@@ -1,0 +1,41 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Makefile Build for mycomp",
+            "type": "shell",
+            "command": "mingw32-make",
+            "args": [
+                "all"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/mycomp"
+            }
+        },
+        {
+            "label": "Makefile Debug Build for mycomp",
+            "type": "shell",
+            "command": "mingw32-make",
+            "args": [
+                "debug"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/mycomp"
+            }
+        },
+    ]
+}
