@@ -1,0 +1,42 @@
+Welcome to the complex numbers calculator.
+First consider this rules and examples :
+1. Valid complex variable names: A, B, C, D, E, F.
+2. Valid operations are as follows:
+   - read_comp: To input a complex number.
+   - print_comp: To display a complex number.
+   - add_comp: To add two complex numbers.
+   - sub_comp: To subtract one complex number from another.
+   - mult_comp_real: To multiply a complex number by a real number.
+   - mult_comp_img: To multiply a complex number by an imaginary number.
+   - mult_comp_comp: To multiply two complex numbers.
+   - abs_comp: To find the absolute value of a complex number.
+3. Command formats:
+   - For read_comp: read_comp <variable>, <real part>, <imaginary part> <ENTER>
+     Example: read_comp A, 3.5, -2.1
+   - For print_comp: print_comp <variable><ENTER>
+     Example: print_comp A
+   - For operations with two variables (add/sub/mult_comp_comp):
+     <operation> <variable1>, <variable2><ENTER>
+     Example: add_comp A, B
+   - For operations with a variable and a real number (mult_comp_real):
+     mult_comp_real <variable>, <real value><ENTER>
+     Example: mult_comp_real B, 4.5
+   - For operations with a variable and an imaginary value (mult_comp_img):
+     mult_comp_img <variable>, <imaginary value><ENTER>
+     Example: mult_comp_img C, 2.3
+4. To quit: stop<ENTER>
+Line: read_compA,5,5
+Unknown command: read_compA,5,5
+Line: print_compA
+Unknown command: print_compA
+Line: read_compB,5,5
+Unknown command: read_compB,5,5
+Line: read_compC,5,5
+Unknown command: read_compC,5,5
+Line: read_compD,5,5
+Unknown command: read_compD,5,5
+Line: read_compE,5,5
+Unknown command: read_compE,5,5
+Line: read_compE,5,5
+Unknown command: read_compE,5,5
+End of input detected. Exiting...
