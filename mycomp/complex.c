@@ -1,23 +1,61 @@
 #include <stdio.h>
+#include <math.h>
 #include "complex.h"
 
-Operation get_operation_type(const char *operation_str)
+void read_comp(Complex *a, double real, double imaginary)
 {
-    if (strcmp(operation_str, "print_comp") == 0)
-        return PRINT_COMP;
-    if (strcmp(operation_str, "add_comp") == 0)
-        return ADD_COMP;
-    if (strcmp(operation_str, "sub_comp") == 0)
-        return SUB_COMP;
-    if (strcmp(operation_str, "mult_comp_real") == 0)
-        return MULT_COMP_REAL;
-    if (strcmp(operation_str, "mult_comp_img") == 0)
-        return MULT_COMP_IMG;
-    if (strcmp(operation_str, "mult_comp_comp") == 0)
-        return MULT_COMP_COMP;
-    if (strcmp(operation_str, "abs_comp") == 0)
-        return ABS_COMP;
-    if (strcmp(operation_str, "stop") == 0)
-        return STOP;
-    return INVALID_OPERATION;
+    a->real = real;
+    a->imaginary = imaginary;
+}
+
+void print_comp(Complex *a)
+{
+    printf("%.2f + (%.2f)i\n", a->real, a->imaginary);
+}
+
+Complex add_comp(Complex *a, Complex *b)
+{
+    Complex result;
+    result.real = a->real + b->real;
+    result.imaginary = a->imaginary + b->imaginary;
+    return result;
+}
+
+Complex sub_comp(Complex *a, Complex *b)
+{
+    Complex result;
+    result.real = a->real - b->real;
+    result.imaginary = a->imaginary - b->imaginary;
+    return result;
+}
+
+Complex mult_comp_real(Complex *a, double b)
+{
+    Complex result;
+    result.real = a->real * b;
+    result.imaginary = a->imaginary * b;
+    printf("THIS CALC IS NOT TRUE");
+    return result;
+}
+
+Complex mult_comp_img(Complex *a, double b)
+{
+    Complex result;
+    result.real = -a->imaginary * b;
+    result.imaginary = a->real * b;
+    printf("THIS CALC IS NOT TRUE");
+    return result;
+}
+
+Complex mult_comp_comp(Complex *a, Complex *b)
+{
+    Complex result;
+    result.real = a->real * b->real - a->imaginary * b->imaginary;
+    result.imaginary = a->real * b->imaginary + a->imaginary * b->real;
+    return result;
+}
+
+double abs_comp(Complex *a)
+{
+    return sqrt(a->real * a->real + a->imaginary * a->imaginary);
 }

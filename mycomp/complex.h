@@ -7,19 +7,13 @@ typedef struct
     double imaginary;
 } Complex;
 
-typedef enum
-{
-    PRINT_COMP,
-    ADD_COMP,
-    SUB_COMP,
-    MULT_COMP_REAL,
-    MULT_COMP_IMG,
-    MULT_COMP_COMP,
-    ABS_COMP,
-    STOP,
-    INVALID_OPERATION
-} Operation;
-
-Operation get_operation_type(const char *operation_str);
+void read_comp(Complex *a, double real, double imaginary);
+void print_comp(Complex *a);
+Complex add_comp(Complex *a, Complex *b);
+Complex sub_comp(Complex *a, Complex *b);
+Complex mult_comp_real(Complex *a, double b);
+Complex mult_comp_img(Complex *a, double b);
+Complex mult_comp_comp(Complex *a, Complex *b);
+double abs_comp(Complex *a);
 
 #endif

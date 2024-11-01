@@ -1,6 +1,10 @@
 {
     "files.associations": {
-        "complex.h": "c"
+        "complex.h": "c",
+        "string.h": "c",
+        "validation.h": "c",
+        "stdlib.h": "c",
+        "complex": "c"
     },
     "files.exclude": {
         "**/*.exe": true,

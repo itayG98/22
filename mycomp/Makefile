@@ -7,7 +7,7 @@ CC = gcc
 TARGET = mycomp
 
 # Source files
-SRCS = mycomp.c complex.c 
+SRCS = mycomp.c complex.c validation.c
 
 # Object files
 OBJS = $(SRCS:.c=.o)
