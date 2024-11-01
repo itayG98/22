@@ -5,7 +5,9 @@
         "validation.h": "c",
         "stdlib.h": "c",
         "complex": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "cctype": "cpp",
+        "locale": "cpp"
     },
     "files.exclude": {
         "**/*.exe": true,
