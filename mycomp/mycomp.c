@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "mycomp.h"
 #include "complex.h"
 #include "validation.h"
 
