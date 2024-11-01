@@ -25,6 +25,11 @@ all: $(TARGET)
 debug: CFLAGS += $(DEBUG_FLAGS)
 debug: $(TARGET)
 
+# Define dependencies for source files
+mycomp.o: mycomp.c mycomp.h validation.h complex.h
+complex.o: complex.c complex.h
+validation.o: validation.c validation.h
+
 # Linking the object files to create the executable
 $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS)
