@@ -4,7 +4,8 @@
         "string.h": "c",
         "validation.h": "c",
         "stdlib.h": "c",
-        "complex": "c"
+        "complex": "c",
+        "stdio.h": "c"
     },
     "files.exclude": {
         "**/*.exe": true,
