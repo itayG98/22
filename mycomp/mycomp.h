@@ -48,6 +48,8 @@ void stop(commandData *command_data);
 void free_commnad_data(commandData *command_data);
 void extract_data_from_line(commandData *command_data);
 void execute_command(commandData *command_data);
+CommandParams extract_command_params(const commandData *cmdData);
+int is_valid_variable(char c);
 void calculate_max_command_length(void);
 void remove_spaces_and_tabs(char *str);
 void display_rules(void);

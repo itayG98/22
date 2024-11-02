@@ -85,9 +85,9 @@ void extract_data_from_line(commandData *command_data)
     int i, j;
     i = j = 0;
     char *cmnd, *suffix, *line;
-    *cmnd = malloc((MAX_CMD_LENGTH + 1) * sizeof(char));
-    *suffix = malloc(sizeof(char) * MAX_LINE_LENGTH);
-    *line = command_data->line;
+    cmnd = malloc((MAX_CMD_LENGTH + 1) * sizeof(char));
+    suffix = malloc(sizeof(char) * MAX_LINE_LENGTH);
+    line = command_data->line;
     while (line[i] && i < MAX_CMD_LENGTH && (islower(line[i]) || line[i] == '_'))
     {
         cmnd[i] = line[i];
@@ -128,6 +128,54 @@ void execute_command(commandData *command_data)
     printf("is not a valid command");
 }
 
+CommandParams extract_command_params(const commandData *cmdData)
+{
+    CommandParams cmdParams = {0};
+    char *param_str = cmdData->params;
+    char *token;
+    int token_count = 0;
+
+    token = strtok(param_str, ",");
+    while (token && token_count < 4)
+    {
+
+        if (token_count == 0 && isupper(*token))
+        {
+            if (!is_valid_variable(*token))
+                return (CommandParams){0};
+            cmdParams.a = get_variable_value(*token);
+        }
+        else if (token_count == 1 && atof(token))
+        {
+            cmdParams.val_a = atof(token);
+        }
+        else if (token_count == 2 && atof(token))
+        {
+            cmdParams.val_b = atof(token);
+        }
+        else if (token_count == 3 && isupper(*token))
+        {
+            if (!is_valid_variable(*token))
+                return (CommandParams){0};
+            cmdParams.b = get_variable_value(*token);
+        }
+        else
+        {
+            return (CommandParams){0};
+        }
+
+        token_count++;
+        token = strtok(NULL, ",");
+    }
+
+    if (token_count > 0 && cmdData->params[strlen(cmdData->params) - 1] == ',')
+    {
+        return (CommandParams){0};
+    }
+
+    return cmdParams;
+}
+
 void get_line(commandData *command_data)
 {
     command_data->line = malloc(sizeof(char) * MAX_LINE_LENGTH);
@@ -145,6 +193,18 @@ void get_line(commandData *command_data)
         return;
     }
     command_data->line[strcspn(command_data->line, "\n")] = 0;
+}
+
+int is_valid_variable(char c)
+{
+    for (int i = 0; i < NUM_OF_VARIABLES; i++)
+    {
+        if (variables[i].key == c)
+        {
+            return 1;
+        }
+    }
+    return 0;
 }
 
 void calculate_max_command_length(void)
