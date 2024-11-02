@@ -45,6 +45,7 @@ typedef struct
 
 void get_line(commandData *command_data);
 void stop(commandData *command_data);
+void free_commnad_data(commandData *command_data);
 void extract_data_from_line(commandData *command_data);
 void execute_command(commandData *command_data);
 void calculate_max_command_length(void);

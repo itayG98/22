@@ -52,7 +52,7 @@ int main()
 
 void stop(commandData *command_data)
 {
-    free(command_data->line);
+    free_commnad_data(command_data);
     switch (command_data->flag)
     {
     case SUCCES:
@@ -73,13 +73,21 @@ void stop(commandData *command_data)
     }
 }
 
+void free_commnad_data(commandData *command_data)
+{
+    free(command_data->line);
+    free(command_data->command);
+    free(command_data->params);
+}
+
 void extract_data_from_line(commandData *command_data)
 {
     int i, j;
     i = j = 0;
-    char *cmnd = malloc((MAX_CMD_LENGTH + 1) * sizeof(char));
-    char *suffix = malloc(sizeof(char) * MAX_LINE_LENGTH);
-    const char *line = command_data->line;
+    char *cmnd, *suffix, *line;
+    *cmnd = malloc((MAX_CMD_LENGTH + 1) * sizeof(char));
+    *suffix = malloc(sizeof(char) * MAX_LINE_LENGTH);
+    *line = command_data->line;
     while (line[i] && i < MAX_CMD_LENGTH && (islower(line[i]) || line[i] == '_'))
     {
         cmnd[i] = line[i];
