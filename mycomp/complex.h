@@ -7,13 +7,21 @@ typedef struct
     double imaginary;
 } Complex;
 
-void read_comp(Complex *a, double real, double imaginary);
-void print_comp(Complex *a);
-Complex add_comp(Complex *a, Complex *b);
-Complex sub_comp(Complex *a, Complex *b);
-Complex mult_comp_real(Complex *a, double b);
-Complex mult_comp_img(Complex *a, double b);
-Complex mult_comp_comp(Complex *a, Complex *b);
-double abs_comp(Complex *a);
+typedef struct
+{
+    Complex a;
+    Complex b;
+    double val_a;
+    double val_b;
+} CommandParams;
+
+void read_comp(CommandParams params);
+void print_comp(CommandParams params);
+Complex add_comp(CommandParams params);
+Complex sub_comp(CommandParams params);
+Complex mult_comp_real(CommandParams params);
+Complex mult_comp_img(CommandParams params);
+Complex mult_comp_comp(CommandParams params);
+double abs_comp(CommandParams params);
 
 #endif

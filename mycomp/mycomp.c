@@ -26,31 +26,117 @@ static VariableTable variables[NUM_OF_VARIABLES] = {
     {'F', {0, 0}}};
 
 static int MAX_CMD_LENGTH;
+
 int main()
 {
+    commandData command_data = {NULL, NULL, NULL, DEFAULT};
     calculate_max_command_length();
-    char *line, *cmnd, *params;
-    int params_start_idx = -1;
-    diplayRules();
-    while (TRUE)
+    display_rules();
+    while (command_data.flag == DEFAULT)
     {
-        line = get_line();
-        if (line == NULL)
+        printf("\n\n~prompt: ");
+        get_line(&command_data);
+        if (command_data.line == NULL)
         {
-            printf("End of input detected. Exiting...\n");
-            free(line);
-            stop();
+            stop(&command_data);
         }
-        if (strlen(line) != 0)
+        if (strlen(command_data.line) != 0)
         {
-            cmnd = extract_cmnd(line, &params_start_idx);
-            execute_command(cmnd, line, params_start_idx);
+            extract_data_from_line(&command_data);
+            execute_command(&command_data);
         }
     }
-    free(line);
-    free(cmnd);
-    free(params);
+    stop(&command_data);
     return 0;
+}
+
+void stop(commandData *command_data)
+{
+    free(command_data->line);
+    switch (command_data->flag)
+    {
+    case SUCCES:
+        printf("Operation successful. Exiting...\n");
+        exit(EXIT_SUCCESS);
+    case DEFAULT:
+        printf("No inpt detected...\n");
+        break;
+    case EOF_REACHED:
+        printf("End of file reached. Exiting...\n");
+        exit(EXIT_SUCCESS);
+    case ERROR:
+        printf("Error occurred. Exiting...\n");
+        exit(EXIT_FAILURE);
+    default:
+        printf("Unknown error code. Exiting...\n");
+        exit(EXIT_FAILURE);
+    }
+}
+
+void extract_data_from_line(commandData *command_data)
+{
+    int i, j;
+    i = j = 0;
+    char *cmnd = malloc((MAX_CMD_LENGTH + 1) * sizeof(char));
+    char *suffix = malloc(sizeof(char) * MAX_LINE_LENGTH);
+    const char *line = command_data->line;
+    while (line[i] && i < MAX_CMD_LENGTH && (islower(line[i]) || line[i] == '_'))
+    {
+        cmnd[i] = line[i];
+        i++;
+    }
+    cmnd[i] = '\0';
+    while (line[i])
+    {
+        if (line[i] != '\t' && line[i] != ' ')
+        {
+            suffix[j] = line[i];
+            j++;
+        }
+        i++;
+    }
+    suffix[j] = '\0';
+    command_data->command = cmnd;
+    command_data->params = suffix;
+}
+
+void execute_command(commandData *command_data)
+{
+    int i;
+    for (i = 0; i < NUM_OF_CMNDS; i++)
+    {
+        if (strcmp(command_data->command, commandTable[i].command) == 0)
+        {
+            if (commandTable[i].action.action_params != NULL)
+            {
+                printf("Executing : %s\n", commandTable[i].command);
+                /* commandTable[i].validate(command_data->params);*/
+                printf("using : %s\n", command_data->params);
+                /*commandTable[i].action(); */
+                return;
+            }
+        }
+    }
+    printf("is not a valid command");
+}
+
+void get_line(commandData *command_data)
+{
+    command_data->line = malloc(sizeof(char) * MAX_LINE_LENGTH);
+    if (!command_data->line)
+    {
+        perror("Unable to allocate memory for line");
+        command_data->flag = ERROR;
+        return;
+    }
+    if (fgets(command_data->line, MAX_LINE_LENGTH, stdin) == NULL)
+    {
+        command_data->flag = EOF_REACHED;
+        free(command_data->line);
+        command_data->line = NULL;
+        return;
+    }
+    command_data->line[strcspn(command_data->line, "\n")] = 0;
 }
 
 void calculate_max_command_length(void)
@@ -64,56 +150,6 @@ void calculate_max_command_length(void)
             MAX_CMD_LENGTH = len;
         }
     }
-}
-
-char *extract_cmnd(const char *line, int *params_start_idx)
-{
-    char *cmnd = malloc((MAX_CMD_LENGTH + 1) * sizeof(char));
-    int i = 0;
-    while (line[i] && i < 15 && (islower(line[i]) || line[i] == '_'))
-    {
-        cmnd[i] = line[i];
-        i++;
-    }
-    cmnd[i] = '\0';
-    *params_start_idx = i;
-    return cmnd;
-}
-
-void execute_command(char *cmnd, char *line, int params_start_idx)
-{
-    int i = 0;
-    for (i = 0; i < NUM_OF_CMNDS; i++)
-    {
-        if (strcmp(cmnd, commandTable[i].command) == 0)
-        {
-            if (commandTable[i].action)
-            {
-                printf("Executing : %s\n", commandTable[i].command);
-                printf("using : %s\n", line + params_start_idx);
-                /*commandTable[i].action(); */
-            }
-            return;
-        }
-    }
-    printf("Unknown command: %s\n", cmnd);
-}
-
-char *get_line()
-{
-    char *line = malloc(sizeof(char) * MAX_LINE_LENGTH);
-    if (!line)
-    {
-        perror("Unable to allocate memory for line");
-        return NULL;
-    }
-    if (fgets(line, sizeof(char) * MAX_LINE_LENGTH, stdin) == NULL)
-    {
-        return NULL;
-    }
-    line[strcspn(line, "\n")] = 0;
-    remove_spaces_and_tabs(line);
-    return line;
 }
 
 void remove_spaces_and_tabs(char *str)
@@ -130,12 +166,7 @@ void remove_spaces_and_tabs(char *str)
     str[j] = '\0';
 }
 
-void stop(void)
-{
-    exit(0);
-}
-
-void diplayRules(void)
+void display_rules(void)
 {
     /* Introduction and instructions for user */
     printf("Welcome to the complex numbers calculator.\n");

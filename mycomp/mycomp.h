@@ -8,19 +8,33 @@
 #define NUM_OF_CMNDS 9
 #define NUM_OF_VARIABLES 6
 
-char *get_line(void);
-void calculate_max_command_length(void);
-char *extract_cmnd(const char *line, int *params_start_idx);
-void remove_spaces_and_tabs(char *str);
-void execute_command(char *cmnd, char *params, int params_start_idx);
-void display_rules(void);
-void stop(void);
+typedef enum
+{
+    ERROR = -1,
+    DEFAULT = 0,
+    EOF_REACHED = 1,
+    SUCCES = 2
+} STATE;
+
+typedef struct
+{
+    char *line;
+    char *command;
+    char *params;
+    STATE flag;
+} commandData;
+
+typedef union
+{
+    void (*action_params)(CommandParams params);
+    void (*action_exit_reason)(STATE reason, int count, ...);
+} Action;
 
 typedef struct
 {
     char *command;
+    Action action;
     ValidateCommand validate;
-    void (*action)();
 } CommandTable;
 
 typedef struct
@@ -28,5 +42,13 @@ typedef struct
     char key;
     Complex value;
 } VariableTable;
+
+void get_line(commandData *command_data);
+void stop(commandData *command_data);
+void extract_data_from_line(commandData *command_data);
+void execute_command(commandData *command_data);
+void calculate_max_command_length(void);
+void remove_spaces_and_tabs(char *str);
+void display_rules(void);
 
 #endif

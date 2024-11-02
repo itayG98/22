@@ -7,7 +7,8 @@
         "complex": "c",
         "stdio.h": "c",
         "cctype": "cpp",
-        "locale": "cpp"
+        "locale": "cpp",
+        "xlocale": "c"
     },
     "files.exclude": {
         "**/*.exe": true,

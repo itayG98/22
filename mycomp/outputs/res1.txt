@@ -25,18 +25,34 @@ First consider this rules and examples :
      mult_comp_img <variable>, <imaginary value><ENTER>
      Example: mult_comp_img C, 2.3
 4. To quit: stop<ENTER>
-Line: read_compA,5,5
-Unknown command: read_compA,5,5
-Line: print_compA
-Unknown command: print_compA
-Line: read_compB,5,5
-Unknown command: read_compB,5,5
-Line: read_compC,5,5
-Unknown command: read_compC,5,5
-Line: read_compD,5,5
-Unknown command: read_compD,5,5
-Line: read_compE,5,5
-Unknown command: read_compE,5,5
-Line: read_compE,5,5
-Unknown command: read_compE,5,5
-End of input detected. Exiting...
+
+
+~prompt: Executing : read_comp
+using : A,5,5
+
+
+~prompt: Executing : print_comp
+using : A
+
+
+~prompt: Executing : read_comp
+using : B,5,5
+
+
+~prompt: Executing : read_comp
+using : C,5,5
+
+
+~prompt: Executing : read_comp
+using : D,5,5
+
+
+~prompt: Executing : read_comp
+using : E,5,5
+
+
+~prompt: Executing : read_comp
+using : E,5,5
+
+
+~prompt: End of file reached. Exiting...
