@@ -13,4 +13,5 @@ CommandParams vld_mult_comp_img(char *line);
 CommandParams vld_mult_comp_comp(char *line);
 CommandParams vld_abs_comp(char *line);
 
+CommandParams *create_empty_command_params();
 #endif

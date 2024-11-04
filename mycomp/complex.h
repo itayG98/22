@@ -24,4 +24,6 @@ Complex mult_comp_img(CommandParams params);
 Complex mult_comp_comp(CommandParams params);
 double abs_comp(CommandParams params);
 
+void print_params(CommandParams params);
+
 #endif

@@ -29,7 +29,8 @@ static int MAX_CMD_LENGTH;
 
 int main()
 {
-    commandData command_data = {NULL, NULL, NULL, DEFAULT};
+    commandData command_data = {{0, 0}, {0, 0}, NULL, DEFAULT};
+    CommandParams params = {{0, 0}, {0, 0}, 0, 0};
     calculate_max_command_length();
     display_rules();
     while (command_data.flag == DEFAULT)
@@ -43,7 +44,9 @@ int main()
         if (strlen(command_data.line) != 0)
         {
             extract_data_from_line(&command_data);
-            execute_command(&command_data);
+            params = extract_command_params(&command_data);
+            print_params(params);
+            /*execute_command(&command_data); */
         }
     }
     stop(&command_data);
@@ -130,37 +133,81 @@ void execute_command(commandData *command_data)
 
 CommandParams extract_command_params(const commandData *cmdData)
 {
-    CommandParams cmdParams = {0};
-    char *param_str = cmdData->params;
+    CommandParams cmdParams = {{0, 0}, {0, 0}, 0, 0};
+    char *params_str = cmdData->params;
     char *token;
     int token_count = 0;
 
-    token = strtok(param_str, ",");
+    token = strtok(params_str, ",");
     while (token && token_count < 4)
     {
+        switch (token_count)
+        {
+        case 0:
+            if (isupper(*token))
+            {
+                int index = get_variable_index(*token);
+                if (index == -1)
+                {
+                    printf("Error: Variable not found\n");
+                    return (CommandParams){0};
+                }
+                cmdParams.a = get_variable_value_by_index(index);
+            }
+            else
+            {
+                printf("Error: First parameter must be a capital letter.\n");
+                return (CommandParams){0};
+            }
+            break;
 
-        if (token_count == 0 && isupper(*token))
-        {
-            if (!is_valid_variable(*token))
+        case 1:
+            if (isupper(*token))
+            {
+                int index = get_variable_index(*token);
+                if (index == -1)
+                {
+                    printf("Error: Variable not found\n");
+                    return (CommandParams){0};
+                }
+                cmdParams.b = get_variable_value_by_index(index);
+            }
+            else if (atof(token))
+            {
+                cmdParams.val_a = atof(token);
+            }
+            else
+            {
+                printf("Error: Second parameter must be a capital letter or a number.\n");
                 return (CommandParams){0};
-            cmdParams.a = get_variable_value(*token);
-        }
-        else if (token_count == 1 && atof(token))
-        {
-            cmdParams.val_a = atof(token);
-        }
-        else if (token_count == 2 && atof(token))
-        {
-            cmdParams.val_b = atof(token);
-        }
-        else if (token_count == 3 && isupper(*token))
-        {
-            if (!is_valid_variable(*token))
+            }
+            break;
+
+        case 2:
+            if (atof(token))
+            {
+                cmdParams.val_b = atof(token);
+            }
+            else
+            {
+                printf("Error: Third parameter must be a number.\n");
                 return (CommandParams){0};
-            cmdParams.b = get_variable_value(*token);
-        }
-        else
-        {
+            }
+            break;
+
+        case 3:
+            if (atof(token))
+            {
+                cmdParams.val_b = atof(token);
+            }
+            else
+            {
+                printf("Error: Fourth parameter must be a number.\n");
+                return (CommandParams){0};
+            }
+            break;
+
+        default:
             return (CommandParams){0};
         }
 
@@ -170,9 +217,9 @@ CommandParams extract_command_params(const commandData *cmdData)
 
     if (token_count > 0 && cmdData->params[strlen(cmdData->params) - 1] == ',')
     {
+        printf("Error: Trailing comma in parameter list.\n");
         return (CommandParams){0};
     }
-
     return cmdParams;
 }
 
@@ -195,16 +242,22 @@ void get_line(commandData *command_data)
     command_data->line[strcspn(command_data->line, "\n")] = 0;
 }
 
-int is_valid_variable(char c)
+int get_variable_index(char c)
 {
-    for (int i = 0; i < NUM_OF_VARIABLES; i++)
+    int i;
+    for (i = 0; i < NUM_OF_VARIABLES; i++)
     {
         if (variables[i].key == c)
         {
-            return 1;
+            return i;
         }
     }
-    return 0;
+    return -1;
+}
+
+Complex get_variable_value_by_index(int index)
+{
+    return variables[index].value;
 }
 
 void calculate_max_command_length(void)

@@ -43,9 +43,15 @@ using : B,5,5
 using : C,5,5
 
 
-~prompt: Executing : read_comp
-using : D,5,5
+~prompt: 
 
+~prompt: 
+
+~prompt: 
+
+~prompt: is not a valid command
+
+~prompt: is not a valid command
 
 ~prompt: Executing : read_comp
 using : E,5,5

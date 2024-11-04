@@ -66,3 +66,13 @@ double abs_comp(CommandParams params)
 
     return sqrt(params.a.real * params.b.real + params.a.imaginary * params.b.imaginary);
 }
+
+/*Development helpers*/
+void print_params(CommandParams params)
+{
+    printf("Command Parameters:\n");
+    printf("Complex a: %.2f + %.2fi\n", params.a.real, params.a.imaginary);
+    printf("Complex b: %.2f + %.2fi\n", params.b.real, params.b.imaginary);
+    printf("Value a: %.2f\n", params.val_a);
+    printf("Value b: %.2f\n", params.val_b);
+}
