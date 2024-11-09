@@ -27,20 +27,32 @@ First consider this rules and examples :
 4. To quit: stop<ENTER>
 
 
-~prompt: Executing : read_comp
-using : A,5,5
+~prompt: Command Parameters:
+Complex a: 0.00 + 0.00i
+Complex b: 0.00 + 0.00i
+Value a: 5.00
+Value b: 5.00
 
 
-~prompt: Executing : print_comp
-using : A
+~prompt: Command Parameters:
+Complex a: 0.00 + 0.00i
+Complex b: 0.00 + 0.00i
+Value a: 0.00
+Value b: 0.00
 
 
-~prompt: Executing : read_comp
-using : B,5,5
+~prompt: Command Parameters:
+Complex a: 0.00 + 0.00i
+Complex b: 0.00 + 0.00i
+Value a: 5.00
+Value b: 5.00
 
 
-~prompt: Executing : read_comp
-using : C,5,5
+~prompt: Command Parameters:
+Complex a: 0.00 + 0.00i
+Complex b: 0.00 + 0.00i
+Value a: 5.00
+Value b: 5.00
 
 
 ~prompt: 
@@ -49,16 +61,32 @@ using : C,5,5
 
 ~prompt: 
 
-~prompt: is not a valid command
+~prompt: Command Parameters:
+Complex a: 0.00 + 0.00i
+Complex b: 0.00 + 0.00i
+Value a: 0.00
+Value b: 0.00
 
-~prompt: is not a valid command
 
-~prompt: Executing : read_comp
-using : E,5,5
+~prompt: Command Parameters:
+Complex a: 0.00 + 0.00i
+Complex b: 0.00 + 0.00i
+Value a: 5.00
+Value b: 5.00
 
 
-~prompt: Executing : read_comp
-using : E,5,5
+~prompt: Command Parameters:
+Complex a: 0.00 + 0.00i
+Complex b: 0.00 + 0.00i
+Value a: 5.00
+Value b: 5.00
+
+
+~prompt: Command Parameters:
+Complex a: 0.00 + 0.00i
+Complex b: 0.00 + 0.00i
+Value a: 5.00
+Value b: 5.00
 
 
 ~prompt: End of file reached. Exiting...

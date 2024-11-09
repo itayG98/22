@@ -2,6 +2,12 @@
 #include <math.h>
 #include "complex.h"
 
+void display_comp_num(Complex num)
+{
+    printf("%.2f + (%.2f)i\n", num.real, num.imaginary);
+}
+
+/*  Actions */
 void read_comp(CommandParams *params)
 {
     params->a->real = *(params->val_a);
@@ -10,60 +16,281 @@ void read_comp(CommandParams *params)
 
 void print_comp(CommandParams *params)
 {
-    printf("%.2f + (%.2f)i\n", params->a->real, params->a->imaginary);
+    display_comp_num(*params->a);
 }
 
-Complex add_comp(CommandParams *params)
+/* Calculation*/
+void add_comp(CommandParams *params)
 {
-    Complex result;
-    printf("THIS CALC IS NOT TRUE\n");
-
+    Complex result = {0};
     result.real = params->a->real + params->b->real;
     result.imaginary = params->a->imaginary + params->b->imaginary;
-    return result;
+    display_comp_num(result);
 }
 
-Complex sub_comp(CommandParams *params)
+void sub_comp(CommandParams *params)
 {
-    Complex result;
-    printf("THIS CALC IS NOT TRUE\n");
-
+    Complex result = {0};
     result.real = params->a->real - params->b->real;
     result.imaginary = params->a->imaginary - params->b->imaginary;
-    return result;
+    display_comp_num(result);
 }
 
-Complex mult_comp_real(CommandParams *params)
+void mult_comp_real(CommandParams *params)
 {
-    Complex result;
+    Complex result = {0};
+    printf("THIS CALC IS NOT TRUE\n");
     result.real = params->a->real * (*(params->val_a));
     result.imaginary = params->a->imaginary * (*(params->val_a));
-    printf("THIS CALC IS NOT TRUE\n");
     return result;
 }
 
-Complex mult_comp_img(CommandParams *params)
+void mult_comp_img(CommandParams *params)
 {
-    Complex result;
+    Complex result = {0};
+    printf("THIS CALC IS NOT TRUE\n");
     result.real = -params->a->imaginary * (*(params->val_a));
     result.imaginary = params->a->real * (*(params->val_a));
-    printf("THIS CALC IS NOT TRUE\n");
-    return result;
+    display_comp_num(result);
 }
 
-Complex mult_comp_comp(CommandParams *params)
+void mult_comp_comp(CommandParams *params)
 {
-    Complex result;
+    Complex result = {0};
+    printf("THIS CALC IS NOT TRUE\n");
     result.real = params->a->real * params->b->real - params->a->imaginary * params->b->imaginary;
     result.imaginary = params->a->real * params->b->imaginary + params->a->imaginary * params->b->real;
-    printf("THIS CALC IS NOT TRUE\n");
-    return result;
+    display_comp_num(result);
 }
 
-double abs_comp(CommandParams *params)
+void abs_comp(CommandParams *params)
 {
-    printf("THIS CALC IS NOT TRUE\n");
-    return sqrt(params->a->real * params->a->real + params->a->imaginary * params->a->imaginary);
+    double result = 0;
+    result = sqrt(params->a->real * params->a->real + params->a->imaginary * params->a->imaginary);
+    printf("%.2f\n", result);
+}
+
+/* Validation*/
+
+CommandParams vld_read_comp(char *params)
+{
+    Requiermets req = {TRUE, FALSE, TRUE, TRUE};
+    return extract_command_params(params, req);
+}
+
+CommandParams vld_print_comp(char *params)
+{
+    Requiermets req = {TRUE, FALSE, FALSE, FALSE};
+    return extract_command_params(params, req);
+}
+
+CommandParams vld_add_comp(char *params)
+{
+    Requiermets req = {TRUE, FALSE, FALSE, FALSE};
+    return extract_command_params(params, req);
+}
+
+CommandParams vld_sub_comp(char *params)
+{
+    Requiermets req = {TRUE, FALSE, FALSE, FALSE};
+    return extract_command_params(params, req);
+}
+
+CommandParams vld_mult_comp_real(char *params)
+{
+    Requiermets req = {TRUE, FALSE, TRUE, FALSE};
+    return extract_command_params(params, req);
+}
+
+CommandParams vld_mult_comp_img(char *params)
+{
+    Requiermets req = {TRUE, FALSE, TRUE, FALSE};
+    return extract_command_params(params, req);
+}
+
+CommandParams vld_mult_comp_comp(char *params)
+{
+    Requiermets req = {TRUE, FALSE, FALSE, FALSE};
+    return extract_command_params(params, req);
+}
+
+CommandParams vld_abs_comp(char *params)
+{
+    Requiermets req = {TRUE, FALSE, FALSE, FALSE};
+    return extract_command_params(params, req);
+}
+
+CommandParams vld_stop(char *params)
+{
+    CommandParams cmd_params = {NULL, NULL, NULL, strlen(params) == 0 ? NULL : ERR_EXTRANEOUS_TEXT};
+    return cmd_params;
+}
+
+CommandParams extract_command_params(char *params_str, Requiermets req)
+{
+    CommandParams cmdParams = {NULL, NULL, NULL, NULL, NULL};
+    char *token;
+    int token_count = 0;
+    token = strtok(params_str, ",");
+
+    while (token != NULL && token_count < 4)
+    {
+        if (strlen(token) < 1)
+        {
+            set_error_code(&cmdParams, ERR_MULTIPLE_CONSECUTIVE_COMMAS);
+            return cmdParams;
+        }
+        switch (token_count)
+        {
+        case 0:
+            if (isupper(token[0]) && strlen(token) == 1 && req.var_1)
+            {
+                int index = get_variable_index(token[0]);
+                if (index != -1)
+                {
+                    cmdParams.a = get_variable_ref_by_index(index);
+                }
+                else
+                {
+                    set_error_code(&cmdParams, ERR_UNDEFINED_COMPLEX_VAR);
+                }
+            }
+            else
+            {
+                set_error_code(&cmdParams, ERR_UNDEFINED_COMPLEX_VAR);
+            }
+            return cmdParams;
+            break;
+        case 1:
+            if (isupper(token[0]) && strlen(token) == 1 && req.var_2)
+            {
+                int index = get_variable_index(token[0]);
+                if (index != -1)
+                {
+                    cmdParams.b = get_variable_ref_by_index(index);
+                }
+                else
+                {
+                    set_error_code(&cmdParams, ERR_UNDEFINED_COMPLEX_VAR);
+                    return cmdParams;
+                }
+            }
+            else if (req.vaL_1)
+            {
+                double value = atof(token);
+                if (value != 0 || strcmp(token, "0") == 0)
+                {
+                    cmdParams.val_a = allocate_double_value(value);
+                    if (cmdParams.val_a == NULL)
+                    {
+                        set_error_code(&cmdParams, ERR_MALLOC_FAILED);
+                        return cmdParams;
+                    }
+                }
+                else
+                {
+                    set_error_code(&cmdParams, ERR_INVALID_PARAMETER);
+                    return cmdParams;
+                }
+            }
+            break;
+
+        case 2:
+            if (req.val_2)
+            {
+                double value = atof(token);
+                if (value != 0 || strcmp(token, "0") == 0)
+                {
+                    if (cmdParams.val_a == NULL)
+                    {
+                        cmdParams.val_a = allocate_double_value(value);
+                        if (cmdParams.val_a == NULL)
+                        {
+                            set_error_code(&cmdParams, ERR_MALLOC_FAILED);
+                            return cmdParams;
+                        }
+                    }
+                    else
+                    {
+                        cmdParams.val_b = allocate_double_value(value);
+                        if (cmdParams.val_b == NULL)
+                        {
+                            set_error_code(&cmdParams, ERR_MALLOC_FAILED);
+                            return cmdParams;
+                        }
+                    }
+                }
+                else
+                {
+                    set_error_code(&cmdParams, ERR_INVALID_PARAMETER);
+                    return cmdParams;
+                }
+            }
+            break;
+
+        case 3:
+            if (req.val_2)
+            {
+                double value = atof(token);
+                if (value != 0 || strcmp(token, "0") == 0)
+                {
+                    if (cmdParams.val_b == NULL)
+                    {
+                        cmdParams.val_b = allocate_double_value(value);
+                        if (cmdParams.val_b == NULL)
+                        {
+                            set_error_code(&cmdParams, ERR_MALLOC_FAILED);
+                            return cmdParams;
+                        }
+                    }
+                    else
+                    {
+                        set_error_code(&cmdParams, ERR_EXTRANEOUS_TEXT);
+                        return cmdParams;
+                    }
+                }
+                else
+                {
+                    set_error_code(&cmdParams, ERR_INVALID_PARAMETER);
+                    return cmdParams;
+                }
+            }
+            break;
+        }
+
+        token_count++;
+        token = strtok(NULL, ",");
+    }
+
+    if (token != NULL)
+    {
+        set_error_code(&cmdParams, ERR_ILLEGAL_COMMA);
+    }
+
+    return cmdParams;
+}
+
+void set_error_code(CommandParams *cmdParams, ErrorCode error)
+{
+    cmdParams->errorCode = malloc(sizeof(ErrorCode));
+    if (cmdParams->errorCode == NULL)
+    {
+        cmdParams->errorCode = ERR_MALLOC_FAILED;
+    }
+    else
+    {
+        *cmdParams->errorCode = error;
+    }
+}
+
+double *allocate_double_value(double value)
+{
+    double *val = malloc(sizeof(double));
+    if (val != NULL)
+    {
+        *val = value;
+    }
+    return val;
 }
 
 /*Development helpers*/

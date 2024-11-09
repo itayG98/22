@@ -8,7 +8,10 @@
         "stdio.h": "c",
         "cctype": "cpp",
         "locale": "cpp",
-        "xlocale": "c"
+        "xlocale": "c",
+        "system_error": "c",
+        "math.h": "c",
+        "cmath": "c"
     },
     "files.exclude": {
         "**/*.exe": true,

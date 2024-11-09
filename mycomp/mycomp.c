@@ -4,7 +4,6 @@
 #include <ctype.h>
 #include "mycomp.h"
 #include "complex.h"
-#include "validation.h"
 
 static Command command_table[NUM_OF_CMNDS] = {
     {"read_comp", read_comp, vld_read_comp},
@@ -15,7 +14,7 @@ static Command command_table[NUM_OF_CMNDS] = {
     {"mult_comp_img", mult_comp_img, vld_mult_comp_img},
     {"mult_comp_comp", mult_comp_comp, vld_mult_comp_comp},
     {"abs_comp", abs_comp, vld_abs_comp},
-    {"stop", stop, NULL}};
+    {"stop", stop, vld_stop}};
 
 static Variable variables[NUM_OF_VARIABLES] = {
     {'A', {0, 0}},
@@ -25,32 +24,31 @@ static Variable variables[NUM_OF_VARIABLES] = {
     {'E', {0, 0}},
     {'F', {0, 0}}};
 
-static char *errors[NUM_OF_ERRORS] = {
-    {"Undefined complex variable"},
-    {"Undefined command name"},
-    {"Invalid parameter - not a number"},
-    {"Missing parameter"},
-    {"Extraneous text after end of command"},
-    {"Multiple consecutive commas"},
-    {"Missing comma"},
-    {"Illegal comma"}};
+static ErrorInfo errors[NUM_OF_ERRORS] = {
+    {ERR_UNDEFINED_COMPLEX_VAR, "Undefined complex variable"},
+    {ERR_UNDEFINED_COMMAND_NAME, "Undefined command name"},
+    {ERR_INVALID_PARAMETER, "Invalid parameter - not a number"},
+    {ERR_MISSING_PARAMETER, "Missing parameter"},
+    {ERR_EXTRANEOUS_TEXT, "Extraneous text after end of command"},
+    {ERR_MULTIPLE_CONSECUTIVE_COMMAS, "Multiple consecutive commas"},
+    {ERR_MISSING_COMMA, "Missing comma"},
+    {ERR_ILLEGAL_COMMA, "Illegal comma"}};
 
 static int MAX_CMD_LENGTH;
 
 int main()
 {
     commandData command_data = {0};
-    CommandParams params = {0};
     calculate_max_command_length();
     display_rules();
     while (command_data.flag == DEFAULT || command_data.flag == ERROR)
     {
-        free_allocation(&command_data, &params);
+        free_allocation(&command_data);
         printf("\nprompt: ");
         get_line(&command_data);
         if (command_data.line == NULL)
         {
-            stop(&command_data, &params);
+            stop(&command_data);
         }
         if (strlen(command_data.line) == 0 || command_data.flag == ERROR)
         {
@@ -59,14 +57,12 @@ int main()
         extract_data_from_line(&command_data);
         if (command_data.command == NULL)
         {
-            printf(errors[1]);
+            printf("%s\n", errors[1]);
             continue;
         }
-        params = extract_command_params(&command_data);
-        print_params(&params);
-        execute_command(&command_data, params);
+        execute_command(&command_data);
     }
-    stop(&command_data, &params);
+    stop(&command_data);
     return 0;
 }
 
@@ -95,7 +91,9 @@ void extract_data_from_line(commandData *command_data)
 {
     int i, j;
     i = j = 0;
-    char *cmnd, *suffix, *line;
+    char *cmnd;
+    char *suffix;
+    char *line;
     cmnd = malloc((MAX_CMD_LENGTH + 1) * sizeof(char));
     suffix = malloc(sizeof(char) * MAX_LINE_LENGTH);
     if (cmnd == NULL || suffix == NULL)
@@ -122,165 +120,6 @@ void extract_data_from_line(commandData *command_data)
     suffix[j] = '\0';
     command_data->command = cmnd;
     command_data->params = suffix;
-}
-
-CommandParams extract_command_params(commandData *cmdData)
-{
-    CommandParams cmdParams = {NULL, NULL, NULL, NULL};
-    char *params_str = cmdData->params;
-    char *token;
-    int token_count = 0;
-
-    token = strtok(params_str, ",");
-    while (token != NULL && token_count < 4)
-    {
-
-        switch (token_count)
-        {
-        case 0:
-            if (isupper(token[0]) && strlen(token) == 1)
-            {
-                int index = get_variable_index(token[0]);
-                if (index != -1)
-                {
-                    cmdParams.a = get_variable_ref_by_index(index);
-                }
-                else
-                {
-                    printf("%s", errors[0]);
-                    return cmdParams;
-                }
-            }
-            else
-            {
-                printf("%s", errors[1]);
-                return cmdParams;
-            }
-            break;
-        case 1:
-            if (isupper(token[0]) && strlen(token) == 1)
-            {
-                int index = get_variable_index(token[0]);
-                if (index != -1)
-                {
-                    cmdParams.b = get_variable_ref_by_index(index);
-                }
-                else
-                {
-                    printf("%s", errors[0]);
-                    return cmdParams;
-                }
-            }
-            else
-            {
-                double value = atof(token);
-                if (value != 0 || strcmp(token, "0") == 0)
-                {
-                    cmdParams.val_a = malloc(sizeof(double));
-                    if (cmdParams.val_a == NULL)
-                    {
-                        cmdData->flag = MALLOC_ERROR;
-                        return cmdParams;
-                    }
-                    *(cmdParams.val_a) = value;
-                }
-                else
-                {
-                    printf("%s", errors[2]);
-                    return cmdParams;
-                }
-            }
-            break;
-        case 2:
-        {
-            double value = atof(token);
-            if (value != 0 || strcmp(token, "0") == 0)
-            {
-                if (cmdParams.val_a == NULL)
-                {
-                    cmdParams.val_a = malloc(sizeof(double));
-                    if (cmdParams.val_a == NULL)
-                    {
-                        cmdData->flag = MALLOC_ERROR;
-                        return cmdParams;
-                    }
-                    *(cmdParams.val_a) = value;
-                }
-                else
-                {
-                    cmdParams.val_b = malloc(sizeof(double));
-                    if (cmdParams.val_b == NULL)
-                    {
-                        cmdData->flag = MALLOC_ERROR;
-                        return cmdParams;
-                    }
-                    *(cmdParams.val_b) = value;
-                }
-            }
-            else
-            {
-                printf("%s", errors[2]);
-                return cmdParams;
-            }
-        }
-        break;
-
-        case 3:
-        {
-            double value = atof(token);
-            if (value != 0 || strcmp(token, "0") == 0)
-            {
-                if (cmdParams.val_b == NULL)
-                {
-                    cmdParams.val_b = malloc(sizeof(double));
-                    if (cmdParams.val_b == NULL)
-                    {
-                        cmdData->flag = MALLOC_ERROR;
-                        return cmdParams;
-                    }
-                    *(cmdParams.val_b) = value;
-                }
-                else
-                {
-                    printf("Too many number params.\n");
-                    return cmdParams;
-                }
-            }
-            else
-            {
-                printf("Error: Fourth parameter must be a number.\n");
-                return cmdParams;
-            }
-        }
-        break;
-
-        default:
-            printf("%s", errors[4]);
-            return cmdParams;
-        }
-
-        token_count++;
-        token = strtok(NULL, ",");
-    }
-    if (token_count > 4)
-    {
-        printf("%s", errors[4]);
-    }
-    return cmdParams;
-}
-
-void remove_spaces_and_tabs(char *str)
-{
-    int i = 0, j = 0;
-    while (str[i])
-    {
-        if (str[i] != ' ' && str[i] != '\t')
-        {
-            str[j++] = str[i];
-        }
-        i++;
-    }
-    str[j] = '\0';
 }
 
 /*Logic*/
@@ -316,38 +155,39 @@ void calculate_max_command_length(void)
     }
 }
 
-void execute_command(commandData *command_data, CommandParams params)
+void execute_command(commandData *command_data)
 {
     int i;
-    for (i = 0; i < NUM_OF_CMNDS; i++)
+    CommandParams params = {NULL, NULL, NULL, NULL, NULL};
+    for (i = 0; i < NUM_OF_CMNDS - 1; i++)
     {
         if (strcmp(command_data->command, command_table[i].command) == 0)
         {
-            if (command_table[i].action.action_params != NULL)
+            printf("Executing : %s\n", command_table[i].command);
+            params = command_table[i].validate(command_data->params);
+            if (params.errorCode)
             {
-                printf("Executing : %s\n", command_table[i].command);
-                if (command_table[i].validate)
-                {
-                    BOOLEAN isValid = command_table[i].validate(params);
-                    if (isValid)
-                    {
-                        command_table[i].action(c)
-                    }
-                }
-                else
-                {
-                    stop(command_data, params);
-                }
-                return;
+                print_error_message(params.errorCode);
             }
+            else
+            {
+                command_table[i].action(&params);
+            }
+            free_command_params(&params);
+            return;
         }
+    }
+    if (strcmp(command_data->command, command_table[NUM_OF_CMNDS - 1].command) == 0)
+    {
+        command_data->flag = SUCCES;
+        stop(command_data);
     }
     printf("%s is not a valid command", command_data->command);
 }
 
-void stop(commandData *command_data, CommandParams *cmdParams)
+void stop(commandData *command_data)
 {
-    free_allocation(command_data, cmdParams);
+    free_allocation(command_data);
     switch (command_data->flag)
     {
     case SUCCES:
@@ -402,12 +242,23 @@ void display_rules(void)
     printf("4. To quit: stop<ENTER>\n");
 }
 
+void print_error_message(int *code)
+{
+    if (code != NULL && *code >= 0 && *code < NUM_OF_ERRORS)
+    {
+        printf("%s\n", errors[*code].message);
+    }
+    else
+    {
+        printf("Invalid error code\n");
+    }
+}
+
 /* Allocation*/
 
-void free_allocation(commandData *command_data, CommandParams *cmdParams)
+void free_allocation(commandData *command_data)
 {
     free_commnad_data(command_data);
-    free_command_params(cmdParams);
 }
 
 void free_commnad_data(commandData *command_data)
@@ -431,9 +282,11 @@ void free_command_params(CommandParams *cmdParams)
         free(cmdParams->b);
         free(cmdParams->val_a);
         free(cmdParams->val_b);
+        free(cmdParams->errorCode);
         cmdParams->a = NULL;
         cmdParams->b = NULL;
         cmdParams->val_a = NULL;
         cmdParams->val_b = NULL;
+        cmdParams->errorCode = NULL;
     }
 }

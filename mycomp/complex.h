@@ -1,5 +1,33 @@
 #ifndef COMPLEX_H
 #define COMPLEX_H
+#include "complex.h"
+
+#define NUM_OF_ERRORS 8
+
+typedef enum
+{
+    FALSE = 0,
+    TRUE = 1
+} BOOLEAN;
+
+typedef enum
+{
+    ERR_UNDEFINED_COMPLEX_VAR,
+    ERR_UNDEFINED_COMMAND_NAME,
+    ERR_INVALID_PARAMETER,
+    ERR_MISSING_PARAMETER,
+    ERR_EXTRANEOUS_TEXT,
+    ERR_MULTIPLE_CONSECUTIVE_COMMAS,
+    ERR_MISSING_COMMA,
+    ERR_ILLEGAL_COMMA,
+    ERR_MALLOC_FAILED
+} ErrorCode;
+
+typedef struct
+{
+    ErrorCode code;
+    char *message;
+} ErrorInfo;
 
 typedef struct
 {
@@ -13,17 +41,42 @@ typedef struct
     Complex *b;
     double *val_a;
     double *val_b;
+    ErrorCode *errorCode;
 } CommandParams;
 
+typedef struct
+{
+    BOOLEAN var_1;
+    BOOLEAN var_2;
+    BOOLEAN vaL_1;
+    BOOLEAN val_2;
+} Requiermets;
+
+/*Calculations*/
 void read_comp(CommandParams *params);
 void print_comp(CommandParams *params);
-Complex add_comp(CommandParams *params);
-Complex sub_comp(CommandParams *params);
-Complex mult_comp_real(CommandParams *params);
-Complex mult_comp_img(CommandParams *params);
-Complex mult_comp_comp(CommandParams *params);
-double abs_comp(CommandParams *params);
+void add_comp(CommandParams *params);
+void sub_comp(CommandParams *params);
+void mult_comp_real(CommandParams *params);
+void mult_comp_img(CommandParams *params);
+void mult_comp_comp(CommandParams *params);
+void abs_comp(CommandParams *params);
+
+/*Validation*/
+CommandParams vld_read_comp(char *params);
+CommandParams vld_print_comp(char *params);
+CommandParams vld_add_comp(char *params);
+CommandParams vld_sub_comp(char *params);
+CommandParams vld_mult_comp_real(char *params);
+CommandParams vld_mult_comp_img(char *params);
+CommandParams vld_mult_comp_comp(char *params);
+CommandParams vld_abs_comp(char *params);
+CommandParams vld_stop(char *params);
 
 void print_params(CommandParams *params);
+void display_comp_num(Complex num);
 
+double *allocate_double_value(double value);
+CommandParams extract_command_params(char *params_str, Requiermets req);
+void set_error_code(CommandParams *cmdParams, ErrorCode error);
 #endif

@@ -2,7 +2,6 @@
 #define MYCOMP_H
 
 #include "complex.h"
-#include "validation.h"
 
 #define MAX_LINE_LENGTH 512
 #define NUM_OF_CMNDS 9
@@ -26,17 +25,11 @@ typedef struct
     STATE flag;
 } commandData;
 
-typedef union
-{
-    void (*action_params)(CommandParams params);
-    void (*action_exit_reason)(STATE reason, int count, ...);
-} Action;
-
 typedef struct
 {
     char *command;
-    Action action;
-    ValidateCommand validate;
+    void (*action)(CommandParams *params);
+    CommandParams (*validate)(commandData *command_data);
 } Command;
 
 typedef struct
@@ -48,19 +41,18 @@ typedef struct
 /*Input */
 void get_line(commandData *command_data);
 void extract_data_from_line(commandData *command_data);
-CommandParams extract_command_params(commandData *cmdData);
-void remove_spaces_and_tabs(char *str);
 
 /*Logic*/
 int get_variable_index(char c);
 Complex *get_variable_ref_by_index(int index);
 void calculate_max_command_length(void);
-void execute_command(commandData *command_data, CommandParams params);
-void stop(commandData *command_data, CommandParams *cmdParams);
+void execute_command(commandData *command_data);
+void stop(commandData *command_data);
 void display_rules(void);
+void print_error_message(int *code);
 
 /* Allocation*/
-void free_command_data(commandData *command_data);
+void free_commnad_data(commandData *command_data);
 void free_command_params(CommandParams *cmdParams);
-void free_allocation(commandData *command_data, CommandParams *params);
+void free_allocation(commandData *command_data);
 #endif

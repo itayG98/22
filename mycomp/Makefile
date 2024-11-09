@@ -7,7 +7,7 @@ CC = gcc
 TARGET = mycomp
 
 # Source files
-SRCS = mycomp.c complex.c validation.c
+SRCS = mycomp.c complex.c 
 
 # Object files
 OBJS = $(SRCS:.c=.o)
@@ -26,9 +26,8 @@ debug: CFLAGS += $(DEBUG_FLAGS)
 debug: $(TARGET)
 
 # Define dependencies for source files
-mycomp.o: mycomp.c mycomp.h validation.h complex.h
-complex.o: complex.c complex.h
-validation.o: validation.c validation.h
+mycomp.o: mycomp.c mycomp.h complex.h 
+complex.o: complex.c complex.h 
 
 # Linking the object files to create the executable
 $(TARGET): $(OBJS)
