@@ -87,13 +87,13 @@ CommandParams vld_print_comp(char *params)
 
 CommandParams vld_add_comp(char *params)
 {
-    Requiermets req = {TRUE, FALSE, FALSE, FALSE};
+    Requiermets req = {TRUE, TRUE, FALSE, FALSE};
     return extract_command_params(params, req);
 }
 
 CommandParams vld_sub_comp(char *params)
 {
-    Requiermets req = {TRUE, FALSE, FALSE, FALSE};
+    Requiermets req = {TRUE, TRUE, FALSE, FALSE};
     return extract_command_params(params, req);
 }
 
@@ -111,7 +111,7 @@ CommandParams vld_mult_comp_img(char *params)
 
 CommandParams vld_mult_comp_comp(char *params)
 {
-    Requiermets req = {TRUE, FALSE, FALSE, FALSE};
+    Requiermets req = {TRUE, TRUE, FALSE, FALSE};
     return extract_command_params(params, req);
 }
 
