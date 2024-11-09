@@ -43,7 +43,7 @@ void mult_comp_real(CommandParams *params)
     printf("THIS CALC IS NOT TRUE\n");
     result.real = params->a->real * (*(params->val_a));
     result.imaginary = params->a->imaginary * (*(params->val_a));
-    return result;
+    display_comp_num(result);
 }
 
 void mult_comp_img(CommandParams *params)

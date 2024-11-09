@@ -163,7 +163,6 @@ void execute_command(commandData *command_data)
     {
         if (strcmp(command_data->command, command_table[i].command) == 0)
         {
-            printf("Executing : %s\n", command_table[i].command);
             params = command_table[i].validate(command_data->params);
             if (params.errorCode)
             {

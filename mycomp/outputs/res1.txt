@@ -26,67 +26,26 @@ First consider this rules and examples :
      Example: mult_comp_img C, 2.3
 4. To quit: stop<ENTER>
 
+prompt: Executing : read_comp
 
-~prompt: Command Parameters:
-Complex a: 0.00 + 0.00i
-Complex b: 0.00 + 0.00i
-Value a: 5.00
-Value b: 5.00
+prompt: Executing : print_comp
+5.00 + (5.00)i
 
+prompt: Executing : read_comp
 
-~prompt: Command Parameters:
-Complex a: 0.00 + 0.00i
-Complex b: 0.00 + 0.00i
-Value a: 0.00
-Value b: 0.00
+prompt: Executing : read_comp
 
+prompt: Executing : abs_comp
+7.07
 
-~prompt: Command Parameters:
-Complex a: 0.00 + 0.00i
-Complex b: 0.00 + 0.00i
-Value a: 5.00
-Value b: 5.00
+prompt: 
+prompt: 
+prompt: 
+prompt: re is not a valid command
+prompt: ad_comp is not a valid command
+prompt: Executing : read_comp
 
+prompt: Executing : print_comp
+5.00 + (5.00)i
 
-~prompt: Command Parameters:
-Complex a: 0.00 + 0.00i
-Complex b: 0.00 + 0.00i
-Value a: 5.00
-Value b: 5.00
-
-
-~prompt: 
-
-~prompt: 
-
-~prompt: 
-
-~prompt: Command Parameters:
-Complex a: 0.00 + 0.00i
-Complex b: 0.00 + 0.00i
-Value a: 0.00
-Value b: 0.00
-
-
-~prompt: Command Parameters:
-Complex a: 0.00 + 0.00i
-Complex b: 0.00 + 0.00i
-Value a: 5.00
-Value b: 5.00
-
-
-~prompt: Command Parameters:
-Complex a: 0.00 + 0.00i
-Complex b: 0.00 + 0.00i
-Value a: 5.00
-Value b: 5.00
-
-
-~prompt: Command Parameters:
-Complex a: 0.00 + 0.00i
-Complex b: 0.00 + 0.00i
-Value a: 5.00
-Value b: 5.00
-
-
-~prompt: End of file reached. Exiting...
+prompt: End of file reached. Exiting...

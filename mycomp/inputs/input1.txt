@@ -2,10 +2,11 @@ read_comp A , 5 ,5
 print_comp A 
 read_comp B , 5 ,5
 read_comp C , 5 ,5
+abs_comp A 
 
 
 
-re
+re , A , 4564 ,45.4
 ad_comp D , 5 ,5
 read_comp E , 5 ,5
-read_comp E , 5 ,5
+print_comp E 
