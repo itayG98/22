@@ -91,9 +91,9 @@ void extract_data_from_line(commandData *command_data)
 {
     int i, j;
     i = j = 0;
-    char *cmnd;
-    char *suffix;
-    char *line;
+    char *cmnd = NULL;
+    char *suffix = NULL;
+    char *line = NULL;
     cmnd = malloc((MAX_CMD_LENGTH + 1) * sizeof(char));
     suffix = malloc(sizeof(char) * MAX_LINE_LENGTH);
     if (cmnd == NULL || suffix == NULL)
