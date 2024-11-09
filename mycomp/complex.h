@@ -78,5 +78,6 @@ void display_comp_num(Complex num);
 
 double *allocate_double_value(double value);
 CommandParams extract_command_params(char *params_str, Requiermets req);
+BOOLEAN validate_requirements(const CommandParams *cmdParams, const Requiermets *req);
 void set_error_code(CommandParams *cmdParams, ErrorCode error);
 #endif

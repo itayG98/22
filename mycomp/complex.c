@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
 #include "complex.h"
 
@@ -133,9 +134,14 @@ CommandParams extract_command_params(char *params_str, Requiermets req)
     int token_count = 0;
     token = strtok(params_str, ",");
 
-    while (token != NULL && token_count < 4)
+    while (token != NULL)
     {
-        if (strlen(token) < 1)
+        if (strlen(token) < 1 && token_count == 0)
+        {
+            set_error_code(&cmdParams, ERR_ILLEGAL_COMMA);
+            return cmdParams;
+        }
+        else if (strlen(token) < 1)
         {
             set_error_code(&cmdParams, ERR_MULTIPLE_CONSECUTIVE_COMMAS);
             return cmdParams;
@@ -149,17 +155,19 @@ CommandParams extract_command_params(char *params_str, Requiermets req)
                 if (index != -1)
                 {
                     cmdParams.a = get_variable_ref_by_index(index);
+                    break;
                 }
                 else
                 {
                     set_error_code(&cmdParams, ERR_UNDEFINED_COMPLEX_VAR);
+                    return cmdParams;
                 }
             }
             else
             {
                 set_error_code(&cmdParams, ERR_UNDEFINED_COMPLEX_VAR);
+                return cmdParams;
             }
-            return cmdParams;
             break;
         case 1:
             if (isupper(token[0]) && strlen(token) == 1 && req.var_2)
@@ -168,6 +176,7 @@ CommandParams extract_command_params(char *params_str, Requiermets req)
                 if (index != -1)
                 {
                     cmdParams.b = get_variable_ref_by_index(index);
+                    break;
                 }
                 else
                 {
@@ -186,6 +195,7 @@ CommandParams extract_command_params(char *params_str, Requiermets req)
                         set_error_code(&cmdParams, ERR_MALLOC_FAILED);
                         return cmdParams;
                     }
+                    break;
                 }
                 else
                 {
@@ -209,6 +219,7 @@ CommandParams extract_command_params(char *params_str, Requiermets req)
                             set_error_code(&cmdParams, ERR_MALLOC_FAILED);
                             return cmdParams;
                         }
+                        break;
                     }
                     else
                     {
@@ -218,6 +229,7 @@ CommandParams extract_command_params(char *params_str, Requiermets req)
                             set_error_code(&cmdParams, ERR_MALLOC_FAILED);
                             return cmdParams;
                         }
+                        break;
                     }
                 }
                 else
@@ -242,6 +254,7 @@ CommandParams extract_command_params(char *params_str, Requiermets req)
                             set_error_code(&cmdParams, ERR_MALLOC_FAILED);
                             return cmdParams;
                         }
+                        break;
                     }
                     else
                     {
@@ -256,18 +269,45 @@ CommandParams extract_command_params(char *params_str, Requiermets req)
                 }
             }
             break;
+        case 4:
+        {
+            set_error_code(&cmdParams, ERR_EXTRANEOUS_TEXT);
+        }
         }
 
         token_count++;
         token = strtok(NULL, ",");
     }
-
-    if (token != NULL)
+    if (token_count < 1)
     {
-        set_error_code(&cmdParams, ERR_ILLEGAL_COMMA);
+        set_error_code(&cmdParams, ERR_MISSING_COMMA);
     }
-
+    else if (!validate_requirements(&cmdParams, &req))
+    {
+        set_error_code(&cmdParams, ERR_MISSING_PARAMETER);
+    }
     return cmdParams;
+}
+
+BOOLEAN validate_requirements(const CommandParams *cmdParams, const Requiermets *req)
+{
+    if (req->var_1 && cmdParams->a == NULL)
+    {
+        return FALSE;
+    }
+    if (req->var_2 && cmdParams->b == NULL)
+    {
+        return FALSE;
+    }
+    if (req->vaL_1 && cmdParams->val_a == NULL)
+    {
+        return FALSE;
+    }
+    if (req->val_2 && cmdParams->val_b == NULL)
+    {
+        return FALSE;
+    }
+    return TRUE;
 }
 
 void set_error_code(CommandParams *cmdParams, ErrorCode error)
