@@ -25,11 +25,21 @@ typedef struct
     STATE flag;
 } commandData;
 
+typedef CommandParams (*ValidateFunc)(char *params);
+
+typedef union
+{
+    void (*cmd_action)(CommandParams *params);
+    void (*exit_action)(char *params);
+} Action;
+
+void *genericPtr;
+
 typedef struct
 {
     char *command;
-    void (*action)(CommandParams *params);
-    CommandParams (*validate)(commandData *command_data);
+    Action action;
+    ValidateFunc validate;
 } Command;
 
 typedef struct

@@ -6,15 +6,15 @@
 #include "complex.h"
 
 static Command command_table[NUM_OF_CMNDS] = {
-    {"read_comp", read_comp, vld_read_comp},
-    {"print_comp", print_comp, vld_print_comp},
-    {"add_comp", add_comp, vld_add_comp},
-    {"sub_comp", sub_comp, vld_sub_comp},
-    {"mult_comp_real", mult_comp_real, vld_mult_comp_real},
-    {"mult_comp_img", mult_comp_img, vld_mult_comp_img},
-    {"mult_comp_comp", mult_comp_comp, vld_mult_comp_comp},
-    {"abs_comp", abs_comp, vld_abs_comp},
-    {"stop", stop, vld_stop}};
+    {"read_comp", {.cmd_action = read_comp}, vld_read_comp},
+    {"print_comp", {.cmd_action = print_comp}, vld_print_comp},
+    {"add_comp", {.cmd_action = add_comp}, vld_add_comp},
+    {"sub_comp", {.cmd_action = sub_comp}, vld_sub_comp},
+    {"mult_comp_real", {.cmd_action = mult_comp_real}, vld_mult_comp_real},
+    {"mult_comp_img", {.cmd_action = mult_comp_img}, vld_mult_comp_img},
+    {"mult_comp_comp", {.cmd_action = mult_comp_comp}, vld_mult_comp_comp},
+    {"abs_comp", {.cmd_action = abs_comp}, vld_abs_comp},
+    {"stop", {.exit_action = stop}, vld_stop}};
 
 static Variable variables[NUM_OF_VARIABLES] = {
     {'A', {0, 0}},
@@ -168,9 +168,13 @@ void execute_command(commandData *command_data)
             {
                 print_error_message(params.errorCode);
             }
+            else if (command_table[i].action.cmd_action)
+            {
+                command_table[i].action.cmd_action(&params);
+            }
             else
             {
-                command_table[i].action(&params);
+                command_table[i].action.exit_action(&params);
             }
             free_command_params(&params);
             return;
