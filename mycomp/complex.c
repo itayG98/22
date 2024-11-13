@@ -204,6 +204,11 @@ CommandParams extract_command_params(char *params_str, Requiermets req)
                     return cmdParams;
                 }
             }
+            else
+            {
+                set_error_code(&cmdParams, ERR_EXTRANEOUS_TEXT);
+                return cmdParams;
+            }
             break;
 
         case 2:
