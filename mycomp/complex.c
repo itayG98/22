@@ -5,6 +5,32 @@
 #include <ctype.h>
 #include "complex.h"
 
+static Variable variables[NUM_OF_VARIABLES] = {
+    {'A', {0}},
+    {'B', {0}},
+    {'C', {0}},
+    {'D', {0}},
+    {'E', {0}},
+    {'F', {0}}};
+
+int get_variable_index(char c)
+{
+    int i;
+    for (i = 0; i < NUM_OF_VARIABLES; i++)
+    {
+        if (variables[i].key == c)
+        {
+            return i;
+        }
+    }
+    return -1;
+}
+
+Complex *get_variable_ref_by_index(int index)
+{
+    return &(variables[index].value);
+}
+
 void display_comp_num(Complex num)
 {
     printf("%.2f + (%.2f)i\n", num.real, num.imaginary);
@@ -322,7 +348,7 @@ void set_error_code(CommandParams *cmdParams, ErrorCode error)
     cmdParams->errorCode = malloc(sizeof(ErrorCode));
     if (cmdParams->errorCode == NULL)
     {
-        cmdParams->errorCode = ERR_MALLOC_FAILED;
+        *cmdParams->errorCode = ERR_MALLOC_FAILED;
     }
     else
     {
@@ -330,6 +356,7 @@ void set_error_code(CommandParams *cmdParams, ErrorCode error)
     }
 }
 
+/*helper method*/
 double *allocate_double_value(double value)
 {
     double *val = malloc(sizeof(double));

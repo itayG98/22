@@ -5,7 +5,6 @@
 
 #define MAX_LINE_LENGTH 512
 #define NUM_OF_CMNDS 9
-#define NUM_OF_VARIABLES 6
 #define NUM_OF_ERRORS 8
 
 typedef enum
@@ -42,19 +41,11 @@ typedef struct
     ValidateFunc validate;
 } Command;
 
-typedef struct
-{
-    char key;
-    Complex value;
-} Variable;
-
 /*Input */
 void get_line(commandData *command_data);
 void extract_data_from_line(commandData *command_data);
 
 /*Logic*/
-int get_variable_index(char c);
-Complex *get_variable_ref_by_index(int index);
 void calculate_max_command_length(void);
 void execute_command(commandData *command_data);
 void stop(commandData *command_data);

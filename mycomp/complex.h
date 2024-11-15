@@ -3,6 +3,7 @@
 #include "complex.h"
 
 #define NUM_OF_ERRORS 8
+#define NUM_OF_VARIABLES 6
 
 typedef enum
 {
@@ -37,6 +38,12 @@ typedef struct
 
 typedef struct
 {
+    char key;
+    Complex value;
+} Variable;
+
+typedef struct
+{
     Complex *a;
     Complex *b;
     double *val_a;
@@ -51,6 +58,10 @@ typedef struct
     BOOLEAN vaL_1;
     BOOLEAN val_2;
 } Requiermets;
+
+/*Variables getters*/
+int get_variable_index(char c);
+Complex *get_variable_ref_by_index(int index);
 
 /*Calculations*/
 void read_comp(CommandParams *params);

@@ -16,14 +16,6 @@ static Command command_table[NUM_OF_CMNDS] = {
     {"abs_comp", {.cmd_action = abs_comp}, vld_abs_comp},
     {"stop", {.exit_action = stop}, vld_stop}};
 
-static Variable variables[NUM_OF_VARIABLES] = {
-    {'A', {0, 0}},
-    {'B', {0, 0}},
-    {'C', {0, 0}},
-    {'D', {0, 0}},
-    {'E', {0, 0}},
-    {'F', {0, 0}}};
-
 static ErrorInfo errors[NUM_OF_ERRORS] = {
     {ERR_UNDEFINED_COMPLEX_VAR, "Undefined complex variable"},
     {ERR_UNDEFINED_COMMAND_NAME, "Undefined command name"},
@@ -123,25 +115,6 @@ void extract_data_from_line(commandData *command_data)
 }
 
 /*Logic*/
-
-int get_variable_index(char c)
-{
-    int i;
-    for (i = 0; i < NUM_OF_VARIABLES; i++)
-    {
-        if (variables[i].key == c)
-        {
-            return i;
-        }
-    }
-    return -1;
-}
-
-Complex *get_variable_ref_by_index(int index)
-{
-    return &(variables[index].value);
-}
-
 void calculate_max_command_length(void)
 {
     int i;
