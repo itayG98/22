@@ -1,1 +1,5 @@
-.\mycomp   < inputs/input1.txt   >  outputs/res1.txt 
+.\mycomp   < inputs/input1   >  outputs/res1
+.\mycomp   < inputs/input2   >  outputs/res2
+.\mycomp   < inputs/input3   >  outputs/res3
+.\mycomp   < inputs/input4   >  outputs/res4
+.\mycomp   < inputs/input5   >  outputs/res5
