@@ -27,18 +27,47 @@ First consider this rules and examples :
 4. To quit: stop<ENTER>
 
 prompt: 
-prompt: 5.00 + (5.00)i
-
-prompt: 
-prompt: 
-prompt: 7.07
-
 prompt: 
 prompt: 
 prompt: 
-prompt: re is not a valid command
-prompt: ad_comp is not a valid command
 prompt: 
-prompt: 5.00 + (5.00)i
-
+prompt: 
+prompt: 
+prompt: 
+prompt: 
+prompt: 
+prompt: 
+prompt: 
+prompt: 
+prompt: 
+prompt: 
+prompt: 
+prompt: 
+prompt: 
+prompt: 
+prompt: 
+prompt: 
+prompt: 
+prompt: 
+prompt: 
+prompt: 
+prompt: 
+prompt: 
+prompt: 
+prompt: 
+prompt: 
+prompt: 
+prompt: 
+prompt: 
+prompt: 
+prompt:  is not a valid command
+prompt: 
+prompt: 
+prompt: 
+prompt: 
+prompt: 
+prompt: 
+prompt: 
+prompt: 
+prompt:  is not a valid command
 prompt: End of file reached. Exiting...
