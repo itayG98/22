@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
+#include <ctype.h>
 #include "complex.h"
 
 void display_comp_num(Complex num)
@@ -124,7 +125,7 @@ CommandParams vld_abs_comp(char *params)
 
 CommandParams vld_stop(char *params)
 {
-    CommandParams cmd_params = {NULL, NULL, NULL, strlen(params) == 0 ? NULL : ERR_EXTRANEOUS_TEXT};
+    CommandParams cmd_params = {NULL, NULL, NULL, NULL};
     return cmd_params;
 }
 
