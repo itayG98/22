@@ -54,16 +54,13 @@ prompt: 7.07
 
 prompt: Undefined complex variable
 
-prompt: THIS CALC IS NOT TRUE
-260710.00 + (27071175.00)i
+prompt: 260710.00 + (27071175.00)i
 
 prompt: Undefined complex variable
 
-prompt: THIS CALC IS NOT TRUE
--26810465.00 + (27331885.00)i
+prompt: -26810465.00 + (27331885.00)i
 
-prompt: THIS CALC IS NOT TRUE
--29311221847061.00 + (564618082740.00)i
+prompt: -29311221847061.00 + (564618082740.00)i
 
 prompt:  is not a valid command
 prompt: Extraneous text after end of command
