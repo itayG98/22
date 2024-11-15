@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 #include <string.h>
 #include <ctype.h>
+#include <math.h>
 #include "complex.h"
 
 static Variable variables[NUM_OF_VARIABLES] = {
@@ -68,7 +68,6 @@ void sub_comp(CommandParams *params)
 void mult_comp_real(CommandParams *params)
 {
     Complex result = {0};
-    printf("THIS CALC IS NOT TRUE\n");
     result.real = params->a->real * (*(params->val_a));
     result.imaginary = params->a->imaginary * (*(params->val_a));
     display_comp_num(result);
@@ -77,7 +76,6 @@ void mult_comp_real(CommandParams *params)
 void mult_comp_img(CommandParams *params)
 {
     Complex result = {0};
-    printf("THIS CALC IS NOT TRUE\n");
     result.real = -params->a->imaginary * (*(params->val_a));
     result.imaginary = params->a->real * (*(params->val_a));
     display_comp_num(result);
@@ -86,7 +84,6 @@ void mult_comp_img(CommandParams *params)
 void mult_comp_comp(CommandParams *params)
 {
     Complex result = {0};
-    printf("THIS CALC IS NOT TRUE\n");
     result.real = params->a->real * params->b->real - params->a->imaginary * params->b->imaginary;
     result.imaginary = params->a->real * params->b->imaginary + params->a->imaginary * params->b->real;
     display_comp_num(result);
