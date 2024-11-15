@@ -1,9 +1,32 @@
 read_comp A , 5 ,5
+read_comp B , 514 ,123
+read_comp C , -5 ,412
+read_comp D , -5 ,-14
+read_comp E , 54 ,5.4554
+read_comp F , 54 ,5.43 , 564,4 , עברית
+read_comp G , 52142 ,5414235
+read_comp A , 52142 ,5414235 
 print_comp A 
+טקסט
+עוד טקסט לא חוקי
+MULT_comp B , 5 ,5
 read_comp B , 5 ,5
+ADD A , 5 ,5, 5, ,6,6,,,,6
 read_comp C , 5 ,5
+abs_comp A , B
+abs_comp A , 45
 abs_comp A 
-
+abs_comp B
+abs_comp T
+mult_comp_real A ,5 
+mult_comp_comp (A) ,B
+mult_comp_comp A ,B
+mult_comp_comp A ,A 
+Sub_comp ABCDEFGH
+sub_comp A , 5 
+sub_comp A ,G , 5
+sub_comp A ,,B , 5 
+stop A , 56 ,45
 
 
 re , A , 4564 ,45.4

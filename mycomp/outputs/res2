@@ -27,18 +27,49 @@ First consider this rules and examples :
 4. To quit: stop<ENTER>
 
 prompt: 
-prompt: 5.00 + (5.00)i
+prompt: 
+prompt: 
+prompt: 
+prompt: 
+prompt: Extraneous text after end of command
+
+prompt: Undefined complex variable
 
 prompt: 
+prompt: 52142.00 + (5414235.00)i
+
+prompt:  is not a valid command
+prompt:  is not a valid command
+prompt:  is not a valid command
 prompt: 
+prompt:  is not a valid command
+prompt: 
+prompt: Extraneous text after end of command
+
+prompt: Extraneous text after end of command
+
+prompt: 5414486.07
+
 prompt: 7.07
 
-prompt: 
-prompt: 
-prompt: 
-prompt: re is not a valid command
-prompt: ad_comp is not a valid command
-prompt: 
-prompt: 5.00 + (5.00)i
+prompt: Undefined complex variable
 
-prompt: End of file reached. Exiting...
+prompt: THIS CALC IS NOT TRUE
+260710.00 + (27071175.00)i
+
+prompt: Undefined complex variable
+
+prompt: THIS CALC IS NOT TRUE
+-26810465.00 + (27331885.00)i
+
+prompt: THIS CALC IS NOT TRUE
+-29311221847061.00 + (564618082740.00)i
+
+prompt:  is not a valid command
+prompt: Extraneous text after end of command
+
+prompt: Undefined complex variable
+
+prompt: 52137.00 + (5414230.00)i
+
+prompt: Operation successful. Exiting...

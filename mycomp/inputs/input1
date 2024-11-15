@@ -1,8 +1,19 @@
 read_comp A , 5 ,5
+read_comp B , 514 ,123
+read_comp C , -5 ,412
+read_comp D , -5 ,-14
+read_comp E , 54 ,5.4554
+read_comp F , 54 ,5.43 , 564,4 , עברית
+read_comp G , 52142 ,541414235
 print_comp A 
+עברית
 read_comp B , 5 ,5
 read_comp C , 5 ,5
+abs_comp A , B
+abs_comp A , 45
 abs_comp A 
+abs_comp B
+abs_comp T
 
 
 

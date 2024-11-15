@@ -27,11 +27,28 @@ First consider this rules and examples :
 4. To quit: stop<ENTER>
 
 prompt: 
+prompt: 
+prompt: 
+prompt: 
+prompt: 
+prompt: Extraneous text after end of command
+
+prompt: Undefined complex variable
+
 prompt: 5.00 + (5.00)i
 
+prompt:  is not a valid command
 prompt: 
 prompt: 
+prompt: Extraneous text after end of command
+
+prompt: Extraneous text after end of command
+
 prompt: 7.07
+
+prompt: 7.07
+
+prompt: Undefined complex variable
 
 prompt: 
 prompt: 
