@@ -30,13 +30,13 @@ static int MAX_CMD_LENGTH;
 
 int main()
 {
-    commandData command_data = {0};
+    commandData command_data = {NULL, NULL, NULL, DEFAULT};
     initCommandTableAction();
     calculate_max_command_length();
     display_rules();
     while (command_data.flag == DEFAULT || command_data.flag == ERROR)
     {
-        free_allocation(&command_data);
+        free_commnad_data(&command_data);
         printf("\nprompt: ");
         get_line(&command_data);
         if (command_data.line == NULL)
@@ -179,7 +179,7 @@ void execute_command(commandData *command_data)
 
 void stop(commandData *command_data)
 {
-    free_allocation(command_data);
+    free_commnad_data(command_data);
     switch (command_data->flag)
     {
     case SUCCES:
@@ -248,18 +248,22 @@ void print_error_message(int code)
 
 /* Allocation*/
 
-void free_allocation(commandData *command_data)
-{
-    free_commnad_data(command_data);
-}
-
 void free_commnad_data(commandData *command_data)
 {
     if (command_data)
     {
-        free(command_data->line);
-        free(command_data->command);
-        free(command_data->params);
+        if (command_data->line)
+        {
+            free(command_data->line);
+        }
+        if (command_data->command)
+        {
+            free(command_data->command);
+        }
+        if (command_data->params)
+        {
+            free(command_data->params);
+        }
         command_data->line = NULL;
         command_data->command = NULL;
         command_data->params = NULL;
@@ -270,11 +274,18 @@ void free_command_params(CommandParams *cmdParams)
 {
     if (cmdParams)
     {
-        free(cmdParams->a);
-        free(cmdParams->b);
-        free(cmdParams->val_a);
-        free(cmdParams->val_b);
-        free(cmdParams->errorCode);
+        if (cmdParams->val_a)
+        {
+            free(cmdParams->val_a);
+        }
+        if (cmdParams->val_b)
+        {
+            free(cmdParams->val_b);
+        }
+        if (cmdParams->errorCode)
+        {
+            free(cmdParams->errorCode);
+        }
         cmdParams->a = NULL;
         cmdParams->b = NULL;
         cmdParams->val_a = NULL;

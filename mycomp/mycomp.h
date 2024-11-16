@@ -57,5 +57,4 @@ void print_error_message(int code);
 /* Allocation*/
 void free_commnad_data(commandData *command_data);
 void free_command_params(CommandParams *cmdParams);
-void free_allocation(commandData *command_data);
 #endif
