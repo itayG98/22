@@ -6,15 +6,15 @@
 #include "complex.h"
 
 static Command command_table[NUM_OF_CMNDS] = {
-    {"read_comp", {.cmd_action = read_comp}, vld_read_comp},
-    {"print_comp", {.cmd_action = print_comp}, vld_print_comp},
-    {"add_comp", {.cmd_action = add_comp}, vld_add_comp},
-    {"sub_comp", {.cmd_action = sub_comp}, vld_sub_comp},
-    {"mult_comp_real", {.cmd_action = mult_comp_real}, vld_mult_comp_real},
-    {"mult_comp_img", {.cmd_action = mult_comp_img}, vld_mult_comp_img},
-    {"mult_comp_comp", {.cmd_action = mult_comp_comp}, vld_mult_comp_comp},
-    {"abs_comp", {.cmd_action = abs_comp}, vld_abs_comp},
-    {"stop", {.exit_action = stop}, vld_stop}};
+    {"read_comp", {0}, vld_read_comp},
+    {"print_comp", {0}, vld_print_comp},
+    {"add_comp", {0}, vld_add_comp},
+    {"sub_comp", {0}, vld_sub_comp},
+    {"mult_comp_real", {0}, vld_mult_comp_real},
+    {"mult_comp_img", {0}, vld_mult_comp_img},
+    {"mult_comp_comp", {0}, vld_mult_comp_comp},
+    {"abs_comp", {0}, vld_abs_comp},
+    {"stop", {0}, vld_stop}};
 
 static ErrorInfo errors[NUM_OF_ERRORS] = {
     {ERR_UNDEFINED_COMPLEX_VAR, "Undefined complex variable"},
@@ -31,6 +31,7 @@ static int MAX_CMD_LENGTH;
 int main()
 {
     commandData command_data = {0};
+    initCommandTableAction();
     calculate_max_command_length();
     display_rules();
     while (command_data.flag == DEFAULT || command_data.flag == ERROR)
@@ -49,13 +50,28 @@ int main()
         extract_data_from_line(&command_data);
         if (command_data.command == NULL)
         {
-            printf("%s\n", errors[1]);
+            printf("%s\n", errors[1].message);
             continue;
         }
         execute_command(&command_data);
     }
     stop(&command_data);
     return 0;
+}
+
+/*Init*/
+
+void initCommandTableAction(void)
+{
+    command_table[0].action.cmd_action = read_comp;
+    command_table[1].action.cmd_action = print_comp;
+    command_table[2].action.cmd_action = add_comp;
+    command_table[3].action.cmd_action = sub_comp;
+    command_table[4].action.cmd_action = mult_comp_real;
+    command_table[5].action.cmd_action = mult_comp_img;
+    command_table[6].action.cmd_action = mult_comp_comp;
+    command_table[7].action.cmd_action = abs_comp;
+    command_table[8].action.exit_action = stop;
 }
 
 /*Input */
@@ -82,10 +98,10 @@ void get_line(commandData *command_data)
 void extract_data_from_line(commandData *command_data)
 {
     int i, j;
-    i = j = 0;
     char *cmnd = NULL;
     char *suffix = NULL;
     char *line = NULL;
+    i = j = 0;
     cmnd = malloc((MAX_CMD_LENGTH + 1) * sizeof(char));
     suffix = malloc(sizeof(char) * MAX_LINE_LENGTH);
     if (cmnd == NULL || suffix == NULL)
@@ -139,7 +155,7 @@ void execute_command(commandData *command_data)
             params = command_table[i].validate(command_data->params);
             if (params.errorCode)
             {
-                print_error_message(params.errorCode);
+                print_error_message(*params.errorCode);
             }
             else if (command_table[i].action.cmd_action)
             {
@@ -147,7 +163,7 @@ void execute_command(commandData *command_data)
             }
             else
             {
-                command_table[i].action.exit_action(&params);
+                command_table[i].action.exit_action(command_data);
             }
             free_command_params(&params);
             return;
@@ -218,11 +234,11 @@ void display_rules(void)
     printf("4. To quit: stop<ENTER>\n");
 }
 
-void print_error_message(int *code)
+void print_error_message(int code)
 {
-    if (code != NULL && *code >= 0 && *code < NUM_OF_ERRORS)
+    if (code >= 0 && code < NUM_OF_ERRORS)
     {
-        printf("%s\n", errors[*code].message);
+        printf("%s\n", errors[code].message);
     }
     else
     {

@@ -5,8 +5,10 @@
         "string.h": "c",
         "ctype.h": "c",
         "math.h": "c",
-        "complex.h": "c",
         "complex": "c",
+        "complex.h": "c",
+        "mycomp.h": "c",
+        "mycomp": "c",
     },
     "files.exclude": {
         "**/*.exe": true,

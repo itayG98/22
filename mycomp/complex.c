@@ -6,12 +6,12 @@
 #include "complex.h"
 
 static Variable variables[NUM_OF_VARIABLES] = {
-    {'A', {0}},
-    {'B', {0}},
-    {'C', {0}},
-    {'D', {0}},
-    {'E', {0}},
-    {'F', {0}}};
+    {'A', {0.0, 0.0}},
+    {'B', {0.0, 0.0}},
+    {'C', {0.0, 0.0}},
+    {'D', {0.0, 0.0}},
+    {'E', {0.0, 0.0}},
+    {'F', {0.0, 0.0}}};
 
 int get_variable_index(char c)
 {
@@ -148,7 +148,11 @@ CommandParams vld_abs_comp(char *params)
 
 CommandParams vld_stop(char *params)
 {
-    CommandParams cmd_params = {NULL, NULL, NULL, NULL};
+    CommandParams cmd_params = {NULL, NULL, NULL, NULL, NULL};
+    if (strlen(params) > 0)
+    {
+        set_error_code(&cmd_params, ERR_ILLEGAL_COMMA);
+    }
     return cmd_params;
 }
 

@@ -29,10 +29,8 @@ typedef CommandParams (*ValidateFunc)(char *params);
 typedef union
 {
     void (*cmd_action)(CommandParams *params);
-    void (*exit_action)(char *params);
+    void (*exit_action)(commandData *command_data);
 } Action;
-
-void *genericPtr;
 
 typedef struct
 {
@@ -40,6 +38,10 @@ typedef struct
     Action action;
     ValidateFunc validate;
 } Command;
+
+/*Init*/
+
+void initCommandTableAction(void);
 
 /*Input */
 void get_line(commandData *command_data);
@@ -50,7 +52,7 @@ void calculate_max_command_length(void);
 void execute_command(commandData *command_data);
 void stop(commandData *command_data);
 void display_rules(void);
-void print_error_message(int *code);
+void print_error_message(int code);
 
 /* Allocation*/
 void free_commnad_data(commandData *command_data);
