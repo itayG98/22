@@ -1,5 +1,6 @@
 #ifndef COMPLEX_H
 #define COMPLEX_H
+
 #include "complex.h"
 
 #define NUM_OF_ERRORS 8

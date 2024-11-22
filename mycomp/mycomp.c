@@ -148,7 +148,7 @@ void execute_command(commandData *command_data)
 {
     int i;
     CommandParams params = {NULL, NULL, NULL, NULL, NULL};
-    for (i = 0; i < NUM_OF_CMNDS - 1; i++)
+    for (i = 0; i < NUM_OF_CMNDS; i++)
     {
         if (strcmp(command_data->command, command_table[i].command) == 0)
         {
@@ -156,23 +156,21 @@ void execute_command(commandData *command_data)
             if (params.errorCode)
             {
                 print_error_message(*params.errorCode);
+                return;
             }
             else if (command_table[i].action.cmd_action)
             {
                 command_table[i].action.cmd_action(&params);
+                printf("Executing : %s %s", command_data->command, command_data->params);
             }
-            else
+            else if (command_table[i].action.exit_action)
             {
+                command_data->flag = SUCCES;
                 command_table[i].action.exit_action(command_data);
             }
             free_command_params(&params);
             return;
         }
-    }
-    if (strcmp(command_data->command, command_table[NUM_OF_CMNDS - 1].command) == 0)
-    {
-        command_data->flag = SUCCES;
-        stop(command_data);
     }
     printf("%s is not a valid command", command_data->command);
 }
@@ -248,7 +246,7 @@ void print_error_message(int code)
 
 BOOLEAN isTabOrSpace(char c)
 {
-    return c == ' ' || c == '\t';
+    return c == ' ' || c == '\t' ? TRUE : FALSE;
 }
 
 /* Allocation*/
