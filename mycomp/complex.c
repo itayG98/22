@@ -33,7 +33,7 @@ Complex *get_variable_ref_by_index(int index)
 
 void display_comp_num(Complex num)
 {
-    printf("%.2f + (%.2f)i\n", num.real, num.imaginary);
+    printf("\n%.2f + (%.2f)i\n", num.real, num.imaginary);
 }
 
 /*  Actions */
@@ -181,7 +181,7 @@ CommandParams extract_command_params(char *params_str, Requiermets req)
             if (isupper(token[0]) && strlen(token) == 1 && req.var_1)
             {
                 int index = get_variable_index(token[0]);
-                if (index != -1)
+                if (index >= 0)
                 {
                     cmdParams.a = get_variable_ref_by_index(index);
                     break;
@@ -202,7 +202,7 @@ CommandParams extract_command_params(char *params_str, Requiermets req)
             if (isupper(token[0]) && strlen(token) == 1 && req.var_2)
             {
                 int index = get_variable_index(token[0]);
-                if (index != -1)
+                if (index >= 0)
                 {
                     cmdParams.b = get_variable_ref_by_index(index);
                     break;
