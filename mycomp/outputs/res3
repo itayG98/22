@@ -27,18 +27,20 @@ First consider this rules and examples :
 4. To quit: stop<ENTER>
 
 prompt: 
-prompt: 5.00 + (5.00)i
+prompt: 
+prompt: 
+prompt: 
+prompt: 
+prompt: Extraneous text after end of command
+
+prompt: Undefined complex variable
 
 prompt: 
-prompt: 
-prompt: 7.07
+prompt: 52142.00 + (5414235.00)i
 
-prompt: 
-prompt: 
-prompt: 
-prompt: re is not a valid command
-prompt: ad_comp is not a valid command
-prompt: 
-prompt: 5.00 + (5.00)i
+prompt: -639149917.00 + (2789330256.00)i
 
-prompt: End of file reached. Exiting...
+prompt: mult_comp_rael is not a valid command
+prompt: Undefined complex variable
+
+prompt: Operation successful. Exiting...
