@@ -53,8 +53,11 @@ void execute_command(commandData *command_data);
 void stop(commandData *command_data);
 void display_rules(void);
 void print_error_message(int code);
-
+BOOLEAN isTabOrSpace(char c);
 /* Allocation*/
 void free_commnad_data(commandData *command_data);
 void free_command_params(CommandParams *cmdParams);
+
+/*Development helpers*/
+void print_commandData(commandData *cmdData);
 #endif

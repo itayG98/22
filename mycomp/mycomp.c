@@ -118,7 +118,7 @@ void extract_data_from_line(commandData *command_data)
     cmnd[i] = '\0';
     while (line[i])
     {
-        if (line[i] != '\t' && line[i] != ' ')
+        if (!isTabOrSpace(line[i]))
         {
             suffix[j] = line[i];
             j++;
@@ -246,6 +246,11 @@ void print_error_message(int code)
     }
 }
 
+BOOLEAN isTabOrSpace(char c)
+{
+    return c == ' ' || c == '\t';
+}
+
 /* Allocation*/
 
 void free_commnad_data(commandData *command_data)
@@ -292,4 +297,20 @@ void free_command_params(CommandParams *cmdParams)
         cmdParams->val_b = NULL;
         cmdParams->errorCode = NULL;
     }
+}
+
+/*Development helpers*/
+void print_commandData(commandData *cmdData)
+{
+    if (cmdData == NULL)
+    {
+        printf("commandData is NULL.\n");
+        return;
+    }
+
+    printf("commandData:\n");
+    printf("  Line    : %s\n", cmdData->line ? cmdData->line : "NULL");
+    printf("  Command : %s\n", cmdData->command ? cmdData->command : "NULL");
+    printf("  Params  : %s\n", cmdData->params ? cmdData->params : "NULL");
+    printf("  Flag    : %d\n", cmdData->flag);
 }
