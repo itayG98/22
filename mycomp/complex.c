@@ -161,7 +161,13 @@ CommandParams extract_command_params(char *params_str, Requiermets req)
     CommandParams cmdParams = {NULL, NULL, NULL, NULL, NULL};
     char *token;
     int token_count = 0;
-    token = strtok(params_str, ",");
+    char *params_copy = strdup(params_str);
+    if (params_copy == NULL)
+    {
+        set_error_code(&cmdParams, ERR_MALLOC_FAILED);
+        return cmdParams;
+    }
+    token = strtok(params_copy, ",");
 
     while (token != NULL)
     {
@@ -308,7 +314,6 @@ CommandParams extract_command_params(char *params_str, Requiermets req)
             set_error_code(&cmdParams, ERR_EXTRANEOUS_TEXT);
         }
         }
-
         token_count++;
         token = strtok(NULL, ",");
     }
