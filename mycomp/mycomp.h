@@ -46,6 +46,7 @@ void initCommandTableAction(void);
 /*Input */
 void get_line(commandData *command_data);
 void extract_data_from_line(commandData *command_data);
+char *copyStr(const char *source);
 
 /*Logic*/
 void calculate_max_command_length(void);

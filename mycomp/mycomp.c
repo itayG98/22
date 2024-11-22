@@ -81,8 +81,7 @@ void get_line(commandData *command_data)
     command_data->line = malloc(sizeof(char) * MAX_LINE_LENGTH);
     if (!command_data->line)
     {
-        perror("Unable to allocate memory for line");
-        command_data->flag = ERROR;
+        command_data->flag = MALLOC_ERROR;
         return;
     }
     if (fgets(command_data->line, MAX_LINE_LENGTH, stdin) == NULL)
@@ -130,6 +129,22 @@ void extract_data_from_line(commandData *command_data)
     command_data->params = suffix;
 }
 
+char *copyStr(const char *source)
+{
+    if (source != NULL)
+    {
+        char *copy = malloc(sizeof(char) * MAX_LINE_LENGTH);
+        if (copy == NULL)
+        {
+            return NULL;
+        }
+        strncpy(copy, source, MAX_LINE_LENGTH - 1);
+        copy[MAX_LINE_LENGTH - 1] = '\0';
+        return copy;
+    }
+    return NULL;
+}
+
 /*Logic*/
 void calculate_max_command_length(void)
 {
@@ -148,31 +163,44 @@ void execute_command(commandData *command_data)
 {
     int i;
     CommandParams params = {NULL, NULL, NULL, NULL, NULL};
+    char *params_copy = copyStr(command_data->params);
+    if (params_copy == NULL)
+    {
+        command_data->flag = MALLOC_ERROR;
+        stop(command_data);
+    }
+    printf("%s %s", command_data->command, command_data->params);
     for (i = 0; i < NUM_OF_CMNDS; i++)
     {
         if (strcmp(command_data->command, command_table[i].command) == 0)
         {
-            params = command_table[i].validate(command_data->params);
-            if (params.errorCode)
+            params = command_table[i].validate(params_copy);
+            if (params.errorCode && *params.errorCode == ERR_MALLOC_FAILED)
+            {
+                free(params_copy);
+                command_data->flag = MALLOC_ERROR;
+                stop(command_data);
+            }
+            else if (params.errorCode && params.errorCode)
             {
                 print_error_message(*params.errorCode);
-                return;
             }
             else if (command_table[i].action.cmd_action)
             {
                 command_table[i].action.cmd_action(&params);
-                printf("Executing : %s %s", command_data->command, command_data->params);
             }
             else if (command_table[i].action.exit_action)
             {
+                free(params_copy);
                 command_data->flag = SUCCES;
                 command_table[i].action.exit_action(command_data);
             }
             free_command_params(&params);
+            free(params_copy);
             return;
         }
     }
-    printf("%s is not a valid command", command_data->command);
+    printf("\n%s is not a valid command.", command_data->command);
 }
 
 void stop(commandData *command_data)
@@ -193,7 +221,7 @@ void stop(commandData *command_data)
         printf("Error occurred. Exiting...\n");
         exit(EXIT_FAILURE);
     case MALLOC_ERROR:
-        printf("Memory allocation . Exiting...\n");
+        printf("Memory allocation failed . Exiting...\n");
     default:
         printf("Unknown error code. Exiting...\n");
         exit(EXIT_FAILURE);
@@ -236,11 +264,11 @@ void print_error_message(int code)
 {
     if (code >= 0 && code < NUM_OF_ERRORS)
     {
-        printf("%s\n", errors[code].message);
+        printf("\n%s.", errors[code].message);
     }
     else
     {
-        printf("Invalid error code\n");
+        printf("Invalid error code.");
     }
 }
 

@@ -26,19 +26,21 @@ First consider this rules and examples :
      Example: mult_comp_img C, 2.3
 4. To quit: stop<ENTER>
 
-prompt: 
-prompt: 5.00 + (5.00)i
+prompt: read_comp A,5,5
+prompt: print_comp A5.00 + (5.00)i
+
+prompt: read_comp B,5,5
+prompt: read_comp C,5,5
+prompt: abs_comp A7.07
 
 prompt: 
 prompt: 
-prompt: 7.07
-
 prompt: 
-prompt: 
-prompt: 
-prompt: re is not a valid command
-prompt: ad_comp is not a valid command
-prompt: 
-prompt: 5.00 + (5.00)i
+prompt: re ,A,4564,45.4
+re is not a valid command.
+prompt: ad_comp D,5,5
+ad_comp is not a valid command.
+prompt: read_comp E,5,5
+prompt: print_comp E5.00 + (5.00)i
 
 prompt: End of file reached. Exiting...
