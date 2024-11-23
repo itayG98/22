@@ -93,7 +93,7 @@ void abs_comp(CommandParams *params)
 {
     double result = 0;
     result = sqrt(params->a->real * params->a->real + params->a->imaginary * params->a->imaginary);
-    printf("%.2f\n", result);
+    printf("\n%.2f\n", result);
 }
 
 /* Validation*/
@@ -395,4 +395,19 @@ void print_params(CommandParams *params)
     {
         printf("Value b: %.2f\n", *(params->val_b));
     }
+}
+
+void print_Req(Requiermets *req)
+{
+    if (req == NULL)
+    {
+        printf("Requiermets structure is NULL.\n");
+        return;
+    }
+
+    printf("Requiermets Structure:\n");
+    printf("  var_1 : %s\n", req->var_1 ? "TRUE" : "FALSE");
+    printf("  var_2 : %s\n", req->var_2 ? "TRUE" : "FALSE");
+    printf("  vaL_1 : %s\n", req->vaL_1 ? "TRUE" : "FALSE");
+    printf("  val_2 : %s\n", req->val_2 ? "TRUE" : "FALSE");
 }

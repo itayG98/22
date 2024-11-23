@@ -36,7 +36,8 @@ Extraneous text after end of command.
 prompt: read_comp G,52142,5414235
 Undefined complex variable.
 prompt: read_comp A,52142,5414235
-prompt: print_comp A52142.00 + (5414235.00)i
+prompt: print_comp A
+52142.00 + (5414235.00)i
 
 prompt:  טקסט
  is not a valid command.
@@ -52,19 +53,24 @@ prompt: abs_comp A,B
 Extraneous text after end of command.
 prompt: abs_comp A,45
 Extraneous text after end of command.
-prompt: abs_comp A5414486.07
+prompt: abs_comp A
+5414486.07
 
-prompt: abs_comp B7.07
+prompt: abs_comp B
+7.07
 
 prompt: abs_comp T
 Undefined complex variable.
-prompt: mult_comp_real A,5260710.00 + (27071175.00)i
+prompt: mult_comp_real A,5
+260710.00 + (27071175.00)i
 
 prompt: mult_comp_comp (A),B
 Undefined complex variable.
-prompt: mult_comp_comp A,B-26810465.00 + (27331885.00)i
+prompt: mult_comp_comp A,B
+-26810465.00 + (27331885.00)i
 
-prompt: mult_comp_comp A,A-29311221847061.00 + (564618082740.00)i
+prompt: mult_comp_comp A,A
+-29311221847061.00 + (564618082740.00)i
 
 prompt:  Sub_compABCDEFGH
  is not a valid command.
@@ -72,7 +78,8 @@ prompt: sub_comp A,5
 Extraneous text after end of command.
 prompt: sub_comp A,G,5
 Undefined complex variable.
-prompt: sub_comp A,,B,552137.00 + (5414230.00)i
+prompt: sub_comp A,,B,5
+52137.00 + (5414230.00)i
 
 prompt: stop A,56,45
 Illegal comma.
@@ -83,6 +90,7 @@ re is not a valid command.
 prompt: ad_comp D,5,5
 ad_comp is not a valid command.
 prompt: read_comp E,5,5
-prompt: print_comp E5.00 + (5.00)i
+prompt: print_comp E
+5.00 + (5.00)i
 
 prompt: End of file reached. Exiting...

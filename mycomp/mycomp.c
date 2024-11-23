@@ -185,22 +185,22 @@ void execute_command(commandData *command_data)
             {
                 print_error_message(*params.errorCode);
             }
-            else if (command_table[i].action.cmd_action)
-            {
-                command_table[i].action.cmd_action(&params);
-            }
-            else if (command_table[i].action.exit_action)
+            else if (i == NUM_OF_CMNDS - 1 && command_table[i].action.exit_action)
             {
                 free(params_copy);
                 command_data->flag = SUCCES;
                 command_table[i].action.exit_action(command_data);
+            }
+            else if (command_table[i].action.cmd_action)
+            {
+                command_table[i].action.cmd_action(&params);
             }
             free_command_params(&params);
             free(params_copy);
             return;
         }
     }
-    printf("\n%s is not a valid command.", command_data->command);
+    printf("\n%s is not a valid command.", command_data->line);
 }
 
 void stop(commandData *command_data)
