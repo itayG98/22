@@ -26,7 +26,7 @@ static ErrorInfo errors[NUM_OF_ERRORS] = {
     {ERR_MISSING_COMMA, "Missing comma"},
     {ERR_ILLEGAL_COMMA, "Illegal comma"}};
 
-static int MAX_CMD_LENGTH;
+static int MAX_CMD_LENGTH = 0;
 
 int main()
 {
