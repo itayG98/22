@@ -56,7 +56,7 @@ typedef struct
 {
     BOOLEAN var_1;
     BOOLEAN var_2;
-    BOOLEAN vaL_1;
+    BOOLEAN val_1;
     BOOLEAN val_2;
 } Requiermets;
 

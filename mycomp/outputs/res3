@@ -43,7 +43,7 @@ prompt: mult_comp_comp A,B
 -639149917.00 + (2789330256.00)i
 
 prompt: mult_comp_rael A,23
-mult_comp_rael is not a valid command.
+mult_comp_rael A , 23 is not a valid command.
 prompt: mult_comp_comp A,G
 Undefined complex variable.
 prompt: stop Operation successful. Exiting...

@@ -213,7 +213,7 @@ CommandParams extract_command_params(char *params_str, Requiermets req)
                     return cmdParams;
                 }
             }
-            else if (req.vaL_1)
+            else if (req.val_1)
             {
                 double value = atof(token);
                 if (value != 0 || strcmp(token, "0") == 0)
@@ -332,7 +332,7 @@ BOOLEAN validate_requirements(const CommandParams *cmdParams, const Requiermets 
     {
         return FALSE;
     }
-    if (req->vaL_1 && cmdParams->val_a == NULL)
+    if (req->val_1 && cmdParams->val_a == NULL)
     {
         return FALSE;
     }
@@ -408,6 +408,6 @@ void print_Req(Requiermets *req)
     printf("Requiermets Structure:\n");
     printf("  var_1 : %s\n", req->var_1 ? "TRUE" : "FALSE");
     printf("  var_2 : %s\n", req->var_2 ? "TRUE" : "FALSE");
-    printf("  vaL_1 : %s\n", req->vaL_1 ? "TRUE" : "FALSE");
+    printf("  val_1 : %s\n", req->val_1 ? "TRUE" : "FALSE");
     printf("  val_2 : %s\n", req->val_2 ? "TRUE" : "FALSE");
 }
