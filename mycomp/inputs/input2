@@ -7,8 +7,8 @@ read_comp F , 54 ,5.43 , 564,4 , עברית
 read_comp G , 52142 ,5414235
 read_comp A , 52142 ,5414235 
 print_comp A 
-טקסט
-עוד טקסט לא חוקי
+text
+another err
 MULT_comp B , 5 ,5
 read_comp B , 5 ,5
 ADD A , 5 ,5, 5, ,6,6,,,,6

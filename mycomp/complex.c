@@ -33,7 +33,7 @@ Complex *get_variable_ref_by_index(int index)
 
 void display_comp_num(Complex num)
 {
-    printf("\n%.2f + (%.2f)i\n", num.real, num.imaginary);
+    printf("\n%.2f + (%.2f)i", num.real, num.imaginary);
 }
 
 /*  Actions */
@@ -93,7 +93,7 @@ void abs_comp(CommandParams *params)
 {
     double result = 0;
     result = sqrt(params->a->real * params->a->real + params->a->imaginary * params->a->imaginary);
-    printf("\n%.2f\n", result);
+    printf("\n%.2f", result);
 }
 
 /* Validation*/
@@ -178,129 +178,31 @@ CommandParams extract_command_params(char *params_str, Requiermets req)
         switch (token_count)
         {
         case 0:
-            if (isupper(token[0]) && strlen(token) == 1 && req.var_1)
+            handle_first_param(req, token, &cmdParams);
+            if (cmdParams.errorCode != NULL)
             {
-                int index = get_variable_index(token[0]);
-                if (index >= 0)
-                {
-                    cmdParams.a = get_variable_ref_by_index(index);
-                    break;
-                }
-                else
-                {
-                    set_error_code(&cmdParams, ERR_UNDEFINED_COMPLEX_VAR);
-                    return cmdParams;
-                }
-            }
-            else
-            {
-                set_error_code(&cmdParams, ERR_UNDEFINED_COMPLEX_VAR);
                 return cmdParams;
             }
             break;
         case 1:
-            if (isupper(token[0]) && strlen(token) == 1 && req.var_2)
+            handle_second_param(req, token, &cmdParams);
+            if (cmdParams.errorCode != NULL)
             {
-                int index = get_variable_index(token[0]);
-                if (index >= 0)
-                {
-                    cmdParams.b = get_variable_ref_by_index(index);
-                    break;
-                }
-                else
-                {
-                    set_error_code(&cmdParams, ERR_UNDEFINED_COMPLEX_VAR);
-                    return cmdParams;
-                }
-            }
-            else if (req.val_1)
-            {
-                double value = atof(token);
-                if (value != 0 || strcmp(token, "0") == 0)
-                {
-                    cmdParams.val_a = allocate_double_value(value);
-                    if (cmdParams.val_a == NULL)
-                    {
-                        set_error_code(&cmdParams, ERR_MALLOC_FAILED);
-                        return cmdParams;
-                    }
-                    break;
-                }
-                else
-                {
-                    set_error_code(&cmdParams, ERR_INVALID_PARAMETER);
-                    return cmdParams;
-                }
-            }
-            else
-            {
-                set_error_code(&cmdParams, ERR_EXTRANEOUS_TEXT);
                 return cmdParams;
             }
             break;
-
         case 2:
-            if (req.val_2)
+            handle_third_param(req, token, &cmdParams);
+            if (cmdParams.errorCode != NULL)
             {
-                double value = atof(token);
-                if (value != 0 || strcmp(token, "0") == 0)
-                {
-                    if (cmdParams.val_a == NULL)
-                    {
-                        cmdParams.val_a = allocate_double_value(value);
-                        if (cmdParams.val_a == NULL)
-                        {
-                            set_error_code(&cmdParams, ERR_MALLOC_FAILED);
-                            return cmdParams;
-                        }
-                        break;
-                    }
-                    else
-                    {
-                        cmdParams.val_b = allocate_double_value(value);
-                        if (cmdParams.val_b == NULL)
-                        {
-                            set_error_code(&cmdParams, ERR_MALLOC_FAILED);
-                            return cmdParams;
-                        }
-                        break;
-                    }
-                }
-                else
-                {
-                    set_error_code(&cmdParams, ERR_INVALID_PARAMETER);
-                    return cmdParams;
-                }
+                return cmdParams;
             }
             break;
-
         case 3:
-            if (req.val_2)
+            handle_fourth_param(req, token, &cmdParams);
+            if (cmdParams.errorCode != NULL)
             {
-                double value = atof(token);
-                if (value != 0 || strcmp(token, "0") == 0)
-                {
-                    if (cmdParams.val_b == NULL)
-                    {
-                        cmdParams.val_b = allocate_double_value(value);
-                        if (cmdParams.val_b == NULL)
-                        {
-                            set_error_code(&cmdParams, ERR_MALLOC_FAILED);
-                            return cmdParams;
-                        }
-                        break;
-                    }
-                    else
-                    {
-                        set_error_code(&cmdParams, ERR_EXTRANEOUS_TEXT);
-                        return cmdParams;
-                    }
-                }
-                else
-                {
-                    set_error_code(&cmdParams, ERR_INVALID_PARAMETER);
-                    return cmdParams;
-                }
+                return cmdParams;
             }
             break;
         case 4:
@@ -320,6 +222,195 @@ CommandParams extract_command_params(char *params_str, Requiermets req)
         set_error_code(&cmdParams, ERR_MISSING_PARAMETER);
     }
     return cmdParams;
+}
+
+void handle_first_param(Requiermets req, char *token, CommandParams *cmdParams)
+{
+    if (req.var_1)
+    {
+        char varName = getOnlyChar(token);
+        if (varName != '\0')
+        {
+            int index = get_variable_index(varName);
+            if (index >= 0)
+            {
+                cmdParams->a = get_variable_ref_by_index(index);
+            }
+            else
+            {
+                set_error_code(cmdParams, ERR_UNDEFINED_COMPLEX_VAR);
+            }
+        }
+        else
+        {
+            set_error_code(cmdParams, ERR_UNDEFINED_COMPLEX_VAR);
+        }
+    }
+    else
+    {
+        set_error_code(cmdParams, ERR_UNDEFINED_COMPLEX_VAR);
+    }
+}
+
+void handle_second_param(Requiermets req, char *token, CommandParams *cmdParams)
+{
+    if (req.var_2)
+    {
+        char varName = getOnlyChar(token);
+        if (varName != '\0')
+        {
+            int index = get_variable_index(varName);
+            if (index >= 0)
+            {
+                cmdParams->b = get_variable_ref_by_index(index);
+            }
+            else
+            {
+                set_error_code(cmdParams, ERR_UNDEFINED_COMPLEX_VAR);
+            }
+        }
+        else
+        {
+            set_error_code(cmdParams, ERR_UNDEFINED_COMPLEX_VAR);
+        }
+    }
+    else if (req.val_1 && validateToken(token))
+    {
+        double value = atof(token);
+        if (value != 0 || strcmp(token, "0") == 0)
+        {
+            cmdParams->val_a = allocate_double_value(value);
+            if (cmdParams->val_a == NULL)
+            {
+                set_error_code(cmdParams, ERR_MALLOC_FAILED);
+            }
+        }
+        else
+        {
+            set_error_code(cmdParams, ERR_INVALID_PARAMETER);
+        }
+    }
+    else
+    {
+        set_error_code(cmdParams, ERR_EXTRANEOUS_TEXT);
+    }
+}
+
+void handle_third_param(Requiermets req, char *token, CommandParams *cmdParams)
+{
+    if (req.val_2 && validateToken(token))
+    {
+        double value = atof(token);
+        if (value != 0 || strcmp(token, "0") == 0)
+        {
+            if (cmdParams->val_a == NULL)
+            {
+                cmdParams->val_a = allocate_double_value(value);
+                if (cmdParams->val_a == NULL)
+                {
+                    set_error_code(cmdParams, ERR_MALLOC_FAILED);
+                }
+            }
+            else
+            {
+                cmdParams->val_b = allocate_double_value(value);
+                if (cmdParams->val_b == NULL)
+                {
+                    set_error_code(cmdParams, ERR_MALLOC_FAILED);
+                }
+            }
+        }
+        else
+        {
+            set_error_code(cmdParams, ERR_INVALID_PARAMETER);
+        }
+    }
+}
+
+void handle_fourth_param(Requiermets req, char *token, CommandParams *cmdParams)
+{
+    if (req.val_2 && validateToken(token))
+    {
+        double value = atof(token);
+        if (value != 0 || strcmp(token, "0") == 0)
+        {
+            if (cmdParams->val_b == NULL)
+            {
+                cmdParams->val_b = allocate_double_value(value);
+                if (cmdParams->val_b == NULL)
+                {
+                    set_error_code(cmdParams, ERR_MALLOC_FAILED);
+                }
+            }
+            else
+            {
+                set_error_code(cmdParams, ERR_EXTRANEOUS_TEXT);
+            }
+        }
+        else
+        {
+            set_error_code(cmdParams, ERR_INVALID_PARAMETER);
+        }
+    }
+}
+
+char getOnlyChar(const char *str)
+{
+    char foundChar = '\0';
+    const char *ptr = str;
+    if (str == NULL)
+        return '\0';
+    while (*ptr && isspace(*ptr))
+        ptr++;
+    if (*ptr == '\0')
+        return '\0';
+    foundChar = *ptr;
+    ptr++;
+    while (*ptr)
+    {
+        if (!isspace(*ptr))
+            return '\0';
+        ptr++;
+    }
+    return foundChar;
+}
+
+BOOLEAN validateToken(const char *str)
+{
+    int seenDigit = 0;
+    int seenDot = 0;
+    if (str == NULL)
+        return 0;
+    while (*str && isspace(*str))
+        str++;
+
+    if (*str == '-' || *str == '+')
+        str++;
+
+    while (*str)
+    {
+        if (isdigit(*str))
+        {
+            seenDigit = 1;
+        }
+        else if (*str == '.' && !seenDot)
+        {
+            seenDot = 1;
+        }
+        else if (isspace(*str))
+        {
+            while (*str && isspace(*str))
+                str++;
+            break;
+        }
+        else
+        {
+            return 0;
+        }
+        str++;
+    }
+
+    return seenDigit && *str == '\0';
 }
 
 BOOLEAN validate_requirements(const CommandParams *cmdParams, const Requiermets *req)

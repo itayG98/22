@@ -87,8 +87,15 @@ CommandParams vld_stop(char *params);
 
 void display_comp_num(Complex num);
 
-double *allocate_double_value(double value);
+/*Data extraction*/
 CommandParams extract_command_params(char *params_str, Requiermets req);
+void handle_first_param(Requiermets req, char *token, CommandParams *cmdParams);
+void handle_second_param(Requiermets req, char *token, CommandParams *cmdParams);
+void handle_third_param(Requiermets req, char *token, CommandParams *cmdParams);
+void handle_fourth_param(Requiermets req, char *token, CommandParams *cmdParams);
+char getOnlyChar(const char *str);
+BOOLEAN validateToken(const char *str);
+double *allocate_double_value(double value);
 BOOLEAN validate_requirements(const CommandParams *cmdParams, const Requiermets *req);
 void set_error_code(CommandParams *cmdParams, ErrorCode error);
 

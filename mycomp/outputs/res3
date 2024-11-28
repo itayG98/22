@@ -26,24 +26,19 @@ First consider this rules and examples :
      Example: mult_comp_img C, 2.3
 4. To quit: stop<ENTER>
 
-prompt: read_comp A,5,5
-prompt: read_comp B,514,123
-prompt: read_comp C,-5,412
-prompt: read_comp D,-5,-14
-prompt: read_comp E,54,5.4554
-prompt: read_comp F,54,5.43,564,4,עברית
+prompt: read_comp  A , 5 ,5
+prompt: read_comp  B , 514 ,123
+prompt: read_comp  C , -5 ,412
+prompt: read_comp  D , -5 ,-14
+prompt: read_comp  E , 54 ,5.4554
+prompt: read_comp  F , 54 ,5.43 , 564,4 , עברית
 Extraneous text after end of command.
-prompt: read_comp G,52142,5414235
+prompt: read_comp  G , 52142 ,5414235
 Undefined complex variable.
-prompt: read_comp A,52142,5414235
-prompt: print_comp A
+prompt: read_comp  A , 52142 ,5414235 
+prompt: print_comp  A 
 52142.00 + (5414235.00)i
-
-prompt: mult_comp_comp A,B
+prompt: mult_comp_comp  A , B
 -639149917.00 + (2789330256.00)i
-
-prompt: mult_comp_rael A,23
-mult_comp_rael A , 23 is not a valid command.
-prompt: mult_comp_comp A,G
-Undefined complex variable.
-prompt: stop Operation successful. Exiting...
+prompt: mult_comp_rael  A , 23
+Operation successful. Exiting...

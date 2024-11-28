@@ -115,14 +115,13 @@ void extract_data_from_line(commandData *command_data)
         i++;
     }
     cmnd[i] = '\0';
+    while (line[i] && !isTabOrSpace(line[i]))
+    {
+        i++;
+    }
     while (line[i])
     {
-        if (!isTabOrSpace(line[i]))
-        {
-            suffix[j] = line[i];
-            j++;
-        }
-        i++;
+        suffix[j++] = line[i++];
     }
     suffix[j] = '\0';
     command_data->command = cmnd;
@@ -172,7 +171,7 @@ void execute_command(commandData *command_data)
     printf("%s %s", command_data->command, command_data->params);
     for (i = 0; i < NUM_OF_CMNDS; i++)
     {
-        if (strcmp(command_data->command, command_table[i].command) == 0)
+        if (i < NUM_OF_CMNDS - 1 && strcmp(command_data->command, command_table[i].command) == 0)
         {
             params = command_table[i].validate(params_copy);
             if (params.errorCode && *params.errorCode == ERR_MALLOC_FAILED)
@@ -185,12 +184,6 @@ void execute_command(commandData *command_data)
             {
                 print_error_message(*params.errorCode);
             }
-            else if (i == NUM_OF_CMNDS - 1 && command_table[i].action.exit_action)
-            {
-                free(params_copy);
-                command_data->flag = SUCCES;
-                command_table[i].action.exit_action(command_data);
-            }
             else if (command_table[i].action.cmd_action)
             {
                 command_table[i].action.cmd_action(&params);
@@ -198,6 +191,12 @@ void execute_command(commandData *command_data)
             free_command_params(&params);
             free(params_copy);
             return;
+        }
+        else if (i == NUM_OF_CMNDS - 1 && command_table[i].action.exit_action)
+        {
+            free(params_copy);
+            command_data->flag = SUCCES;
+            command_table[i].action.exit_action(command_data);
         }
     }
     printf("\n%s is not a valid command.", command_data->line);
@@ -209,21 +208,21 @@ void stop(commandData *command_data)
     switch (command_data->flag)
     {
     case SUCCES:
-        printf("Operation successful. Exiting...\n");
+        printf("\nOperation successful. Exiting...\n");
         exit(EXIT_SUCCESS);
     case DEFAULT:
-        printf("No inpt detected...\n");
+        printf("\nNo input detected...\n");
         break;
     case EOF_REACHED:
-        printf("End of file reached. Exiting...\n");
+        printf("\nEnd of file reached. Exiting...\n");
         exit(EXIT_SUCCESS);
     case ERROR:
-        printf("Error occurred. Exiting...\n");
+        printf("\nError occurred. Exiting...\n");
         exit(EXIT_FAILURE);
     case MALLOC_ERROR:
-        printf("Memory allocation failed . Exiting...\n");
+        printf("\nMemory allocation failed . Exiting...\n");
     default:
-        printf("Unknown error code. Exiting...\n");
+        printf("\nUnknown error code. Exiting...\n");
         exit(EXIT_FAILURE);
     }
 }
