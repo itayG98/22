@@ -41,5 +41,19 @@ Extraneous text after end of command.
 prompt: mult_comp_comp   A , B 
 1955.00 + (3185.00)i
 prompt: 
+prompt: print_comp  A
+5.00 + (5.00)i
+prompt: print_comp  B
+514.00 + (123.00)i
+prompt: print_comp  C
+-5.00 + (412.00)i
+prompt: print_comp  D
+-5.00 + (-14.00)i
+prompt: print_comp  E
+54.00 + (5.46)i
+prompt: print_comp  F
+0.00 + (0.00)i
+prompt: print_comp  G
+Undefined complex variable.
 prompt: 
 End of file reached. Exiting...
