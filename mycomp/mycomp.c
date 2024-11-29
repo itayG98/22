@@ -161,8 +161,9 @@ void calculate_max_command_length(void)
 void execute_command(commandData *command_data)
 {
     int i;
-    CommandParams params = {NULL, NULL, NULL, NULL, NULL};
+    int stop_index = NUM_OF_CMNDS - 1;
     char *params_copy = copyStr(command_data->params);
+    CommandParams params = {NULL, NULL, NULL, NULL, NULL};
     if (params_copy == NULL)
     {
         command_data->flag = MALLOC_ERROR;
@@ -171,7 +172,7 @@ void execute_command(commandData *command_data)
     printf("%s %s", command_data->command, command_data->params);
     for (i = 0; i < NUM_OF_CMNDS; i++)
     {
-        if (i < NUM_OF_CMNDS - 1 && strcmp(command_data->command, command_table[i].command) == 0)
+        if (i < NUM_OF_CMNDS && strcmp(command_data->command, command_table[i].command) == 0)
         {
             params = command_table[i].validate(params_copy);
             if (params.errorCode && *params.errorCode == ERR_MALLOC_FAILED)
@@ -184,19 +185,19 @@ void execute_command(commandData *command_data)
             {
                 print_error_message(*params.errorCode);
             }
-            else if (command_table[i].action.cmd_action)
+            else if (i < stop_index && command_table[i].action.cmd_action)
             {
                 command_table[i].action.cmd_action(&params);
+            }
+            else if (i == stop_index && command_table[i].action.exit_action)
+            {
+                free(params_copy);
+                command_data->flag = SUCCES;
+                command_table[stop_index].action.exit_action(command_data);
             }
             free_command_params(&params);
             free(params_copy);
             return;
-        }
-        else if (i == NUM_OF_CMNDS - 1 && command_table[i].action.exit_action)
-        {
-            free(params_copy);
-            command_data->flag = SUCCES;
-            command_table[i].action.exit_action(command_data);
         }
     }
     printf("\n%s is not a valid command.", command_data->line);
