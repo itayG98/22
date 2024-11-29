@@ -4,6 +4,8 @@
 #include <ctype.h>
 #include <math.h>
 #include "complex.h"
+#include "string_utils.h"
+#include "common_types.h"
 
 static Variable variables[NUM_OF_VARIABLES] = {
     {'A', {0.0, 0.0}},
@@ -352,26 +354,6 @@ void handle_fourth_param(Requiermets req, char *token, CommandParams *cmdParams)
             set_error_code(cmdParams, ERR_INVALID_PARAMETER);
         }
     }
-}
-
-char getOnlyChar(const char *str)
-{
-    char foundChar = '\0';
-    const char *ptr = str;
-    if (str == NULL)
-        return '\0';
-    SKIP_SPACES(ptr)
-    if (*ptr == '\0')
-        return '\0';
-    foundChar = *ptr;
-    ptr++;
-    while (*ptr)
-    {
-        if (!isspace(*ptr))
-            return '\0';
-        ptr++;
-    }
-    return foundChar;
 }
 
 BOOLEAN validateToken(const char *str)

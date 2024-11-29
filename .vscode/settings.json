@@ -9,6 +9,8 @@
         "complex.h": "c",
         "mycomp.h": "c",
         "mycomp": "c",
+        "string_utils.h": "c",
+        "common_types.h": "c"
     },
     "files.exclude": {
         "**/*.exe": true,

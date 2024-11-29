@@ -4,6 +4,7 @@
 #include <ctype.h>
 #include "mycomp.h"
 #include "complex.h"
+#include "string_utils.h"
 
 static Command command_table[NUM_OF_CMNDS] = {
     {"read_comp", {0}, vld_read_comp},
@@ -129,22 +130,6 @@ void extract_data_from_line(commandData *command_data)
     command_data->params = suffix;
 }
 
-char *copyStr(const char *source)
-{
-    if (source != NULL)
-    {
-        char *copy = malloc(sizeof(char) * MAX_LINE_LENGTH);
-        if (copy == NULL)
-        {
-            return NULL;
-        }
-        strncpy(copy, source, MAX_LINE_LENGTH - 1);
-        copy[MAX_LINE_LENGTH - 1] = '\0';
-        return copy;
-    }
-    return NULL;
-}
-
 /*Logic*/
 void calculate_max_command_length(void)
 {
@@ -163,7 +148,7 @@ void execute_command(commandData *command_data)
 {
     int i;
     int stop_index = NUM_OF_CMNDS - 1;
-    char *params_copy = copyStr(command_data->params);
+    char *params_copy = copyStr(command_data->params, MAX_LINE_LENGTH);
     CommandParams params = {NULL, NULL, NULL, NULL, NULL};
     if (params_copy == NULL)
     {
@@ -271,11 +256,6 @@ void print_error_message(int code)
     {
         printf("Invalid error code.");
     }
-}
-
-BOOLEAN isTabOrSpace(char c)
-{
-    return c == ' ' || c == '\t' ? TRUE : FALSE;
 }
 
 /* Allocation*/

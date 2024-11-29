@@ -1,22 +1,10 @@
 #ifndef COMPLEX_H
 #define COMPLEX_H
 
-#include "complex.h"
+#include "common_types.h"
 
 #define NUM_OF_ERRORS 8
 #define NUM_OF_VARIABLES 6
-
-#define SKIP_SPACES(line)                 \
-    while (*line == ' ' || *line == '\t') \
-    {                                     \
-        line++;                           \
-    }
-
-typedef enum
-{
-    FALSE = 0,
-    TRUE = 1
-} BOOLEAN;
 
 typedef enum
 {
@@ -99,7 +87,6 @@ void handle_first_param(Requiermets req, char *token, CommandParams *cmdParams);
 void handle_second_param(Requiermets req, char *token, CommandParams *cmdParams);
 void handle_third_param(Requiermets req, char *token, CommandParams *cmdParams);
 void handle_fourth_param(Requiermets req, char *token, CommandParams *cmdParams);
-char getOnlyChar(const char *str);
 BOOLEAN validateToken(const char *str);
 double *allocate_double_value(double value);
 BOOLEAN validate_requirements(const CommandParams *cmdParams, const Requiermets *req);
