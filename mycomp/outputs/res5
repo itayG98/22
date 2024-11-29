@@ -59,8 +59,6 @@ prompt:
 prompt: 
 prompt: 
 prompt: 
-prompt:  
-                             is not a valid command.
 prompt: 
 prompt: 
 prompt: 
@@ -69,8 +67,6 @@ prompt:
 prompt: 
 prompt: 
 prompt: 
-prompt:  
-         is not a valid command.
 prompt: 
 prompt: 
 prompt: 
@@ -79,7 +75,8 @@ prompt:
 prompt: 
 prompt: 
 prompt: 
-prompt:  
-                                     is not a valid command.
+prompt: 
+prompt: 
+prompt: 
 prompt: 
 End of file reached. Exiting...

@@ -54,6 +54,10 @@ int main()
             printf("%s\n", errors[1].message);
             continue;
         }
+        if (strlen(command_data.command) == 0 && strlen(command_data.params) == 0)
+        {
+            continue;
+        }
         execute_command(&command_data);
     }
     stop(&command_data);
@@ -186,7 +190,7 @@ void execute_command(commandData *command_data)
             return;
         }
     }
-    printf("\n%s is not a valid command.", command_data->line);
+    print_error_message(ERR_UNDEFINED_COMMAND_NAME);
 }
 
 void stop(commandData *command_data)

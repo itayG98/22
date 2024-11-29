@@ -41,12 +41,12 @@ prompt: print_comp  A
 prompt: mult_comp_comp  A , B
 -639149917.00 + (2789330256.00)i
 prompt: mult_comp_rael  A , 23
-mult_comp_rael A , 23 is not a valid command.
+Undefined command name.
 prompt: mult_comp_comp  A , G
 Undefined complex variable.
 prompt: stop  WITH PARAMS
-Illegal comma.
+Extraneous text after end of command.
 prompt: srop 
-srop is not a valid command.
+Undefined command name.
 prompt: stop 
 Operation successful. Exiting...

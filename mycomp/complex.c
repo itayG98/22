@@ -153,7 +153,7 @@ CommandParams vld_stop(char *params)
     CommandParams cmd_params = {NULL, NULL, NULL, NULL, NULL};
     if (strlen(params) > 0)
     {
-        set_error_code(&cmd_params, ERR_ILLEGAL_COMMA);
+        set_error_code(&cmd_params, ERR_EXTRANEOUS_TEXT);
     }
     return cmd_params;
 }
