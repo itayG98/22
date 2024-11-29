@@ -10,8 +10,9 @@ print_comp A
 mult_comp_comp A , B
 mult_comp_rael A , 23
 mult_comp_comp A , G
+stop WITH PARAMS
+srop
 stop
-
 
 It will stop anyway......
 MULT_comp B , 5 ,5

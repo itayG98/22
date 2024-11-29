@@ -109,6 +109,7 @@ void extract_data_from_line(commandData *command_data)
         return;
     }
     line = command_data->line;
+    SKIP_SPACES(line);
     while (line[i] && i < MAX_CMD_LENGTH && (islower(line[i]) || line[i] == '_'))
     {
         cmnd[i] = line[i];

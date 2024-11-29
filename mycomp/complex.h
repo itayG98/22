@@ -6,6 +6,12 @@
 #define NUM_OF_ERRORS 8
 #define NUM_OF_VARIABLES 6
 
+#define SKIP_SPACES(line)                 \
+    while (*line == ' ' || *line == '\t') \
+    {                                     \
+        line++;                           \
+    }
+
 typedef enum
 {
     FALSE = 0,
