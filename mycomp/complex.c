@@ -358,23 +358,22 @@ void handle_fourth_param(Requiermets req, char *token, CommandParams *cmdParams)
 
 BOOLEAN validateToken(const char *str)
 {
-    int seenDigit = 0;
-    int seenDot = 0;
+    int seenDigit = FALSE;
+    int seenDot = FALSE;
     if (str == NULL)
-        return 0;
+        return FALSE;
     SKIP_SPACES(str)
     if (*str == '-' || *str == '+')
         str++;
-
     while (*str)
     {
         if (isdigit(*str))
         {
-            seenDigit = 1;
+            seenDigit = TRUE;
         }
         else if (*str == '.' && !seenDot)
         {
-            seenDot = 1;
+            seenDot = TRUE;
         }
         else if (isspace(*str))
         {
@@ -384,7 +383,7 @@ BOOLEAN validateToken(const char *str)
         }
         else
         {
-            return 0;
+            return FALSE;
         }
         str++;
     }
