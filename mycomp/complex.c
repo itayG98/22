@@ -360,8 +360,7 @@ char getOnlyChar(const char *str)
     const char *ptr = str;
     if (str == NULL)
         return '\0';
-    while (*ptr && isspace(*ptr))
-        ptr++;
+    SKIP_SPACES(ptr)
     if (*ptr == '\0')
         return '\0';
     foundChar = *ptr;
@@ -381,9 +380,7 @@ BOOLEAN validateToken(const char *str)
     int seenDot = 0;
     if (str == NULL)
         return 0;
-    while (*str && isspace(*str))
-        str++;
-
+    SKIP_SPACES(str)
     if (*str == '-' || *str == '+')
         str++;
 
