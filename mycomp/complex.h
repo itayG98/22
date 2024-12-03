@@ -52,6 +52,7 @@ typedef struct
     BOOLEAN var_2;
     BOOLEAN val_1;
     BOOLEAN val_2;
+    unsigned param_count;
 } Requiermets;
 
 /*Variables getters*/
@@ -87,7 +88,6 @@ void handle_first_param(Requiermets req, char *token, CommandParams *cmdParams);
 void handle_second_param(Requiermets req, char *token, CommandParams *cmdParams);
 void handle_third_param(Requiermets req, char *token, CommandParams *cmdParams);
 void handle_fourth_param(Requiermets req, char *token, CommandParams *cmdParams);
-BOOLEAN validateToken(const char *str);
 double *allocate_double_value(double value);
 BOOLEAN validate_requirements(const CommandParams *cmdParams, const Requiermets *req);
 void set_error_code(CommandParams *cmdParams, ErrorCode error);

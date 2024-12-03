@@ -121,10 +121,7 @@ void extract_data_from_line(commandData *command_data)
         i++;
     }
     cmnd[i] = '\0';
-    while (line[i] && !isTabOrSpace(line[i]))
-    {
-        i++;
-    }
+    SKIP_SPACES_WITH_i(line);
     while (line[i])
     {
         suffix[j++] = line[i++];

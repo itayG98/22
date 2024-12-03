@@ -1,52 +1,33 @@
+read_comp A , 5 ,5
+read_comp B , 514 ,123
+read_comp C , -5 ,412
+read_comp D , -5 ,-14
+read_comp E , 54 ,5.45545
 
+print_comp ,
+mult_comp_img
+mult_comp_real
+abs_comp ,
+abs_comp , ,
 
+add_comp A ,
 
+add_comp A , ,
 
+add_comp A , B
+add_comp C , D 
 
+sub_comp A ,A 
+sub_comp A 
 
+print_comp A
+mult_comp_real A ,  4
+mult_comp_comp D , E
+mult_comp_comp A ,B , C ,A 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                            
-
-
-
-
-
-
-
-
-        
-
-
-
-
-
-
-
-
-                                    
+abs_comp A
+abs_comp b
+mult_comp_comp A ,B
+ read_comp A , 1 ,1
+mult_comp_real A , -12.34
+stop

@@ -1,0 +1,168 @@
+Welcome to the complex numbers calculator.
+First consider this rules and examples :
+1. Valid complex variable names: A, B, C, D, E, F.
+2. Valid operations are as follows:
+   - read_comp: To input a complex number.
+   - print_comp: To display a complex number.
+   - add_comp: To add two complex numbers.
+   - sub_comp: To subtract one complex number from another.
+   - mult_comp_real: To multiply a complex number by a real number.
+   - mult_comp_img: To multiply a complex number by an imaginary number.
+   - mult_comp_comp: To multiply two complex numbers.
+   - abs_comp: To find the absolute value of a complex number.
+3. Command formats:
+   - For read_comp: read_comp <variable>, <real part>, <imaginary part> <ENTER>
+     Example: read_comp A, 3.5, -2.1
+   - For print_comp: print_comp <variable><ENTER>
+     Example: print_comp A
+   - For operations with two variables (add/sub/mult_comp_comp):
+     <operation> <variable1>, <variable2><ENTER>
+     Example: add_comp A, B
+   - For operations with a variable and a real number (mult_comp_real):
+     mult_comp_real <variable>, <real value><ENTER>
+     Example: mult_comp_real B, 4.5
+   - For operations with a variable and an imaginary value (mult_comp_img):
+     mult_comp_img <variable>, <imaginary value><ENTER>
+     Example: mult_comp_img C, 2.3
+4. To quit: stop<ENTER>
+
+prompt: read_comp 45
+Undefined complex variable.
+prompt: read_comp 45 , 45
+Undefined complex variable.
+prompt: read_comp A , 45
+Missing parameter.
+prompt: read_comp A , 45 , ,
+Multiple consecutive commas.
+prompt: read_comp A , 45  45, 45 , 
+Invalid parameter - not a number.
+prompt: read_comp A , 45 , 45 , 
+Extraneous text after end of command.
+prompt: read_comp A , 45 , 45A
+Invalid parameter - not a number.
+prompt: read_comp A , 45 , 45 45
+Invalid parameter - not a number.
+prompt: read_comp A4
+Undefined complex variable.
+prompt: read_comp G
+Undefined complex variable.
+prompt: read_comp a
+Undefined complex variable.
+prompt: read_comp 
+Undefined complex variable.
+prompt: 
+prompt: print_comp ,
+Undefined complex variable.
+prompt: print_comp a
+Undefined complex variable.
+prompt: print_comp 45
+Undefined complex variable.
+prompt: print_comp A ,5
+Extraneous text after end of command.
+prompt: print_comp A4
+Undefined complex variable.
+prompt: print_comp B , ,
+Extraneous text after end of command.
+prompt: print_comp A ,B 
+Extraneous text after end of command.
+prompt: print_comp A ,B  ,5
+Extraneous text after end of command.
+prompt: 
+prompt: add_comp A 
+Missing parameter.
+prompt: add_comp A ,
+Missing parameter.
+prompt: add_comp A ,b 
+Undefined complex variable.
+prompt: add_comp A ,B , 
+Extraneous text after end of command.
+prompt: add_comp A  , AV
+Undefined complex variable.
+prompt: add_comp Av , 4
+Undefined complex variable.
+prompt: add_comp A ,b test
+Undefined complex variable.
+prompt: 
+prompt: 
+prompt: sub_comp A ,b 
+Undefined complex variable.
+prompt: sub_comp A , 5 
+Undefined complex variable.
+prompt: sub_comp A ,, B
+Multiple consecutive commas.
+prompt: sub_comp B , G
+Undefined complex variable.
+prompt: sub_comp A ,B , 
+Extraneous text after end of command.
+prompt: sub_comp A ,B 5 ,
+Undefined complex variable.
+prompt: sub_comp A ,B4,
+Undefined complex variable.
+prompt: sub_comp A5 ,B ,    
+Undefined complex variable.
+prompt: 
+prompt: mult_comp_real 
+Undefined complex variable.
+prompt: mult_comp_real A 
+Missing parameter.
+prompt: mult_comp_real A , 
+Missing parameter.
+prompt: mult_comp_real A , A
+Invalid parameter - not a number.
+prompt: mult_comp_real A4 , 4
+Undefined complex variable.
+prompt: mult_comp_real A  , 45 ,56
+Extraneous text after end of command.
+prompt: mult_comp_real A , 45 5 
+Invalid parameter - not a number.
+prompt: mult_comp_real G , 
+Undefined complex variable.
+prompt: 
+prompt: mult_comp_img 
+Undefined complex variable.
+prompt: mult_comp_img A 
+Missing parameter.
+prompt: mult_comp_img A , 4 ,
+Extraneous text after end of command.
+prompt: mult_comp_img A , ,4 ,
+Multiple consecutive commas.
+prompt: 
+prompt: mult_comp_comp A 
+Missing parameter.
+prompt: mult_comp_comp 45 , A 
+Undefined complex variable.
+prompt: mult_comp_comp B , B ,
+Extraneous text after end of command.
+prompt: mult_comp_comp B , B4 , 
+Undefined complex variable.
+prompt: mult_comp_comp B 4, B ,
+Undefined complex variable.
+prompt: mult_comp_comp B3 , B ,
+Undefined complex variable.
+prompt: mult_comp_comp B , G 
+Undefined complex variable.
+prompt: 
+prompt: abs_comp G 
+Undefined complex variable.
+prompt: abs_comp AD
+Undefined complex variable.
+prompt: abs_comp A ,B 
+Extraneous text after end of command.
+prompt: abs_comp 4
+Undefined complex variable.
+prompt: abs_comp , 
+Undefined complex variable.
+prompt: abs_comp , ,
+Undefined complex variable.
+prompt: 
+prompt: stop _ 
+Extraneous text after end of command.
+prompt: stop 4
+Extraneous text after end of command.
+prompt: stop ,
+Extraneous text after end of command.
+prompt: stop A
+Extraneous text after end of command.
+prompt: 
+prompt: 
+End of file reached. Exiting...

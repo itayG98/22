@@ -102,55 +102,56 @@ void abs_comp(CommandParams *params)
 
 CommandParams vld_read_comp(char *params)
 {
-    Requiermets req = {TRUE, FALSE, TRUE, TRUE};
+    Requiermets req = {TRUE, FALSE, TRUE, TRUE, 3};
     return extract_command_params(params, req);
 }
 
 CommandParams vld_print_comp(char *params)
 {
-    Requiermets req = {TRUE, FALSE, FALSE, FALSE};
+    Requiermets req = {TRUE, FALSE, FALSE, FALSE, 1};
     return extract_command_params(params, req);
 }
 
 CommandParams vld_add_comp(char *params)
 {
-    Requiermets req = {TRUE, TRUE, FALSE, FALSE};
+    Requiermets req = {TRUE, TRUE, FALSE, FALSE, 2};
     return extract_command_params(params, req);
 }
 
 CommandParams vld_sub_comp(char *params)
 {
-    Requiermets req = {TRUE, TRUE, FALSE, FALSE};
+    Requiermets req = {TRUE, TRUE, FALSE, FALSE, 2};
     return extract_command_params(params, req);
 }
 
 CommandParams vld_mult_comp_real(char *params)
 {
-    Requiermets req = {TRUE, FALSE, TRUE, FALSE};
+    Requiermets req = {TRUE, FALSE, TRUE, FALSE, 2};
     return extract_command_params(params, req);
 }
 
 CommandParams vld_mult_comp_img(char *params)
 {
-    Requiermets req = {TRUE, FALSE, TRUE, FALSE};
+    Requiermets req = {TRUE, FALSE, TRUE, FALSE, 2};
     return extract_command_params(params, req);
 }
 
 CommandParams vld_mult_comp_comp(char *params)
 {
-    Requiermets req = {TRUE, TRUE, FALSE, FALSE};
+    Requiermets req = {TRUE, TRUE, FALSE, FALSE, 2};
     return extract_command_params(params, req);
 }
 
 CommandParams vld_abs_comp(char *params)
 {
-    Requiermets req = {TRUE, FALSE, FALSE, FALSE};
+    Requiermets req = {TRUE, FALSE, FALSE, FALSE, 1};
     return extract_command_params(params, req);
 }
 
 CommandParams vld_stop(char *params)
 {
     CommandParams cmd_params = {NULL, NULL, NULL, NULL, NULL};
+    SKIP_SPACES(params);
     if (strlen(params) > 0)
     {
         set_error_code(&cmd_params, ERR_EXTRANEOUS_TEXT);
@@ -161,20 +162,38 @@ CommandParams vld_stop(char *params)
 CommandParams extract_command_params(char *params_str, Requiermets req)
 {
     CommandParams cmdParams = {NULL, NULL, NULL, NULL, NULL};
-    char *token;
+    char *token = NULL;
+    char *prev_token = NULL;
     int token_count = 0;
-    token = strtok(params_str, ",");
-
-    while (token != NULL)
+    while ((token = my_strsep(&params_str, ",")) != NULL)
     {
-        if (strlen(token) < 1 && token_count == 0)
+        if (token_count == req.param_count)
         {
-            set_error_code(&cmdParams, ERR_ILLEGAL_COMMA);
+            set_error_code(&cmdParams, ERR_EXTRANEOUS_TEXT);
             return cmdParams;
         }
-        else if (strlen(token) < 1)
+        SKIP_SPACES(token);
+        if (IS_EMPTY(token))
         {
-            set_error_code(&cmdParams, ERR_MULTIPLE_CONSECUTIVE_COMMAS);
+            if (token_count > 0 && token_count < req.param_count)
+            {
+                BOOLEAN isConsecCommas = FALSE;
+                while ((token = my_strsep(&params_str, ",")) != NULL)
+                {
+                    isConsecCommas = TRUE;
+                }
+                set_error_code(&cmdParams, isConsecCommas ? ERR_MULTIPLE_CONSECUTIVE_COMMAS : ERR_MISSING_PARAMETER);
+                return cmdParams;
+            }
+            else
+            {
+                set_error_code(&cmdParams, ERR_MISSING_PARAMETER);
+                return cmdParams;
+            }
+        }
+        else if (token_count + 1 > req.param_count)
+        {
+            set_error_code(&cmdParams, ERR_EXTRANEOUS_TEXT);
             return cmdParams;
         }
         switch (token_count)
@@ -207,17 +226,17 @@ CommandParams extract_command_params(char *params_str, Requiermets req)
                 return cmdParams;
             }
             break;
-        case 4:
-        {
-            set_error_code(&cmdParams, ERR_EXTRANEOUS_TEXT);
-        }
         }
         token_count++;
-        token = strtok(NULL, ",");
+        prev_token = token;
     }
     if (token_count < 1)
     {
-        set_error_code(&cmdParams, ERR_MISSING_COMMA);
+        set_error_code(&cmdParams, ERR_UNDEFINED_COMPLEX_VAR);
+    }
+    else if (prev_token && endsWithDelimiter(prev_token, ','))
+    {
+        set_error_code(&cmdParams, ERR_EXTRANEOUS_TEXT);
     }
     else if (!validate_requirements(&cmdParams, &req))
     {
@@ -276,7 +295,7 @@ void handle_second_param(Requiermets req, char *token, CommandParams *cmdParams)
             set_error_code(cmdParams, ERR_UNDEFINED_COMPLEX_VAR);
         }
     }
-    else if (req.val_1 && validateToken(token))
+    else if (req.val_1 && isValidNumString(token))
     {
         double value = atof(token);
         if (value != 0 || strcmp(token, "0") == 0)
@@ -292,6 +311,10 @@ void handle_second_param(Requiermets req, char *token, CommandParams *cmdParams)
             set_error_code(cmdParams, ERR_INVALID_PARAMETER);
         }
     }
+    else if (req.val_1)
+    {
+        set_error_code(cmdParams, ERR_INVALID_PARAMETER);
+    }
     else
     {
         set_error_code(cmdParams, ERR_EXTRANEOUS_TEXT);
@@ -300,7 +323,7 @@ void handle_second_param(Requiermets req, char *token, CommandParams *cmdParams)
 
 void handle_third_param(Requiermets req, char *token, CommandParams *cmdParams)
 {
-    if (req.val_2 && validateToken(token))
+    if (req.val_2 && cmdParams->val_b == NULL && isValidNumString(token))
     {
         double value = atof(token);
         if (value != 0 || strcmp(token, "0") == 0)
@@ -327,11 +350,19 @@ void handle_third_param(Requiermets req, char *token, CommandParams *cmdParams)
             set_error_code(cmdParams, ERR_INVALID_PARAMETER);
         }
     }
+    else if (req.val_2)
+    {
+        set_error_code(cmdParams, ERR_INVALID_PARAMETER);
+    }
+    else
+    {
+        set_error_code(cmdParams, ERR_EXTRANEOUS_TEXT);
+    }
 }
 
 void handle_fourth_param(Requiermets req, char *token, CommandParams *cmdParams)
 {
-    if (req.val_2 && validateToken(token))
+    if (req.val_2 && isValidNumString(token))
     {
         double value = atof(token);
         if (value != 0 || strcmp(token, "0") == 0)
@@ -354,41 +385,6 @@ void handle_fourth_param(Requiermets req, char *token, CommandParams *cmdParams)
             set_error_code(cmdParams, ERR_INVALID_PARAMETER);
         }
     }
-}
-
-BOOLEAN validateToken(const char *str)
-{
-    int seenDigit = FALSE;
-    int seenDot = FALSE;
-    if (str == NULL)
-        return FALSE;
-    SKIP_SPACES(str)
-    if (*str == '-' || *str == '+')
-        str++;
-    while (*str)
-    {
-        if (isdigit(*str))
-        {
-            seenDigit = TRUE;
-        }
-        else if (*str == '.' && !seenDot)
-        {
-            seenDot = TRUE;
-        }
-        else if (isspace(*str))
-        {
-            while (*str && isspace(*str))
-                str++;
-            break;
-        }
-        else
-        {
-            return FALSE;
-        }
-        str++;
-    }
-
-    return seenDigit && *str == '\0';
 }
 
 BOOLEAN validate_requirements(const CommandParams *cmdParams, const Requiermets *req)

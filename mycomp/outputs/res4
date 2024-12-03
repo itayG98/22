@@ -26,34 +26,34 @@ First consider this rules and examples :
      Example: mult_comp_img C, 2.3
 4. To quit: stop<ENTER>
 
-prompt: read_comp  A , 5 ,5
+prompt: read_comp A , 5 ,5
 prompt: 
-prompt: read_comp  B , 514 ,123
+prompt: read_comp B , 514 ,123
 prompt: 
-prompt: read_comp  C , -5 ,412
+prompt: read_comp C , -5 ,412
 prompt: 
-prompt: read_comp  D , -5 ,-14
+prompt: read_comp D , -5 ,-14
 prompt: 
-prompt: read_comp  E , 54 ,5.4554
+prompt: read_comp E , 54 ,5.4554
 prompt: 
-prompt: read_comp  F , 54 ,5.43 , 564,4
+prompt: read_comp F , 54 ,5.43 , 564,4
 Extraneous text after end of command.
-prompt: mult_comp_comp   A , B 
+prompt: mult_comp_comp A , B 
 1955.00 + (3185.00)i
 prompt: 
-prompt: print_comp  A
+prompt: print_comp A
 5.00 + (5.00)i
-prompt: print_comp  B
+prompt: print_comp B
 514.00 + (123.00)i
-prompt: print_comp  C
+prompt: print_comp C
 -5.00 + (412.00)i
-prompt: print_comp  D
+prompt: print_comp D
 -5.00 + (-14.00)i
-prompt: print_comp  E
+prompt: print_comp E
 54.00 + (5.46)i
-prompt: print_comp  F
+prompt: print_comp F
 0.00 + (0.00)i
-prompt: print_comp  G
+prompt: print_comp G
 Undefined complex variable.
 prompt: 
 End of file reached. Exiting...

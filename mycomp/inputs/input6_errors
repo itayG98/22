@@ -1,0 +1,75 @@
+read_comp 45
+read_comp 45 , 45
+read_comp A , 45
+read_comp A , 45 , ,
+read_comp A , 45  45, 45 , 
+read_comp A , 45 , 45 , 
+read_comp A , 45 , 45A
+read_comp A , 45 , 45 45
+read_comp A4
+read_comp G
+read_comp a
+read_comp
+
+print_comp ,
+print_comp a
+print_comp 45
+print_comp A ,5
+print_comp A4
+print_comp B , ,
+print_comp A ,B 
+print_comp A ,B  ,5
+
+add_comp A 
+add_comp A ,
+add_comp A ,b 
+add_comp A ,B , 
+add_comp A  , AV
+add_comp Av , 4
+add_comp A ,b test
+
+
+sub_comp A ,b 
+sub_comp A , 5 
+sub_comp A ,, B
+sub_comp B , G
+sub_comp A ,B , 
+sub_comp A ,B 5 ,
+sub_comp A ,B4,
+sub_comp A5 ,B ,    
+
+mult_comp_real 
+mult_comp_real A 
+mult_comp_real A , 
+mult_comp_real A , A
+mult_comp_real A4 , 4
+mult_comp_real A  , 45 ,56
+mult_comp_real A , 45 5 
+mult_comp_real G , 
+
+mult_comp_img 
+mult_comp_img A 
+mult_comp_img A , 4 ,
+mult_comp_img A , ,4 ,
+
+mult_comp_comp A 
+mult_comp_comp 45 , A 
+mult_comp_comp B , B ,
+mult_comp_comp B , B , FAIL TEST 
+mult_comp_comp B , B4 , 
+mult_comp_comp B 4, B ,
+mult_comp_comp B3 , B ,
+mult_comp_comp B , G 
+
+abs_comp G 
+abs_comp AD
+abs_comp A ,B 
+abs_comp 4
+abs_comp , 
+abs_comp , ,
+
+ stop _ 
+ stop 4
+ stop ,
+ stop A
+
