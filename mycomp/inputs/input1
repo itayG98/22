@@ -4,5 +4,8 @@ read_comp C , -5 ,412
 read_comp D , -5 ,-14
 read_comp E , 54 ,5.4554
 read_comp F , 54 ,5.43 , 564,4
+abd_comp F 
+mult_comp_real A, -34.43242432
+read_comp A , 5 , ---5
 mult_comp_comp  A , B 
-
+stop

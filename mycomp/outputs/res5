@@ -32,6 +32,17 @@ prompt: read_comp C , -5 ,412
 prompt: read_comp D , -5 ,-14
 prompt: read_comp E , 54 ,5.45545
 prompt: 
+prompt: print_comp ,
+Missing parameter.
+prompt: mult_comp_img 
+Missing parameter.
+prompt: mult_comp_real 
+Missing parameter.
+prompt: abs_comp ,
+Missing parameter.
+prompt: abs_comp , ,
+Missing parameter.
+prompt: 
 prompt: add_comp A ,
 Missing parameter.
 prompt: 
@@ -56,5 +67,15 @@ prompt: mult_comp_comp D , E
 -193.62 + (-783.28)i
 prompt: mult_comp_comp A ,B , C ,A 
 Extraneous text after end of command.
+prompt: 
+prompt: abs_comp A
+7.07
+prompt: abs_comp b
+Undefined complex variable.
+prompt: mult_comp_comp A ,B
+1955.00 + (3185.00)i
+prompt: read_comp A , 1 ,1
+prompt: mult_comp_real A , -12.34
+-12.34 + (-12.34)i
 prompt: stop 
 Operation successful. Exiting...

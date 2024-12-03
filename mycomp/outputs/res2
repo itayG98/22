@@ -85,5 +85,9 @@ Undefined command name.
 prompt: read_comp E , 5 ,5
 prompt: print_comp E 
 5.00 + (5.00)i
-prompt: 
-End of file reached. Exiting...
+prompt: stop ERRR
+Extraneous text after end of command.
+prompt: stop next is good bye!
+Extraneous text after end of command.
+prompt: stop 
+Operation successful. Exiting...

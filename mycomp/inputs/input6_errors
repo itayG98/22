@@ -68,6 +68,10 @@ abs_comp 4
 abs_comp , 
 abs_comp , ,
 
+read_comp A , 5 , ---5
+read_comp A , 5 , +-5
+read_comp A , 5 , "5"
+
  stop _ 
  stop 4
  stop ,

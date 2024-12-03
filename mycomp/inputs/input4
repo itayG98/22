@@ -11,6 +11,10 @@ read_comp E , 54 ,5.4554
 read_comp F , 54 ,5.43 , 564,4
 mult_comp_comp  A , B 
 
+mult_comp_comp  A , B ,,
+mult_comp_comp  A ,           , B
+mult_comp_comp  A ,, B  
+
 print_comp A
 print_comp B
 print_comp C

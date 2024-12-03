@@ -33,8 +33,13 @@ prompt: read_comp D , -5 ,-14
 prompt: read_comp E , 54 ,5.4554
 prompt: read_comp F , 54 ,5.43 , 564,4
 Extraneous text after end of command.
+prompt: abd_comp F 
+Undefined command name.
+prompt: mult_comp_real A, -34.43242432
+-172.16 + (-172.16)i
+prompt: read_comp A , 5 , ---5
+Invalid parameter - not a number.
 prompt: mult_comp_comp A , B 
 1955.00 + (3185.00)i
-prompt: 
-prompt: 
-End of file reached. Exiting...
+prompt: stop 
+Operation successful. Exiting...

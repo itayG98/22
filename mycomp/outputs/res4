@@ -41,6 +41,13 @@ Extraneous text after end of command.
 prompt: mult_comp_comp A , B 
 1955.00 + (3185.00)i
 prompt: 
+prompt: mult_comp_comp A , B ,,
+Extraneous text after end of command.
+prompt: mult_comp_comp A ,           , B
+Multiple consecutive commas.
+prompt: mult_comp_comp A ,, B  
+Multiple consecutive commas.
+prompt: 
 prompt: print_comp A
 5.00 + (5.00)i
 prompt: print_comp B

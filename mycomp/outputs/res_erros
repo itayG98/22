@@ -49,10 +49,10 @@ Undefined complex variable.
 prompt: read_comp a
 Undefined complex variable.
 prompt: read_comp 
-Undefined complex variable.
+Missing parameter.
 prompt: 
 prompt: print_comp ,
-Undefined complex variable.
+Missing parameter.
 prompt: print_comp a
 Undefined complex variable.
 prompt: print_comp 45
@@ -102,7 +102,7 @@ prompt: sub_comp A5 ,B ,
 Undefined complex variable.
 prompt: 
 prompt: mult_comp_real 
-Undefined complex variable.
+Missing parameter.
 prompt: mult_comp_real A 
 Missing parameter.
 prompt: mult_comp_real A , 
@@ -119,7 +119,7 @@ prompt: mult_comp_real G ,
 Undefined complex variable.
 prompt: 
 prompt: mult_comp_img 
-Undefined complex variable.
+Missing parameter.
 prompt: mult_comp_img A 
 Missing parameter.
 prompt: mult_comp_img A , 4 ,
@@ -132,6 +132,8 @@ Missing parameter.
 prompt: mult_comp_comp 45 , A 
 Undefined complex variable.
 prompt: mult_comp_comp B , B ,
+Extraneous text after end of command.
+prompt: mult_comp_comp B , B , FAIL TEST 
 Extraneous text after end of command.
 prompt: mult_comp_comp B , B4 , 
 Undefined complex variable.
@@ -151,9 +153,16 @@ Extraneous text after end of command.
 prompt: abs_comp 4
 Undefined complex variable.
 prompt: abs_comp , 
-Undefined complex variable.
+Missing parameter.
 prompt: abs_comp , ,
-Undefined complex variable.
+Missing parameter.
+prompt: 
+prompt: read_comp A , 5 , ---5
+Invalid parameter - not a number.
+prompt: read_comp A , 5 , +-5
+Invalid parameter - not a number.
+prompt: read_comp A , 5 , "5"
+Invalid parameter - not a number.
 prompt: 
 prompt: stop _ 
 Extraneous text after end of command.
