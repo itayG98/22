@@ -44,7 +44,7 @@ int main()
         {
             stop(&command_data);
         }
-        if (strlen(command_data.line) == 0 || command_data.flag == ERROR)
+        if (IS_EMPTY(command_data.line) || command_data.flag == ERROR)
         {
             continue;
         }
@@ -299,11 +299,7 @@ void free_command_params(CommandParams *cmdParams)
         {
             free(cmdParams->errorCode);
         }
-        cmdParams->a = NULL;
-        cmdParams->b = NULL;
-        cmdParams->val_a = NULL;
-        cmdParams->val_b = NULL;
-        cmdParams->errorCode = NULL;
+        cmdParams = NULL;
     }
 }
 

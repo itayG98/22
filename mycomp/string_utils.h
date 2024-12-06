@@ -3,12 +3,12 @@
 
 #include "common_types.h"
 
-#define SKIP_SPACES(line)                                                    \
-    while ((*line == ' ' || *line == '\t') && *line != '\0' && *line != EOF) \
-        line++;
+#define SKIP_SPACES(str)                                                 \
+    while ((*str == ' ' || *str == '\t') && *str != '\0' && *str != EOF) \
+        str++;
 
-#define SKIP_SPACES_WITH_i(line)                                                                    \
-    while (((line)[i] && ((line)[i] == ' ' || (line)[i] == '\t') && *line != '\0' && *line != EOF)) \
+#define SKIP_SPACES_WITH_i(str)                                                                \
+    while (((str)[i] && ((str)[i] == ' ' || (str)[i] == '\t') && *str != '\0' && *str != EOF)) \
         (i)++;
 
 #define IS_EMPTY(str) (!(*str) || (str) == NULL || *(str) == '\0')
