@@ -172,6 +172,5 @@ prompt: stop ,
 Extraneous text after end of command.
 prompt: stop A
 Extraneous text after end of command.
-prompt: 
-prompt: 
-End of file reached. Exiting...
+prompt: stop 
+Operation successful. Exiting...

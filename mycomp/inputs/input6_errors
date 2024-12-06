@@ -73,7 +73,9 @@ read_comp A , 5 , +-5
 read_comp A , 5 , "5"
 
  stop _ 
- stop 4
- stop ,
+  stop 4
+stop ,
  stop A
+stop
+unrachable line :)
 
