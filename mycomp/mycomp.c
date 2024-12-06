@@ -83,12 +83,28 @@ void initCommandTableAction(void)
 
 void get_line(commandData *command_data)
 {
+    int ch;
+    while ((ch = getc(stdin)) != EOF)
+    {
+        if (ch != ' ' && ch != '\t')
+        {
+            ungetc(ch, stdin);
+            break;
+        }
+    }
+    if (ch == EOF)
+    {
+        command_data->flag = EOF_REACHED;
+        command_data->line = NULL;
+        return;
+    }
     command_data->line = malloc(sizeof(char) * MAX_LINE_LENGTH);
     if (!command_data->line)
     {
         command_data->flag = MALLOC_ERROR;
         return;
     }
+
     if (fgets(command_data->line, MAX_LINE_LENGTH, stdin) == NULL)
     {
         command_data->flag = EOF_REACHED;
@@ -104,7 +120,7 @@ void extract_data_from_line(commandData *command_data)
     int i, j;
     char *cmnd = NULL;
     char *suffix = NULL;
-    char *line = NULL;
+    char *line = command_data->line;
     i = j = 0;
     cmnd = malloc((MAX_CMD_LENGTH + 1) * sizeof(char));
     suffix = malloc(sizeof(char) * MAX_LINE_LENGTH);
@@ -113,7 +129,6 @@ void extract_data_from_line(commandData *command_data)
         command_data->flag = MALLOC_ERROR;
         return;
     }
-    line = command_data->line;
     SKIP_SPACES(line);
     while (line[i] && i < MAX_CMD_LENGTH && (islower(line[i]) || line[i] == '_'))
     {
