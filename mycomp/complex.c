@@ -127,54 +127,6 @@ CommandParams vld_action(char *params, Requiermets req)
     return extract_command_params(params, req);
 }
 
-CommandParams vld_read_comp(char *params)
-{
-    Requiermets req = {TRUE, FALSE, TRUE, TRUE, 3};
-    return extract_command_params(params, req);
-}
-
-CommandParams vld_print_comp(char *params)
-{
-    Requiermets req = {TRUE, FALSE, FALSE, FALSE, 1};
-    return extract_command_params(params, req);
-}
-
-CommandParams vld_add_comp(char *params)
-{
-    Requiermets req = {TRUE, TRUE, FALSE, FALSE, 2};
-    return extract_command_params(params, req);
-}
-
-CommandParams vld_sub_comp(char *params)
-{
-    Requiermets req = {TRUE, TRUE, FALSE, FALSE, 2};
-    return extract_command_params(params, req);
-}
-
-CommandParams vld_mult_comp_real(char *params)
-{
-    Requiermets req = {TRUE, FALSE, TRUE, FALSE, 2};
-    return extract_command_params(params, req);
-}
-
-CommandParams vld_mult_comp_img(char *params)
-{
-    Requiermets req = {TRUE, FALSE, TRUE, FALSE, 2};
-    return extract_command_params(params, req);
-}
-
-CommandParams vld_mult_comp_comp(char *params)
-{
-    Requiermets req = {TRUE, TRUE, FALSE, FALSE, 2};
-    return extract_command_params(params, req);
-}
-
-CommandParams vld_abs_comp(char *params)
-{
-    Requiermets req = {TRUE, FALSE, FALSE, FALSE, 1};
-    return extract_command_params(params, req);
-}
-
 CommandParams vld_stop(char *params)
 {
     CommandParams cmd_params = {NULL, NULL, NULL, NULL, NULL};
