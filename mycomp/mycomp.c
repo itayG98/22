@@ -54,7 +54,7 @@ int main()
             printf("%s\n", errors[1].message);
             continue;
         }
-        if (strlen(command_data.command) == 0 && strlen(command_data.params) == 0)
+        if (isSpacesString(command_data.command) && isSpacesString(command_data.params))
         {
             continue;
         }
