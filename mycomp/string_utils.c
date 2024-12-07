@@ -93,7 +93,7 @@ BOOLEAN isValidNumString(const char *str)
 
 BOOLEAN isSpacesString(const char *str)
 {
-    if (str == NULL || *str == '\0')
+    if (str == NULL || *str == '\0' || *str == '\n')
     {
         return TRUE;
     }
