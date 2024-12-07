@@ -173,7 +173,7 @@ CommandParams extract_command_params(char *params_str, Requiermets req)
             return cmdParams;
         }
         SKIP_SPACES(token);
-        if (IS_EMPTY(token))
+        if (isSpacesString(token))
         {
             if (token_count > 0 && token_count < req.param_count)
             {

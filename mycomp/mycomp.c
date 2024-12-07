@@ -44,7 +44,7 @@ int main()
         {
             stop(&command_data);
         }
-        if (IS_EMPTY(command_data.line) || command_data.flag == ERROR)
+        if (isSpacesString(command_data.line) || command_data.flag == ERROR)
         {
             continue;
         }
