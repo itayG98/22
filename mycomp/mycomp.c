@@ -6,6 +6,7 @@
 #include "complex.h"
 #include "string_utils.h"
 
+/* Command table-like structure containing name, action placeholder, and validation function */
 static Command command_table[NUM_OF_CMNDS] = {
     {"read_comp", {0}, vld_read_comp},
     {"print_comp", {0}, vld_print_comp},
@@ -17,6 +18,7 @@ static Command command_table[NUM_OF_CMNDS] = {
     {"abs_comp", {0}, vld_abs_comp},
     {"stop", {0}, vld_stop}};
 
+/* Error information table defining error codes and their corresponding messages. */
 static ErrorInfo errors[NUM_OF_ERRORS] = {
     {ERR_UNDEFINED_COMPLEX_VAR, "Undefined complex variable"},
     {ERR_UNDEFINED_COMMAND_NAME, "Undefined command name"},
@@ -27,8 +29,20 @@ static ErrorInfo errors[NUM_OF_ERRORS] = {
     {ERR_MISSING_COMMA, "Missing comma"},
     {ERR_ILLEGAL_COMMA, "Illegal comma"}};
 
+/*Dynimalcy assigend value for the longest command length*/
 static int MAX_CMD_LENGTH = 0;
 
+/*
+The entry point of the complex calculator program
+this program interate trhogu inputs from the stdind and
+execute each valid command , each command has up to 2 variable names
+and two double values.
+This meothod will exit whenever it fails to allocate memory , EOF
+or valid stop command is encountered.
+Example usage :
+ read_comp  A , 1 , -1
+ will insert 1+(-1)i to A
+*/
 int main()
 {
     commandData command_data = {NULL, NULL, NULL, DEFAULT};
@@ -66,6 +80,7 @@ int main()
 
 /*Init*/
 
+/*C90 forbids subobject initialization*/
 void initCommandTableAction(void)
 {
     command_table[0].action.cmd_action = read_comp;
@@ -81,6 +96,10 @@ void initCommandTableAction(void)
 
 /*Input */
 
+/*
+This method skips white charecters and than allocate and assign a new
+ line using fgets to the commandData object
+*/
 void get_line(commandData *command_data)
 {
     int ch;
@@ -115,6 +134,11 @@ void get_line(commandData *command_data)
     command_data->line[strcspn(command_data->line, "\n")] = '\0';
 }
 
+/*
+This method will extract the first lower or underscore charecters and assign to the command parameter
+ and the rest will be assigned as the params
+white charecters at the start of the line or after the line will skipped
+*/
 void extract_data_from_line(commandData *command_data)
 {
     int i, j;
@@ -147,6 +171,10 @@ void extract_data_from_line(commandData *command_data)
 }
 
 /*Logic*/
+
+/*
+This method determines the longest command length and assigns it to MAX_CMD_LENGTH during runtime
+*/
 void calculate_max_command_length(void)
 {
     int i;
@@ -160,6 +188,10 @@ void calculate_max_command_length(void)
     }
 }
 
+/*
+This method takes the data that extracted priviously validate it and execute
+ it or print an error message
+*/
 void execute_command(commandData *command_data)
 {
     int i;
@@ -205,6 +237,9 @@ void execute_command(commandData *command_data)
     print_error_message(ERR_UNDEFINED_COMMAND_NAME);
 }
 
+/*
+This method stop the porgram and prints message according to reason
+*/
 void stop(commandData *command_data)
 {
     free_commnad_data(command_data);
@@ -230,6 +265,9 @@ void stop(commandData *command_data)
     }
 }
 
+/*
+This method prints a menu
+*/
 void display_rules(void)
 {
     /* Introduction and instructions for user */
@@ -262,6 +300,9 @@ void display_rules(void)
     printf("4. To quit: stop<ENTER>\n");
 }
 
+/*
+This method prints an error messeege according to it's code
+*/
 void print_error_message(int code)
 {
     if (code >= 0 && code < NUM_OF_ERRORS)
@@ -276,6 +317,7 @@ void print_error_message(int code)
 
 /* Allocation*/
 
+/*This method free allocated data for the commandData fields */
 void free_commnad_data(commandData *command_data)
 {
     if (command_data->line)
@@ -295,6 +337,7 @@ void free_commnad_data(commandData *command_data)
     command_data->params = NULL;
 }
 
+/*This method free allocated data for the CommandParams number pointer's fields */
 void free_command_params(CommandParams *cmdParams)
 {
 
@@ -313,6 +356,8 @@ void free_command_params(CommandParams *cmdParams)
 }
 
 /*Development helpers*/
+
+/*This method prints the commandData state */
 void print_commandData(commandData *cmdData)
 {
     if (cmdData == NULL)
