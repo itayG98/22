@@ -76,8 +76,6 @@ prompt: sub_comp A ,,B , 5
 Multiple consecutive commas.
 prompt: stop A , 56 ,45
 Extraneous text after end of command.
-prompt: 
-prompt: 
 prompt: re , A , 4564 ,45.4
 Undefined command name.
 prompt: ad_comp D , 5 ,5

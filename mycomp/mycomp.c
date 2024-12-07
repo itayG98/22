@@ -35,16 +35,16 @@ int main()
     initCommandTableAction();
     calculate_max_command_length();
     display_rules();
-    while (command_data.flag == DEFAULT || command_data.flag == ERROR)
+    while (command_data.flag == DEFAULT)
     {
         free_commnad_data(&command_data);
         printf("\nprompt: ");
         get_line(&command_data);
-        if (command_data.line == NULL)
+        if (command_data.line == NULL || command_data.flag < DEFAULT)
         {
             stop(&command_data);
         }
-        if (isSpacesString(command_data.line) || command_data.flag == ERROR)
+        if (isSpacesString(command_data.line))
         {
             continue;
         }
@@ -86,7 +86,7 @@ void get_line(commandData *command_data)
     int ch;
     while ((ch = getc(stdin)) != EOF)
     {
-        if (ch != ' ' && ch != '\t')
+        if (ch != ' ' && ch != '\t' && ch != '\n')
         {
             ungetc(ch, stdin);
             break;
@@ -112,7 +112,7 @@ void get_line(commandData *command_data)
         command_data->line = NULL;
         return;
     }
-    command_data->line[strcspn(command_data->line, "\n")] = 0;
+    command_data->line[strcspn(command_data->line, "\n")] = '\0';
 }
 
 void extract_data_from_line(commandData *command_data)
@@ -278,43 +278,37 @@ void print_error_message(int code)
 
 void free_commnad_data(commandData *command_data)
 {
-    if (command_data)
+    if (command_data->line)
     {
-        if (command_data->line)
-        {
-            free(command_data->line);
-        }
-        if (command_data->command)
-        {
-            free(command_data->command);
-        }
-        if (command_data->params)
-        {
-            free(command_data->params);
-        }
-        command_data->line = NULL;
-        command_data->command = NULL;
-        command_data->params = NULL;
+        free(command_data->line);
     }
+    if (command_data->command)
+    {
+        free(command_data->command);
+    }
+    if (command_data->params)
+    {
+        free(command_data->params);
+    }
+    command_data->line = NULL;
+    command_data->command = NULL;
+    command_data->params = NULL;
 }
 
 void free_command_params(CommandParams *cmdParams)
 {
-    if (cmdParams)
+
+    if (cmdParams->val_a)
     {
-        if (cmdParams->val_a)
-        {
-            free(cmdParams->val_a);
-        }
-        if (cmdParams->val_b)
-        {
-            free(cmdParams->val_b);
-        }
-        if (cmdParams->errorCode)
-        {
-            free(cmdParams->errorCode);
-        }
-        cmdParams = NULL;
+        free(cmdParams->val_a);
+    }
+    if (cmdParams->val_b)
+    {
+        free(cmdParams->val_b);
+    }
+    if (cmdParams->errorCode)
+    {
+        free(cmdParams->errorCode);
     }
 }
 

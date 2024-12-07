@@ -27,27 +27,20 @@ First consider this rules and examples :
 4. To quit: stop<ENTER>
 
 prompt: read_comp A , 5 ,5
-prompt: 
 prompt: read_comp B , 514 ,123
-prompt: 
 prompt: read_comp C , -5 ,412
-prompt: 
 prompt: read_comp D , -5 ,-14
-prompt: 
 prompt: read_comp E , 54 ,5.4554
-prompt: 
 prompt: read_comp F , 54 ,5.43 , 564,4
 Extraneous text after end of command.
 prompt: mult_comp_comp A , B 
 1955.00 + (3185.00)i
-prompt: 
 prompt: mult_comp_comp A , B ,,
 Extraneous text after end of command.
 prompt: mult_comp_comp A ,           , B
 Multiple consecutive commas.
 prompt: mult_comp_comp A ,, B  
 Multiple consecutive commas.
-prompt: 
 prompt: print_comp A
 5.00 + (5.00)i
 prompt: print_comp B
