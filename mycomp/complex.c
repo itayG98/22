@@ -151,8 +151,7 @@ CommandParams vld_abs_comp(char *params)
 CommandParams vld_stop(char *params)
 {
     CommandParams cmd_params = {NULL, NULL, NULL, NULL, NULL};
-    SKIP_SPACES(params);
-    if (strlen(params) > 0)
+    if (!isSpacesString(params))
     {
         set_error_code(&cmd_params, ERR_EXTRANEOUS_TEXT);
     }
