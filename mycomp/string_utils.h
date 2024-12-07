@@ -11,8 +11,6 @@
     while (((str)[i] && ((str)[i] == ' ' || (str)[i] == '\t') && *str != '\0' && *str != EOF)) \
         (i)++;
 
-#define IS_EMPTY(str) (!(*str) || (str) == NULL || *(str) == '\0')
-
 char *copyStr(const char *source, const int line_length);
 char getOnlyChar(const char *str);
 BOOLEAN isTabOrSpace(char c);
