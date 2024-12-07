@@ -156,7 +156,7 @@ CommandParams extract_command_params(char *params_str, Requiermets req)
         SKIP_SPACES(token);
         if (isSpacesString(token))
         {
-            if (token_count > 0 && token_count < req.param_count)
+            if (token_count > 0)
             {
                 BOOLEAN isConsecCommas = FALSE;
                 while ((token = my_strsep(&params_str, ",")) != NULL)
@@ -171,11 +171,6 @@ CommandParams extract_command_params(char *params_str, Requiermets req)
                 set_error_code(&cmdParams, ERR_MISSING_PARAMETER);
                 return cmdParams;
             }
-        }
-        else if (token_count + 1 > req.param_count)
-        {
-            set_error_code(&cmdParams, ERR_EXTRANEOUS_TEXT);
-            return cmdParams;
         }
         switch (token_count)
         {
