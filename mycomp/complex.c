@@ -122,12 +122,16 @@ void abs_comp(CommandParams *params)
 
 /* Validation*/
 
+/*
+Validates the string parameters according to the requirements
+for an action and returns the corresponding result
+*/
 CommandParams vld_action(char *params, Requiermets req)
 {
     return extract_command_params(params, req);
 }
-
-CommandParams vld_stop(char *params)
+/*Validate a string parameters to be only white charecters*/
+CommandParams vld_white_charecters_only(char *params)
 {
     CommandParams cmd_params = {NULL, NULL, NULL, NULL, NULL};
     if (!isSpacesString(params))
@@ -141,7 +145,6 @@ CommandParams extract_command_params(char *params_str, Requiermets req)
 {
     CommandParams cmdParams = {NULL, NULL, NULL, NULL, NULL};
     char *token = NULL;
-    char *prev_token = NULL;
     int token_count = 0;
     while ((token = my_strsep(&params_str, ",")) != NULL)
     {
@@ -206,15 +209,10 @@ CommandParams extract_command_params(char *params_str, Requiermets req)
             break;
         }
         token_count++;
-        prev_token = token;
     }
     if (token_count < 1)
     {
         set_error_code(&cmdParams, ERR_UNDEFINED_COMPLEX_VAR);
-    }
-    else if (prev_token && endsWithDelimiter(prev_token, ','))
-    {
-        set_error_code(&cmdParams, ERR_EXTRANEOUS_TEXT);
     }
     else if (!validate_requirements(&cmdParams, &req))
     {

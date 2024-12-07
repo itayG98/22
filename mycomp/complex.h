@@ -71,7 +71,7 @@ void abs_comp(CommandParams *params);
 
 /*Validation*/
 CommandParams vld_action(char *params, Requiermets req);
-CommandParams vld_stop(char *params);
+CommandParams vld_white_charecters_only(char *params);
 
 void display_comp_num(const Complex num);
 

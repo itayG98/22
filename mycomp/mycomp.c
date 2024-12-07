@@ -92,7 +92,7 @@ void initCommandTableAction(void)
     {
         command_table[i].validate.action_vld = vld_action;
     }
-    command_table[NUM_OF_CMNDS - 1].validate.stop_vld = vld_stop;
+    command_table[NUM_OF_CMNDS - 1].validate.stop_vld = vld_white_charecters_only;
     command_table[0].action.cmd_action = read_comp;
     command_table[1].action.cmd_action = print_comp;
     command_table[2].action.cmd_action = add_comp;
