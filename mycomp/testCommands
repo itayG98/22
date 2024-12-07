@@ -3,3 +3,5 @@
 .\mycomp   < inputs/input3   >  outputs/res3
 .\mycomp   < inputs/input4   >  outputs/res4
 .\mycomp   < inputs/input5   >  outputs/res5
+.\mycomp   < inputs/input6_errors   >  outputs/res6_errors
+
