@@ -205,11 +205,7 @@ CommandParams extract_command_params(char *params_str, Requiermets req)
         }
         token_count++;
     }
-    if (token_count < 1)
-    {
-        set_error_code(&cmdParams, ERR_UNDEFINED_COMPLEX_VAR);
-    }
-    else if (!validate_requirements(&cmdParams, &req))
+    if (!validate_requirements(&cmdParams, &req))
     {
         set_error_code(&cmdParams, ERR_MISSING_PARAMETER);
     }
