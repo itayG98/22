@@ -123,7 +123,6 @@ void get_line(commandData *command_data)
         command_data->flag = MALLOC_ERROR;
         return;
     }
-
     if (fgets(command_data->line, MAX_LINE_LENGTH, stdin) == NULL)
     {
         command_data->flag = EOF_REACHED;
@@ -246,21 +245,23 @@ void stop(commandData *command_data)
     switch (command_data->flag)
     {
     case SUCCES:
-        printf("\nOperation successful. Exiting...\n");
+        printf("\nOperation successful.\nExiting...");
         exit(EXIT_SUCCESS);
     case DEFAULT:
-        printf("\nNo input detected...\n");
+        printf("\nNo input detected.\nExiting...");
+        exit(EXIT_SUCCESS);
         break;
     case EOF_REACHED:
-        printf("\nEnd of file reached. Exiting...\n");
+        printf("\nEnd of file reached.\nExiting...");
         exit(EXIT_SUCCESS);
     case ERROR:
-        printf("\nError occurred. Exiting...\n");
+        printf("\nError occurred.\nExiting...");
         exit(EXIT_FAILURE);
     case MALLOC_ERROR:
-        printf("\nMemory allocation failed . Exiting...\n");
+        printf("\nMemory allocation failed.\nExiting...");
+        exit(EXIT_FAILURE);
     default:
-        printf("\nUnknown error code. Exiting...\n");
+        printf("\nUnknown error code.\nExiting...");
         exit(EXIT_FAILURE);
     }
 }
