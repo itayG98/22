@@ -163,4 +163,5 @@ Extraneous text after end of command.
 prompt: stop A
 Extraneous text after end of command.
 prompt: stop 
-Operation successful. Exiting...
+Operation successful.
+Exiting...

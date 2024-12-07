@@ -70,6 +70,7 @@ void mult_comp_comp(CommandParams *params);
 void abs_comp(CommandParams *params);
 
 /*Validation*/
+CommandParams vld_action(char *params, Requiermets req);
 CommandParams vld_read_comp(char *params);
 CommandParams vld_print_comp(char *params);
 CommandParams vld_add_comp(char *params);
@@ -80,7 +81,7 @@ CommandParams vld_mult_comp_comp(char *params);
 CommandParams vld_abs_comp(char *params);
 CommandParams vld_stop(char *params);
 
-void display_comp_num(Complex num);
+void display_comp_num(const Complex num);
 
 /*Data extraction*/
 CommandParams extract_command_params(char *params_str, Requiermets req);

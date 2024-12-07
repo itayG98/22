@@ -49,4 +49,5 @@ Extraneous text after end of command.
 prompt: srop 
 Undefined command name.
 prompt: stop 
-Operation successful. Exiting...
+Operation successful.
+Exiting...

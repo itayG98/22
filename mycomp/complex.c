@@ -7,6 +7,7 @@
 #include "string_utils.h"
 #include "common_types.h"
 
+/* Variable table-like structure containing variable name,and initilized value */
 static Variable variables[NUM_OF_VARIABLES] = {
     {'A', {0.0, 0.0}},
     {'B', {0.0, 0.0}},
@@ -15,6 +16,10 @@ static Variable variables[NUM_OF_VARIABLES] = {
     {'E', {0.0, 0.0}},
     {'F', {0.0, 0.0}}};
 
+/*
+This method iterates through all the variables to find the index of
+ the item if it exists otherwise it returns -1
+ */
 int get_variable_index(char c)
 {
     int i;
@@ -27,30 +32,42 @@ int get_variable_index(char c)
     }
     return -1;
 }
-
+/*This method return a reference to the variable by it's index
+ if exists otherwise NULL
+*/
 Complex *get_variable_ref_by_index(int index)
 {
-    return &(variables[index].value);
+    if (index >= 0 && index < NUM_OF_VARIABLES)
+    {
+        return &(variables[index].value);
+    }
+    return NULL;
 }
 
-void display_comp_num(Complex num)
+/*This method print a complex variable*/
+void display_comp_num(const Complex num)
 {
     printf("\n%.2f + (%.2f)i", num.real, num.imaginary);
 }
 
 /*  Actions */
+
+/*This method insert a validated input and update the variable */
 void read_comp(CommandParams *params)
 {
     params->a->real = *(params->val_a);
     params->a->imaginary = *(params->val_b);
 }
 
+/*This method invoke the printig method with validated variable name*/
 void print_comp(CommandParams *params)
 {
     display_comp_num(*params->a);
 }
 
 /* Calculation*/
+
+/*This method print a addition of two complex variables*/
 void add_comp(CommandParams *params)
 {
     Complex result = {0};
@@ -59,6 +76,7 @@ void add_comp(CommandParams *params)
     display_comp_num(result);
 }
 
+/*This method print a subtruction of two complex variables*/
 void sub_comp(CommandParams *params)
 {
     Complex result = {0};
@@ -67,6 +85,7 @@ void sub_comp(CommandParams *params)
     display_comp_num(result);
 }
 
+/*This method prints a multiplication of complex variable and a real number*/
 void mult_comp_real(CommandParams *params)
 {
     Complex result = {0};
@@ -75,6 +94,7 @@ void mult_comp_real(CommandParams *params)
     display_comp_num(result);
 }
 
+/*This method prints the result of multiplying a complex variable by an imaginary number*/
 void mult_comp_img(CommandParams *params)
 {
     Complex result = {0};
@@ -83,6 +103,7 @@ void mult_comp_img(CommandParams *params)
     display_comp_num(result);
 }
 
+/*This method prints the result of multiplying tow complex variables*/
 void mult_comp_comp(CommandParams *params)
 {
     Complex result = {0};
@@ -91,6 +112,7 @@ void mult_comp_comp(CommandParams *params)
     display_comp_num(result);
 }
 
+/*This method prints the absolute value of a complex variable*/
 void abs_comp(CommandParams *params)
 {
     double result = 0;
@@ -99,6 +121,11 @@ void abs_comp(CommandParams *params)
 }
 
 /* Validation*/
+
+CommandParams vld_action(char *params, Requiermets req)
+{
+    return extract_command_params(params, req);
+}
 
 CommandParams vld_read_comp(char *params)
 {

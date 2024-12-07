@@ -56,4 +56,5 @@ prompt: print_comp F
 prompt: print_comp G
 Undefined complex variable.
 prompt: 
-End of file reached. Exiting...
+End of file reached.
+Exiting...

@@ -42,4 +42,5 @@ Invalid parameter - not a number.
 prompt: mult_comp_comp A , B 
 1955.00 + (3185.00)i
 prompt: stop 
-Operation successful. Exiting...
+Operation successful.
+Exiting...

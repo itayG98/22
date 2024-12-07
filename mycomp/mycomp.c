@@ -8,15 +8,16 @@
 
 /* Command table-like structure containing name, action placeholder, and validation function */
 static Command command_table[NUM_OF_CMNDS] = {
-    {"read_comp", {0}, vld_read_comp},
-    {"print_comp", {0}, vld_print_comp},
-    {"add_comp", {0}, vld_add_comp},
-    {"sub_comp", {0}, vld_sub_comp},
-    {"mult_comp_real", {0}, vld_mult_comp_real},
-    {"mult_comp_img", {0}, vld_mult_comp_img},
-    {"mult_comp_comp", {0}, vld_mult_comp_comp},
-    {"abs_comp", {0}, vld_abs_comp},
-    {"stop", {0}, vld_stop}};
+    {"read_comp", {0}, {0}, {TRUE, FALSE, TRUE, TRUE, 3}},
+    {"print_comp", {0}, {0}, {TRUE, FALSE, FALSE, FALSE, 1}},
+    {"add_comp", {0}, {0}, {TRUE, TRUE, FALSE, FALSE, 2}},
+    {"sub_comp", {0}, {0}, {TRUE, TRUE, FALSE, FALSE, 2}},
+    {"mult_comp_real", {0}, {0}, {TRUE, FALSE, TRUE, FALSE, 2}},
+    {"mult_comp_img", {0}, {0}, {TRUE, FALSE, TRUE, FALSE, 2}},
+    {"mult_comp_comp", {0}, {0}, {TRUE, TRUE, FALSE, FALSE, 2}},
+    {"abs_comp", {0}, {0}, {TRUE, FALSE, FALSE, FALSE, 1}},
+    {"stop", {0}, {0}, {0}},
+};
 
 /* Error information table defining error codes and their corresponding messages. */
 static ErrorInfo errors[NUM_OF_ERRORS] = {
@@ -80,9 +81,18 @@ int main()
 
 /*Init*/
 
-/*C90 forbids subobject initialization*/
+/*
+Initilise the action fields in each line of the table since
+C90 forbids subobject initialization
+*/
 void initCommandTableAction(void)
 {
+    int i;
+    for (i = 0; i < NUM_OF_CMNDS - 1; i++)
+    {
+        command_table[i].validate.action_vld = vld_action;
+    }
+    command_table[NUM_OF_CMNDS - 1].validate.stop_vld = vld_stop;
     command_table[0].action.cmd_action = read_comp;
     command_table[1].action.cmd_action = print_comp;
     command_table[2].action.cmd_action = add_comp;
@@ -207,7 +217,7 @@ void execute_command(commandData *command_data)
     {
         if (i < NUM_OF_CMNDS && strcmp(command_data->command, command_table[i].command) == 0)
         {
-            params = command_table[i].validate(params_copy);
+            params = validate(i, params_copy);
             if (params.errorCode && *params.errorCode == ERR_MALLOC_FAILED)
             {
                 free(params_copy);
@@ -234,6 +244,20 @@ void execute_command(commandData *command_data)
         }
     }
     print_error_message(ERR_UNDEFINED_COMMAND_NAME);
+}
+
+/*This method calls the correct validation method and return
+the appropriate parameters*/
+CommandParams validate(int index, char *params)
+{
+    if (index < NUM_OF_CMNDS - 1)
+    {
+        return command_table[index].validate.action_vld(params, command_table[index].req);
+    }
+    else
+    {
+        return command_table[index].validate.stop_vld(params);
+    }
 }
 
 /*
@@ -318,7 +342,9 @@ void print_error_message(int code)
 
 /* Allocation*/
 
-/*This method free allocated data for the commandData fields */
+/*
+This method free allocated data for the commandData fields
+*/
 void free_commnad_data(commandData *command_data)
 {
     if (command_data->line)
@@ -338,7 +364,7 @@ void free_commnad_data(commandData *command_data)
     command_data->params = NULL;
 }
 
-/*This method free allocated data for the CommandParams number pointer's fields */
+/*This method free allocated data for the CommandParams number's pointers fields */
 void free_command_params(CommandParams *cmdParams)
 {
 
