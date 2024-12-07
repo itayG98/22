@@ -141,6 +141,7 @@ CommandParams vld_white_charecters_only(char *params)
     return cmd_params;
 }
 
+/*This method iterates and check each parameter if valid and set the corresponding result*/
 CommandParams extract_command_params(char *params_str, Requiermets req)
 {
     CommandParams cmdParams = {NULL, NULL, NULL, NULL, NULL};
@@ -212,6 +213,7 @@ CommandParams extract_command_params(char *params_str, Requiermets req)
     return cmdParams;
 }
 
+/*Handle the first parameters*/
 void handle_first_param(Requiermets req, char *token, CommandParams *cmdParams)
 {
     if (req.var_1)
@@ -240,6 +242,7 @@ void handle_first_param(Requiermets req, char *token, CommandParams *cmdParams)
     }
 }
 
+/*Handle the second parameters*/
 void handle_second_param(Requiermets req, char *token, CommandParams *cmdParams)
 {
     if (req.var_2)
@@ -288,6 +291,7 @@ void handle_second_param(Requiermets req, char *token, CommandParams *cmdParams)
     }
 }
 
+/*Handle the third parameters*/
 void handle_third_param(Requiermets req, char *token, CommandParams *cmdParams)
 {
     if (req.val_2 && cmdParams->val_b == NULL && isValidNumString(token))
@@ -326,7 +330,7 @@ void handle_third_param(Requiermets req, char *token, CommandParams *cmdParams)
         set_error_code(cmdParams, ERR_EXTRANEOUS_TEXT);
     }
 }
-
+/*Handle the fourth parameters*/
 void handle_fourth_param(Requiermets req, char *token, CommandParams *cmdParams)
 {
     if (req.val_2 && isValidNumString(token))
@@ -353,7 +357,7 @@ void handle_fourth_param(Requiermets req, char *token, CommandParams *cmdParams)
         }
     }
 }
-
+/*This method validate the all of the requirments fullfiled*/
 BOOLEAN validate_requirements(const CommandParams *cmdParams, const Requiermets *req)
 {
     if (req->var_1 && cmdParams->a == NULL)
@@ -375,6 +379,7 @@ BOOLEAN validate_requirements(const CommandParams *cmdParams, const Requiermets 
     return TRUE;
 }
 
+/*Set the CommandParams error */
 void set_error_code(CommandParams *cmdParams, ErrorCode error)
 {
     cmdParams->errorCode = malloc(sizeof(ErrorCode));
@@ -389,6 +394,8 @@ void set_error_code(CommandParams *cmdParams, ErrorCode error)
 }
 
 /*helper method*/
+
+/*This method allocte a double memory and return the pointer to it*/
 double *allocate_double_value(double value)
 {
     double *val = malloc(sizeof(double));
