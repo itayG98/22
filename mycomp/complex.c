@@ -240,13 +240,9 @@ void handle_second_param(Requiermets req, char *token, CommandParams *cmdParams)
             set_error_code(cmdParams, ERR_INVALID_PARAMETER);
         }
     }
-    else if (req.val_1)
-    {
-        set_error_code(cmdParams, ERR_INVALID_PARAMETER);
-    }
     else
     {
-        set_error_code(cmdParams, ERR_EXTRANEOUS_TEXT);
+        set_error_code(cmdParams, ERR_INVALID_PARAMETER);
     }
 }
 void handle_third_param(Requiermets req, char *token, CommandParams *cmdParams)
@@ -278,13 +274,9 @@ void handle_third_param(Requiermets req, char *token, CommandParams *cmdParams)
             set_error_code(cmdParams, ERR_INVALID_PARAMETER);
         }
     }
-    else if (req.val_2)
-    {
-        set_error_code(cmdParams, ERR_INVALID_PARAMETER);
-    }
     else
     {
-        set_error_code(cmdParams, ERR_EXTRANEOUS_TEXT);
+        set_error_code(cmdParams, ERR_INVALID_PARAMETER);
     }
 }
 void handle_fourth_param(Requiermets req, char *token, CommandParams *cmdParams)
