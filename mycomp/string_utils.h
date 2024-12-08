@@ -34,4 +34,5 @@ BOOLEAN isSpacesString(const char *str);
   NULL if there are no more tokens or empty string if consequtive delimeters
  */
 char *my_strsep(char **inputPtr, const char *delimiters);
+BOOLEAN checkConsecutiveCommas(char *params_str);
 #endif

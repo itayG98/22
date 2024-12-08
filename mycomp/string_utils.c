@@ -119,9 +119,6 @@ BOOLEAN endsWithDelimiter(char *str, char delimiter)
     return str[len - 1] == delimiter;
 }
 
-#include <stdio.h>
-#include <string.h>
-
 char *my_strsep(char **inputPtr, const char *delimiters)
 {
     char *tokenStart; /* Pointer to the start of the token */
@@ -151,4 +148,14 @@ char *my_strsep(char **inputPtr, const char *delimiters)
         return ""; /* Return an empty string for an empty token */
     }
     return tokenStart;
+}
+
+BOOLEAN checkConsecutiveCommas(char *params_str)
+{
+    char *token;
+    while ((token = my_strsep(&params_str, ",")) != NULL)
+    {
+        return TRUE;
+    }
+    return FALSE;
 }

@@ -138,11 +138,7 @@ CommandParams extract_command_params(char *params_str, Requiermets req)
         {
             if (token_count > 0)
             {
-                BOOLEAN isConsecCommas = FALSE;
-                while ((token = my_strsep(&params_str, ",")) != NULL)
-                {
-                    isConsecCommas = TRUE;
-                }
+                BOOLEAN isConsecCommas = checkConsecutiveCommas(params_str);
                 set_error_code(&cmdParams, isConsecCommas ? ERR_MULTIPLE_CONSECUTIVE_COMMAS : ERR_MISSING_PARAMETER);
                 return cmdParams;
             }
@@ -194,32 +190,18 @@ CommandParams extract_command_params(char *params_str, Requiermets req)
 
 void handle_first_param(Requiermets req, char *token, CommandParams *cmdParams)
 {
-    if (req.var_1)
+    char varName = getOnlyChar(token);
+    if (varName != '\0')
     {
-        char varName = getOnlyChar(token);
-        if (varName != '\0')
+        int index = get_variable_index(varName);
+        if (index >= 0)
         {
-            int index = get_variable_index(varName);
-            if (index >= 0)
-            {
-                cmdParams->a = get_variable_ref_by_index(index);
-            }
-            else
-            {
-                set_error_code(cmdParams, ERR_UNDEFINED_COMPLEX_VAR);
-            }
-        }
-        else
-        {
-            set_error_code(cmdParams, ERR_UNDEFINED_COMPLEX_VAR);
+            cmdParams->a = get_variable_ref_by_index(index);
+            return;
         }
     }
-    else
-    {
-        set_error_code(cmdParams, ERR_UNDEFINED_COMPLEX_VAR);
-    }
+    set_error_code(cmdParams, ERR_UNDEFINED_COMPLEX_VAR);
 }
-
 void handle_second_param(Requiermets req, char *token, CommandParams *cmdParams)
 {
     if (req.var_2)
@@ -267,7 +249,6 @@ void handle_second_param(Requiermets req, char *token, CommandParams *cmdParams)
         set_error_code(cmdParams, ERR_EXTRANEOUS_TEXT);
     }
 }
-
 void handle_third_param(Requiermets req, char *token, CommandParams *cmdParams)
 {
     if (req.val_2 && cmdParams->val_b == NULL && isValidNumString(token))
@@ -321,15 +302,15 @@ void handle_fourth_param(Requiermets req, char *token, CommandParams *cmdParams)
                     set_error_code(cmdParams, ERR_MALLOC_FAILED);
                 }
             }
-            else
-            {
-                set_error_code(cmdParams, ERR_EXTRANEOUS_TEXT);
-            }
         }
         else
         {
             set_error_code(cmdParams, ERR_INVALID_PARAMETER);
         }
+    }
+    else
+    {
+        set_error_code(cmdParams, ERR_INVALID_PARAMETER);
     }
 }
 BOOLEAN validate_requirements(const CommandParams *cmdParams, const Requiermets *req)
