@@ -119,38 +119,36 @@ BOOLEAN endsWithDelimiter(char *str, char delimiter)
     return str[len - 1] == delimiter;
 }
 
-char *my_strsep(char **stringp, const char *delim)
-{
-    char *start;
-    char *current;
+#include <stdio.h>
+#include <string.h>
 
-    if (stringp == NULL || *stringp == NULL)
+char *my_strsep(char **inputPtr, const char *delimiters)
+{
+    char *tokenStart; /* Pointer to the start of the token */
+    char *scanner;    /* Pointer to scan through the string */
+    if (inputPtr == NULL || *inputPtr == NULL)
     {
         return NULL;
     }
-
-    start = *stringp;
-    current = start;
-
-    while (*current && !strchr(delim, *current))
+    tokenStart = *inputPtr;
+    scanner = tokenStart;
+    while (*scanner && !strchr(delimiters, *scanner))
     {
-        current++;
+        scanner++;
     }
-
-    if (*current)
+    if (*scanner)
     {
-        *current = '\0';
-        *stringp = current + 1;
+        *scanner = '\0';         /* Null-terminate the current token */
+        *inputPtr = scanner + 1; /* Move inputPtr to the next character */
     }
     else
     {
-        *stringp = NULL;
+        *inputPtr = NULL;
     }
-
-    if (start == current && strchr(delim, *current))
+    /* Handle case where tokenStart equals scanner but starts with a delimiter */
+    if (tokenStart == scanner && strchr(delimiters, *scanner))
     {
-        return "";
+        return ""; /* Return an empty string for an empty token */
     }
-
-    return start;
+    return tokenStart;
 }

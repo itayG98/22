@@ -23,9 +23,15 @@ BOOLEAN isTabOrSpace(char c);
 BOOLEAN isValidNumString(const char *str);
 /*Helper method check wether a given string contains only white charecters*/
 BOOLEAN isSpacesString(const char *str);
+
 /*
- * Helper method to tokenize a string.
+ * Splits a string into tokens based on a set of delimiters.
  * Unlike `strtok()`, consecutive delimiters return an empty string instead of skipping tokens.
+  @param inputPtr: Pointer to the string to tokenize. The pointer is updated
+ *             to point to the next segment of the string.
+  @param delimiters: A string containing the delimiter characters.
+  @return A pointer to the next token (or segment) in the string ,
+  NULL if there are no more tokens or empty string if consequtive delimeters
  */
-char *my_strsep(char **stringp, const char *delim);
+char *my_strsep(char **inputPtr, const char *delimiters);
 #endif
