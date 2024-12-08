@@ -81,10 +81,6 @@ int main()
 
 /*Init*/
 
-/*
-Initilise the action fields in each line of the table since
-C90 forbids subobject initialization
-*/
 void initCommandTableAction(void)
 {
     int i;
@@ -106,13 +102,10 @@ void initCommandTableAction(void)
 
 /*Input */
 
-/*
-This method skips white charecters and than allocate and assign a new
- line using fgets to the commandData object
-*/
 void get_line(commandData *command_data)
 {
     int ch;
+    /*skip empty lines or white charecters*/
     while ((ch = getc(stdin)) != EOF)
     {
         if (ch != ' ' && ch != '\t' && ch != '\n')
@@ -143,11 +136,6 @@ void get_line(commandData *command_data)
     command_data->line[strcspn(command_data->line, "\n")] = '\0';
 }
 
-/*
-This method will extract the first lower or underscore charecters and assign to the command parameter
- and the rest will be assigned as the params
-white charecters at the start of the line or after the line will skipped
-*/
 void extract_data_from_line(commandData *command_data)
 {
     int i, j;
@@ -181,9 +169,6 @@ void extract_data_from_line(commandData *command_data)
 
 /*Logic*/
 
-/*
-This method determines the longest command length and assigns it to MAX_CMD_LENGTH during runtime
-*/
 void calculate_max_command_length(void)
 {
     int i;
@@ -197,10 +182,6 @@ void calculate_max_command_length(void)
     }
 }
 
-/*
-This method takes the data that extracted priviously validate it and execute
- it or print an error message
-*/
 void execute_command(commandData *command_data)
 {
     int i;
@@ -246,8 +227,6 @@ void execute_command(commandData *command_data)
     print_error_message(ERR_UNDEFINED_COMMAND_NAME);
 }
 
-/*This method calls the correct validation method and return
-the appropriate parameters*/
 CommandParams validate(int index, char *params)
 {
     if (index < NUM_OF_CMNDS - 1)
@@ -260,9 +239,6 @@ CommandParams validate(int index, char *params)
     }
 }
 
-/*
-This method stop the porgram and prints message according to reason
-*/
 void stop(commandData *command_data)
 {
     free_commnad_data(command_data);
@@ -290,9 +266,6 @@ void stop(commandData *command_data)
     }
 }
 
-/*
-This method prints a menu
-*/
 void display_rules(void)
 {
     /* Introduction and instructions for user */
@@ -325,9 +298,6 @@ void display_rules(void)
     printf("4. To quit: stop<ENTER>\n");
 }
 
-/*
-This method prints an error messeege according to it's code
-*/
 void print_error_message(int code)
 {
     if (code >= 0 && code < NUM_OF_ERRORS)
@@ -342,9 +312,6 @@ void print_error_message(int code)
 
 /* Allocation*/
 
-/*
-This method free allocated data for the commandData fields
-*/
 void free_commnad_data(commandData *command_data)
 {
     if (command_data->line)
@@ -364,7 +331,6 @@ void free_commnad_data(commandData *command_data)
     command_data->params = NULL;
 }
 
-/*This method free allocated data for the CommandParams number's pointers fields */
 void free_command_params(CommandParams *cmdParams)
 {
 
@@ -384,7 +350,6 @@ void free_command_params(CommandParams *cmdParams)
 
 /*Development helpers*/
 
-/*This method prints the commandData state */
 void print_commandData(commandData *cmdData)
 {
     if (cmdData == NULL)

@@ -7,7 +7,7 @@
 #include "string_utils.h"
 #include "common_types.h"
 
-/* Variable table-like structure containing variable name,and initilized value */
+/* Variables table-like structure containing variable name,and initilized value */
 static Variable variables[NUM_OF_VARIABLES] = {
     {'A', {0.0, 0.0}},
     {'B', {0.0, 0.0}},
@@ -16,10 +16,6 @@ static Variable variables[NUM_OF_VARIABLES] = {
     {'E', {0.0, 0.0}},
     {'F', {0.0, 0.0}}};
 
-/*
-This method iterates through all the variables to find the index of
- the item if it exists otherwise it returns -1
- */
 int get_variable_index(char c)
 {
     int i;
@@ -32,9 +28,7 @@ int get_variable_index(char c)
     }
     return -1;
 }
-/*This method return a reference to the variable by it's index
- if exists otherwise NULL
-*/
+
 Complex *get_variable_ref_by_index(int index)
 {
     if (index >= 0 && index < NUM_OF_VARIABLES)
@@ -44,7 +38,6 @@ Complex *get_variable_ref_by_index(int index)
     return NULL;
 }
 
-/*This method print a complex variable*/
 void display_comp_num(const Complex num)
 {
     printf("\n%.2f + (%.2f)i", num.real, num.imaginary);
@@ -52,14 +45,12 @@ void display_comp_num(const Complex num)
 
 /*  Actions */
 
-/*This method insert a validated input and update the variable */
 void read_comp(CommandParams *params)
 {
     params->a->real = *(params->val_a);
     params->a->imaginary = *(params->val_b);
 }
 
-/*This method invoke the printig method with validated variable name*/
 void print_comp(CommandParams *params)
 {
     display_comp_num(*params->a);
@@ -67,7 +58,6 @@ void print_comp(CommandParams *params)
 
 /* Calculation*/
 
-/*This method print a addition of two complex variables*/
 void add_comp(CommandParams *params)
 {
     Complex result = {0};
@@ -76,7 +66,6 @@ void add_comp(CommandParams *params)
     display_comp_num(result);
 }
 
-/*This method print a subtruction of two complex variables*/
 void sub_comp(CommandParams *params)
 {
     Complex result = {0};
@@ -85,7 +74,6 @@ void sub_comp(CommandParams *params)
     display_comp_num(result);
 }
 
-/*This method prints a multiplication of complex variable and a real number*/
 void mult_comp_real(CommandParams *params)
 {
     Complex result = {0};
@@ -94,7 +82,6 @@ void mult_comp_real(CommandParams *params)
     display_comp_num(result);
 }
 
-/*This method prints the result of multiplying a complex variable by an imaginary number*/
 void mult_comp_img(CommandParams *params)
 {
     Complex result = {0};
@@ -103,7 +90,6 @@ void mult_comp_img(CommandParams *params)
     display_comp_num(result);
 }
 
-/*This method prints the result of multiplying tow complex variables*/
 void mult_comp_comp(CommandParams *params)
 {
     Complex result = {0};
@@ -112,7 +98,6 @@ void mult_comp_comp(CommandParams *params)
     display_comp_num(result);
 }
 
-/*This method prints the absolute value of a complex variable*/
 void abs_comp(CommandParams *params)
 {
     double result = 0;
@@ -122,15 +107,10 @@ void abs_comp(CommandParams *params)
 
 /* Validation*/
 
-/*
-Validates the string parameters according to the requirements
-for an action and returns the corresponding result
-*/
 CommandParams vld_action(char *params, Requiermets req)
 {
     return extract_command_params(params, req);
 }
-/*Validate a string parameters to be only white charecters*/
 CommandParams vld_white_charecters_only(char *params)
 {
     CommandParams cmd_params = {NULL, NULL, NULL, NULL, NULL};
@@ -141,7 +121,6 @@ CommandParams vld_white_charecters_only(char *params)
     return cmd_params;
 }
 
-/*This method iterates and check each parameter if valid and set the corresponding result*/
 CommandParams extract_command_params(char *params_str, Requiermets req)
 {
     CommandParams cmdParams = {NULL, NULL, NULL, NULL, NULL};
@@ -213,7 +192,6 @@ CommandParams extract_command_params(char *params_str, Requiermets req)
     return cmdParams;
 }
 
-/*Handle the first parameters*/
 void handle_first_param(Requiermets req, char *token, CommandParams *cmdParams)
 {
     if (req.var_1)
@@ -242,7 +220,6 @@ void handle_first_param(Requiermets req, char *token, CommandParams *cmdParams)
     }
 }
 
-/*Handle the second parameters*/
 void handle_second_param(Requiermets req, char *token, CommandParams *cmdParams)
 {
     if (req.var_2)
@@ -291,7 +268,6 @@ void handle_second_param(Requiermets req, char *token, CommandParams *cmdParams)
     }
 }
 
-/*Handle the third parameters*/
 void handle_third_param(Requiermets req, char *token, CommandParams *cmdParams)
 {
     if (req.val_2 && cmdParams->val_b == NULL && isValidNumString(token))
@@ -330,7 +306,6 @@ void handle_third_param(Requiermets req, char *token, CommandParams *cmdParams)
         set_error_code(cmdParams, ERR_EXTRANEOUS_TEXT);
     }
 }
-/*Handle the fourth parameters*/
 void handle_fourth_param(Requiermets req, char *token, CommandParams *cmdParams)
 {
     if (req.val_2 && isValidNumString(token))
@@ -357,7 +332,6 @@ void handle_fourth_param(Requiermets req, char *token, CommandParams *cmdParams)
         }
     }
 }
-/*This method validate the all of the requirments fullfiled*/
 BOOLEAN validate_requirements(const CommandParams *cmdParams, const Requiermets *req)
 {
     if (req->var_1 && cmdParams->a == NULL)
@@ -379,7 +353,6 @@ BOOLEAN validate_requirements(const CommandParams *cmdParams, const Requiermets 
     return TRUE;
 }
 
-/*Set the CommandParams error */
 void set_error_code(CommandParams *cmdParams, ErrorCode error)
 {
     cmdParams->errorCode = malloc(sizeof(ErrorCode));
@@ -395,7 +368,6 @@ void set_error_code(CommandParams *cmdParams, ErrorCode error)
 
 /*helper method*/
 
-/*This method allocte a double memory and return the pointer to it*/
 double *allocate_double_value(double value)
 {
     double *val = malloc(sizeof(double));

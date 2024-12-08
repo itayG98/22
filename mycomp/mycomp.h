@@ -61,28 +61,72 @@ typedef struct
 
 /*Init*/
 
+/*
+Initialize  the action fields in each line of the table since
+C90 forbids subobject initialization
+*/
 void initCommandTableAction(void);
 
 /*Input */
 
+/*
+This method skips white charecters and than allocate and assign a new
+ line using fgets to the commandData object
+*/
 void get_line(commandData *command_data);
+
+/*
+This method will extract the first lower or underscore charecters and assign to the command parameter
+ and the rest will be assigned as the params
+white charecters at the start of the line or after the line will skipped
+*/
 void extract_data_from_line(commandData *command_data);
 
 /*Logic*/
 
+/*
+This method determines the longest command length and assigns it to MAX_CMD_LENGTH during runtime
+*/
 void calculate_max_command_length(void);
+/*
+This method takes the data that extracted priviously validate it and execute
+ it or print an error message
+*/
 void execute_command(commandData *command_data);
+/*
+This method calls the correct validation method and return
+the appropriate parameters
+*/
 CommandParams validate(int index, char *params);
+/*
+This method stop the porgram and prints message according to reason
+*/
 void stop(commandData *command_data);
+
+/*
+This method prints a menu for the user explains how to use
+the calculator program
+*/
 void display_rules(void);
+/*
+This method prints an error messeege according to it's code
+*/
 void print_error_message(int code);
-BOOLEAN isTabOrSpace(char c);
+
 /* Allocation*/
 
+/*
+This method free allocated data for the commandData fields
+*/
 void free_commnad_data(commandData *command_data);
+/*
+This method free allocated data for the CommandParams number's pointers fields
+*/
+
 void free_command_params(CommandParams *cmdParams);
 
 /*Development helpers*/
 
+/*This method prints the commandData struct */
 void print_commandData(commandData *cmdData);
 #endif
