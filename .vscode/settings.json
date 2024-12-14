@@ -20,5 +20,9 @@
     "explorer.sortOrder": "type",
     "makefile.configureOnOpen": false,
     "C_Cpp.errorSquiggles": "disabled",
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "cSpell.words": [
+        "cmnd",
+        "CMNDS"
+    ]
 }

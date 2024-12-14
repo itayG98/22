@@ -7,7 +7,7 @@
 #include "string_utils.h"
 #include "common_types.h"
 
-/* Variables table-like structure containing variable name,and initilized value */
+/* Variables table-like structure containing variable name,and initalized value */
 static Variable variables[NUM_OF_VARIABLES] = {
     {'A', {0.0, 0.0}},
     {'B', {0.0, 0.0}},
@@ -107,11 +107,11 @@ void abs_comp(Parameters *params)
 
 /* Validation*/
 
-ValidationResult vld_action(char *params, Requiermets req)
+ValidationResult vld_action(char *params, Requirements req)
 {
     return extract_command_params(params, req);
 }
-ValidationResult vld_white_charecters_only(char *params)
+ValidationResult vld_white_characters_only(char *params)
 {
     ValidationResult cmd_params = {{0}, NULL};
     if (!isSpacesString(params))
@@ -121,7 +121,7 @@ ValidationResult vld_white_charecters_only(char *params)
     return cmd_params;
 }
 
-ValidationResult extract_command_params(char *params_str, Requiermets req)
+ValidationResult extract_command_params(char *params_str, Requirements req)
 {
     ValidationResult vldRes = {{0}, NULL};
     char *token = NULL;
@@ -151,29 +151,46 @@ ValidationResult extract_command_params(char *params_str, Requiermets req)
         switch (token_count)
         {
         case 0:
-            handle_first_param(req, token, &vldRes);
-            if (vldRes.errorCode != NULL)
+            setVarByToken(token, &vldRes, TRUE);
+            if (vldRes.errorCode)
             {
                 return vldRes;
             }
             break;
         case 1:
-            handle_second_param(req, token, &vldRes);
-            if (vldRes.errorCode != NULL)
+            if (req.var_2)
+            {
+                setVarByToken(token, &vldRes, FALSE);
+            }
+            else if (req.val_1)
+            {
+                setNumberByToken(token, &vldRes, TRUE);
+            }
+            if (vldRes.errorCode)
             {
                 return vldRes;
             }
             break;
         case 2:
-            handle_third_param(req, token, &vldRes);
-            if (vldRes.errorCode != NULL)
+            if (req.val_1 && !vldRes.params.val_a)
+            {
+                setNumberByToken(token, &vldRes, TRUE);
+            }
+            else if (req.val_2)
+            {
+                setNumberByToken(token, &vldRes, FALSE);
+            }
+            if (vldRes.errorCode)
             {
                 return vldRes;
             }
             break;
         case 3:
-            handle_fourth_param(req, token, &vldRes);
-            if (vldRes.errorCode != NULL)
+            if (req.val_2)
+            {
+                setNumberByToken(token, &vldRes, FALSE);
+            }
+            if (vldRes.errorCode)
             {
                 return vldRes;
             }
@@ -188,7 +205,7 @@ ValidationResult extract_command_params(char *params_str, Requiermets req)
     return vldRes;
 }
 
-void handle_first_param(Requiermets req, char *token, ValidationResult *vldRes)
+void setVarByToken(char *token, ValidationResult *vldRes, BOOLEAN isFirst)
 {
     char varName = getOnlyChar(token);
     if (varName != '\0')
@@ -196,79 +213,39 @@ void handle_first_param(Requiermets req, char *token, ValidationResult *vldRes)
         int index = get_variable_index(varName);
         if (index >= 0)
         {
-            vldRes->params.a = get_variable_ref_by_index(index);
+            if (isFirst)
+            {
+                vldRes->params.a = get_variable_ref_by_index(index);
+            }
+            else
+            {
+                vldRes->params.b = get_variable_ref_by_index(index);
+            }
             return;
         }
     }
     set_error_code(vldRes, ERR_UNDEFINED_COMPLEX_VAR);
 }
 
-void handle_second_param(Requiermets req, char *token, ValidationResult *vldRes)
+void setNumberByToken(char *token, ValidationResult *vldRes, BOOLEAN isFirst)
 {
-    if (req.var_2)
-    {
-        char varName = getOnlyChar(token);
-        if (varName != '\0')
-        {
-            int index = get_variable_index(varName);
-            if (index >= 0)
-            {
-                vldRes->params.b = get_variable_ref_by_index(index);
-                return;
-            }
-            else
-            {
-                set_error_code(vldRes, ERR_UNDEFINED_COMPLEX_VAR);
-            }
-        }
-        else
-        {
-            set_error_code(vldRes, ERR_UNDEFINED_COMPLEX_VAR);
-        }
-    }
-    else if (req.val_1 && isValidNumString(token))
+    if (isValidNumString(token) != '\0')
     {
         double value = atof(token);
         if (value != 0 || strcmp(token, "0") == 0)
         {
-            vldRes->params.val_a = allocate_double_value(value);
-            if (vldRes->params.val_a == NULL)
+            double *ptr = allocate_double_value(value);
+            if (ptr == NULL)
             {
                 set_error_code(vldRes, ERR_MALLOC_FAILED);
             }
-        }
-        else
-        {
-            set_error_code(vldRes, ERR_INVALID_PARAMETER);
-        }
-    }
-    else
-    {
-        set_error_code(vldRes, ERR_INVALID_PARAMETER);
-    }
-}
-void handle_third_param(Requiermets req, char *token, ValidationResult *vldRes)
-{
-    if (req.val_2 && vldRes->params.val_b == NULL && isValidNumString(token))
-    {
-        double value = atof(token);
-        if (value != 0 || strcmp(token, "0") == 0)
-        {
-            if (vldRes->params.val_a == NULL)
+            else if (isFirst)
             {
-                vldRes->params.val_a = allocate_double_value(value);
-                if (vldRes->params.val_a == NULL)
-                {
-                    set_error_code(vldRes, ERR_MALLOC_FAILED);
-                }
+                vldRes->params.val_a = ptr;
             }
             else
             {
-                vldRes->params.val_b = allocate_double_value(value);
-                if (vldRes->params.val_b == NULL)
-                {
-                    set_error_code(vldRes, ERR_MALLOC_FAILED);
-                }
+                vldRes->params.val_b = ptr;
             }
         }
         else
@@ -281,34 +258,8 @@ void handle_third_param(Requiermets req, char *token, ValidationResult *vldRes)
         set_error_code(vldRes, ERR_INVALID_PARAMETER);
     }
 }
-void handle_fourth_param(Requiermets req, char *token, ValidationResult *vldRes)
-{
 
-    if (req.val_2 && isValidNumString(token))
-    {
-        double value = atof(token);
-        if (value != 0 || strcmp(token, "0") == 0)
-        {
-            if (vldRes->params.val_b == NULL)
-            {
-                vldRes->params.val_b = allocate_double_value(value);
-                if (vldRes->params.val_b == NULL)
-                {
-                    set_error_code(vldRes, ERR_MALLOC_FAILED);
-                }
-            }
-        }
-        else
-        {
-            set_error_code(vldRes, ERR_INVALID_PARAMETER);
-        }
-    }
-    else
-    {
-        set_error_code(vldRes, ERR_INVALID_PARAMETER);
-    }
-}
-BOOLEAN validate_requirements(const Parameters params, const Requiermets *req)
+BOOLEAN validate_requirements(const Parameters params, const Requirements *req)
 {
     if (req->var_1 && params.a == NULL)
     {
@@ -380,15 +331,15 @@ void print_params(Parameters params)
     }
 }
 
-void print_Req(Requiermets *req)
+void print_Req(Requirements *req)
 {
     if (req == NULL)
     {
-        printf("Requiermets structure is NULL.\n");
+        printf("Requirements structure is NULL.\n");
         return;
     }
 
-    printf("Requiermets Structure:\n");
+    printf("Requirements Structure:\n");
     printf("  var_1 : %s\n", req->var_1 ? "TRUE" : "FALSE");
     printf("  var_2 : %s\n", req->var_2 ? "TRUE" : "FALSE");
     printf("  val_1 : %s\n", req->val_1 ? "TRUE" : "FALSE");

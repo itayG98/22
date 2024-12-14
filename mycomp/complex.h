@@ -6,7 +6,7 @@
 #define NUM_OF_ERRORS 8
 #define NUM_OF_VARIABLES 6
 
-/*A code to represent and error from the validation procces*/
+/*A code to represent and error from the validation proccess*/
 typedef enum
 {
     ERR_UNDEFINED_COMPLEX_VAR,
@@ -22,7 +22,7 @@ typedef enum
 
 /*
 struct representing a line in the error table with code ,
-and messege
+and message
  */
 typedef struct
 {
@@ -31,7 +31,7 @@ typedef struct
 } ErrorInfo;
 
 /*
-Struct repreents a complex variable
+Struct represents a complex variable
 */
 typedef struct
 {
@@ -41,7 +41,7 @@ typedef struct
 
 /*
 struct representing a line in the variables table with variable name
-and messege
+and message
  */
 typedef struct
 {
@@ -61,9 +61,9 @@ typedef struct
 } Parameters;
 
 /*
-Struct represent the validation result with all od the parameters
-that extracted , if error accured it has a pointer to dynmicly
-alocated integer mathic an error code
+Struct represent the validation result with all of the parameters
+that extracted , if error accrued it has a pointer to dynamicly
+allocated integer representing an error code
 */
 typedef struct
 {
@@ -72,7 +72,7 @@ typedef struct
 } ValidationResult;
 
 /*
-Struct representing requirments for each command
+Struct representing requirements for each command
 */
 typedef struct
 {
@@ -81,7 +81,7 @@ typedef struct
     BOOLEAN val_1;
     BOOLEAN val_2;
     unsigned param_count;
-} Requiermets;
+} Requirements;
 
 /*Variables getters*/
 
@@ -104,12 +104,12 @@ void display_comp_num(const Complex num);
 
 /*This method insert a validated input and update the variable */
 void read_comp(Parameters *params);
-/*This method invoke the printig method with validated variable name*/
+/*This method invoke the printing method with validated variable name*/
 
 void print_comp(Parameters *params);
 /*This method print a addition of two complex variables*/
 void add_comp(Parameters *params);
-/*This method print a subtruction of two complex variables*/
+/*This method print a subtraction of two complex variables*/
 void sub_comp(Parameters *params);
 /*This method prints a multiplication of complex variable and a real number*/
 void mult_comp_real(Parameters *params);
@@ -126,33 +126,35 @@ void abs_comp(Parameters *params);
 Validates the string parameters according to the requirements
 for an action and returns the corresponding result
 */
-ValidationResult vld_action(char *params, Requiermets req);
-/*Validate a string parameters to be only white charecters*/
-ValidationResult vld_white_charecters_only(char *params);
+ValidationResult vld_action(char *params, Requirements req);
+/*Validate a string parameters to be only white characters*/
+ValidationResult vld_white_characters_only(char *params);
 /*This method iterates and check each parameter if valid and set the corresponding result*/
-ValidationResult extract_command_params(char *params_str, Requiermets req);
+ValidationResult extract_command_params(char *params_str, Requirements req);
 
 /*Data extraction*/
 
-/*Handle the first parameters*/
-void handle_first_param(Requiermets req, char *token, ValidationResult *vldRes);
-/*Handle the second parameters*/
-void handle_second_param(Requiermets req, char *token, ValidationResult *vldRes);
-/*Handle the third parameters*/
-void handle_third_param(Requiermets req, char *token, ValidationResult *vldRes);
-/*Handle the fourth parameters*/
-void handle_fourth_param(Requiermets req, char *token, ValidationResult *vldRes);
-/*This method allocte a double memory and return the pointer to it*/
+/*
+Extract and validate a reference to complex variable according to the token
+ or set an appropriate error msg code
+ */
+void setVarByToken(char *token, ValidationResult *vldRes, BOOLEAN isFirst);
+/*
+Extract and validate a double value by the token and allocate memory for it's new variable variable
+ or set an appropriate error msg code
+ */
+void setNumberByToken(char *token, ValidationResult *vldRes, BOOLEAN isFirst);
+
 double *allocate_double_value(double value);
-/*This method validate the all of the requirments fullfiled*/
-BOOLEAN validate_requirements(const Parameters params, const Requiermets *req);
+/*This method validate the all of the requirements fullfield*/
+BOOLEAN validate_requirements(const Parameters params, const Requirements *req);
 /*Set the ValidationResult error */
 void set_error_code(ValidationResult *vldRes, ErrorCode error);
 
 /*Development helpers*/
 
-/*This method prints Requiermets struct */
-void print_Req(Requiermets *req);
+/*This method prints Requirements struct */
+void print_Req(Requirements *req);
 /*This method prints ValidationResult struct */
 void print_params(Parameters params);
 #endif

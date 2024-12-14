@@ -30,15 +30,15 @@ static ErrorInfo errors[NUM_OF_ERRORS] = {
     {ERR_MISSING_COMMA, "Missing comma"},
     {ERR_ILLEGAL_COMMA, "Illegal comma"}};
 
-/*Dynimalcy assigend value for the longest command length*/
+/*Dynamicly assigned value for the longest command length*/
 static int MAX_CMD_LENGTH = 0;
 
 /*
 The entry point of the complex calculator program
-this program interate trhogu inputs from the stdind and
+this program iterate through inputs from the stdin and
 execute each valid command , each command has up to 2 variable names
 and two double values.
-This meothod will exit whenever it fails to allocate memory , EOF
+This method will exit whenever it fails to allocate memory , EOF
 or valid stop command is encountered.
 Example usage :
  read_comp  A , 1 , -1
@@ -52,7 +52,7 @@ int main()
     display_rules();
     while (command_data.flag == DEFAULT)
     {
-        free_commnad_data(&command_data);
+        free_command_data(&command_data);
         printf("\nprompt: ");
         get_line(&command_data);
         if (command_data.line == NULL || command_data.flag < DEFAULT)
@@ -88,7 +88,7 @@ void initCommandTableAction(void)
     {
         command_table[i].validate.action_vld = vld_action;
     }
-    command_table[NUM_OF_CMNDS - 1].validate.stop_vld = vld_white_charecters_only;
+    command_table[NUM_OF_CMNDS - 1].validate.stop_vld = vld_white_characters_only;
     command_table[0].action.cmd_action = read_comp;
     command_table[1].action.cmd_action = print_comp;
     command_table[2].action.cmd_action = add_comp;
@@ -105,7 +105,7 @@ void initCommandTableAction(void)
 void get_line(commandData *command_data)
 {
     int ch;
-    /*skip empty lines or white charecters*/
+    /*skip empty lines or white characters*/
     while ((ch = getc(stdin)) != EOF)
     {
         if (ch != ' ' && ch != '\t' && ch != '\n')
@@ -216,7 +216,7 @@ void execute_command(commandData *command_data)
             else if (i == stop_index && command_table[i].action.exit_action)
             {
                 free(params_copy);
-                command_data->flag = SUCCES;
+                command_data->flag = SUCCESS;
                 command_table[stop_index].action.exit_action(command_data);
             }
             free_validation_result(&vldResult);
@@ -241,10 +241,10 @@ ValidationResult validate(int index, char *params)
 
 void stop(commandData *command_data)
 {
-    free_commnad_data(command_data);
+    free_command_data(command_data);
     switch (command_data->flag)
     {
-    case SUCCES:
+    case SUCCESS:
         printf("\nOperation successful.\nExiting...");
         exit(EXIT_SUCCESS);
     case DEFAULT:
@@ -312,7 +312,7 @@ void print_error_message(int code)
 
 /* Allocation*/
 
-void free_commnad_data(commandData *command_data)
+void free_command_data(commandData *command_data)
 {
     if (command_data->line)
     {

@@ -3,7 +3,7 @@
 
 #include "complex.h"
 
-/*Max line length ... longer lines will miss interperted by the porgram*/
+/*Max line length ... longer lines will miss interperted by the program*/
 #define MAX_LINE_LENGTH 512
 /*Commands options*/
 #define NUM_OF_CMNDS 9
@@ -17,7 +17,7 @@ typedef enum
     EOF_REACHED = -2,
     ERROR = -1,
     DEFAULT = 0,
-    SUCCES = 1
+    SUCCESS = 1
 } STATE;
 
 /*Struct to represent the state of the program*/
@@ -30,11 +30,11 @@ typedef struct
 } commandData;
 
 /*
-Union represeting pointer to a validation method
+Union representing pointer to a validation method
 */
 typedef union
 {
-    ValidationResult (*action_vld)(char *params, Requiermets req);
+    ValidationResult (*action_vld)(char *params, Requirements req);
     ValidationResult (*stop_vld)(char *params);
 } ValidateFunc;
 
@@ -56,7 +56,7 @@ typedef struct
     char *command;
     Action action;
     ValidateFunc validate;
-    Requiermets req;
+    Requirements req;
 } Command;
 
 /*Init*/
@@ -70,15 +70,15 @@ void initCommandTableAction(void);
 /*Input */
 
 /*
-This method skips white charecters and than allocate and assign a new
+This method skips white characters and than allocate and assign a new
  line using fgets to the commandData object
 */
 void get_line(commandData *command_data);
 
 /*
-This method will extract the first lower or underscore charecters and assign to the command parameter
+This method will extract the first lower or underscore characters and assign to the command parameter
  and the rest will be assigned as the params
-white charecters at the start of the line or after the line will skipped
+white characters at the start of the line or after the line will skipped
 */
 void extract_data_from_line(commandData *command_data);
 
@@ -89,7 +89,7 @@ This method determines the longest command length and assigns it to MAX_CMD_LENG
 */
 void calculate_max_command_length(void);
 /*
-This method takes the data that extracted priviously validate it and execute
+This method takes the data that extracted previously validate it and execute
  it or print an error message
 */
 void execute_command(commandData *command_data);
@@ -99,7 +99,7 @@ the appropriate parameters
 */
 ValidationResult validate(int index, char *params);
 /*
-This method stop the porgram and prints message according to reason
+This method stop the program and prints message according to reason
 */
 void stop(commandData *command_data);
 
@@ -109,7 +109,7 @@ the calculator program
 */
 void display_rules(void);
 /*
-This method prints an error messeege according to it's code
+This method prints an error messene according to it's code
 */
 void print_error_message(int code);
 
@@ -118,7 +118,7 @@ void print_error_message(int code);
 /*
 This method free allocated data for the commandData fields
 */
-void free_commnad_data(commandData *command_data);
+void free_command_data(commandData *command_data);
 /*
 This method free allocated data for the ValidationResult number's pointers fields
 */
