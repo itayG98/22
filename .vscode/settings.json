@@ -23,6 +23,8 @@
     "editor.formatOnSave": true,
     "cSpell.words": [
         "cmnd",
-        "CMNDS"
+        "CMNDS",
+        "mult",
+        "mycomp"
     ]
 }
