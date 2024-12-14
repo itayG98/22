@@ -187,7 +187,7 @@ void execute_command(commandData *command_data)
     int i;
     int stop_index = NUM_OF_CMNDS - 1;
     char *params_copy = copyStr(command_data->params, MAX_LINE_LENGTH);
-    CommandParams params = {NULL, NULL, NULL, NULL, NULL};
+    ValidationResult vldResult = {{0}, NULL};
     if (params_copy == NULL)
     {
         command_data->flag = MALLOC_ERROR;
@@ -198,20 +198,20 @@ void execute_command(commandData *command_data)
     {
         if (i < NUM_OF_CMNDS && strcmp(command_data->command, command_table[i].command) == 0)
         {
-            params = validate(i, params_copy);
-            if (params.errorCode && *params.errorCode == ERR_MALLOC_FAILED)
+            vldResult = validate(i, params_copy);
+            if (vldResult.errorCode && *vldResult.errorCode == ERR_MALLOC_FAILED)
             {
                 free(params_copy);
                 command_data->flag = MALLOC_ERROR;
                 stop(command_data);
             }
-            else if (params.errorCode && params.errorCode)
+            else if (vldResult.errorCode && vldResult.errorCode)
             {
-                print_error_message(*params.errorCode);
+                print_error_message(*vldResult.errorCode);
             }
             else if (i < stop_index && command_table[i].action.cmd_action)
             {
-                command_table[i].action.cmd_action(&params);
+                command_table[i].action.cmd_action(&vldResult.params);
             }
             else if (i == stop_index && command_table[i].action.exit_action)
             {
@@ -219,7 +219,7 @@ void execute_command(commandData *command_data)
                 command_data->flag = SUCCES;
                 command_table[stop_index].action.exit_action(command_data);
             }
-            free_command_params(&params);
+            free_validation_result(&vldResult);
             free(params_copy);
             return;
         }
@@ -227,7 +227,7 @@ void execute_command(commandData *command_data)
     print_error_message(ERR_UNDEFINED_COMMAND_NAME);
 }
 
-CommandParams validate(int index, char *params)
+ValidationResult validate(int index, char *params)
 {
     if (index < NUM_OF_CMNDS - 1)
     {
@@ -331,20 +331,20 @@ void free_commnad_data(commandData *command_data)
     command_data->params = NULL;
 }
 
-void free_command_params(CommandParams *cmdParams)
+void free_validation_result(ValidationResult *vldRes)
 {
-
-    if (cmdParams->val_a)
+    Parameters params = vldRes->params;
+    if (params.val_a)
     {
-        free(cmdParams->val_a);
+        free(params.val_a);
     }
-    if (cmdParams->val_b)
+    if (params.val_b)
     {
-        free(cmdParams->val_b);
+        free(params.val_b);
     }
-    if (cmdParams->errorCode)
+    if (vldRes->errorCode)
     {
-        free(cmdParams->errorCode);
+        free(vldRes->errorCode);
     }
 }
 

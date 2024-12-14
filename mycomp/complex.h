@@ -50,9 +50,7 @@ typedef struct
 } Variable;
 
 /*
-Struct represent the validation result with all od the parameters
-that extracted , if error accured it has a pointer to dynmicly
-alocated integer mathic an error code
+Struct represent the parameters to be given to the command
 */
 typedef struct
 {
@@ -60,8 +58,18 @@ typedef struct
     Complex *b;
     double *val_a;
     double *val_b;
+} Parameters;
+
+/*
+Struct represent the validation result with all od the parameters
+that extracted , if error accured it has a pointer to dynmicly
+alocated integer mathic an error code
+*/
+typedef struct
+{
+    Parameters params;
     ErrorCode *errorCode;
-} CommandParams;
+} ValidationResult;
 
 /*
 Struct representing requirments for each command
@@ -95,22 +103,22 @@ void display_comp_num(const Complex num);
 /*  Actions */
 
 /*This method insert a validated input and update the variable */
-void read_comp(CommandParams *params);
+void read_comp(Parameters *params);
 /*This method invoke the printig method with validated variable name*/
 
-void print_comp(CommandParams *params);
+void print_comp(Parameters *params);
 /*This method print a addition of two complex variables*/
-void add_comp(CommandParams *params);
+void add_comp(Parameters *params);
 /*This method print a subtruction of two complex variables*/
-void sub_comp(CommandParams *params);
+void sub_comp(Parameters *params);
 /*This method prints a multiplication of complex variable and a real number*/
-void mult_comp_real(CommandParams *params);
+void mult_comp_real(Parameters *params);
 /*This method prints the result of multiplying a complex variable by an imaginary number*/
-void mult_comp_img(CommandParams *params);
+void mult_comp_img(Parameters *params);
 /*This method prints the result of multiplying tow complex variables*/
-void mult_comp_comp(CommandParams *params);
+void mult_comp_comp(Parameters *params);
 /*This method prints the absolute value of a complex variable*/
-void abs_comp(CommandParams *params);
+void abs_comp(Parameters *params);
 
 /*Validation*/
 
@@ -118,33 +126,33 @@ void abs_comp(CommandParams *params);
 Validates the string parameters according to the requirements
 for an action and returns the corresponding result
 */
-CommandParams vld_action(char *params, Requiermets req);
+ValidationResult vld_action(char *params, Requiermets req);
 /*Validate a string parameters to be only white charecters*/
-CommandParams vld_white_charecters_only(char *params);
+ValidationResult vld_white_charecters_only(char *params);
+/*This method iterates and check each parameter if valid and set the corresponding result*/
+ValidationResult extract_command_params(char *params_str, Requiermets req);
 
 /*Data extraction*/
 
-/*This method iterates and check each parameter if valid and set the corresponding result*/
-CommandParams extract_command_params(char *params_str, Requiermets req);
 /*Handle the first parameters*/
-void handle_first_param(Requiermets req, char *token, CommandParams *cmdParams);
+void handle_first_param(Requiermets req, char *token, ValidationResult *vldRes);
 /*Handle the second parameters*/
-void handle_second_param(Requiermets req, char *token, CommandParams *cmdParams);
+void handle_second_param(Requiermets req, char *token, ValidationResult *vldRes);
 /*Handle the third parameters*/
-void handle_third_param(Requiermets req, char *token, CommandParams *cmdParams);
+void handle_third_param(Requiermets req, char *token, ValidationResult *vldRes);
 /*Handle the fourth parameters*/
-void handle_fourth_param(Requiermets req, char *token, CommandParams *cmdParams);
+void handle_fourth_param(Requiermets req, char *token, ValidationResult *vldRes);
 /*This method allocte a double memory and return the pointer to it*/
 double *allocate_double_value(double value);
 /*This method validate the all of the requirments fullfiled*/
-BOOLEAN validate_requirements(const CommandParams *cmdParams, const Requiermets *req);
-/*Set the CommandParams error */
-void set_error_code(CommandParams *cmdParams, ErrorCode error);
+BOOLEAN validate_requirements(const Parameters params, const Requiermets *req);
+/*Set the ValidationResult error */
+void set_error_code(ValidationResult *vldRes, ErrorCode error);
 
 /*Development helpers*/
 
 /*This method prints Requiermets struct */
 void print_Req(Requiermets *req);
-/*This method prints CommandParams struct */
-void print_params(CommandParams *params);
+/*This method prints ValidationResult struct */
+void print_params(Parameters params);
 #endif

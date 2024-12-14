@@ -34,8 +34,8 @@ Union represeting pointer to a validation method
 */
 typedef union
 {
-    CommandParams (*action_vld)(char *params, Requiermets req);
-    CommandParams (*stop_vld)(char *params);
+    ValidationResult (*action_vld)(char *params, Requiermets req);
+    ValidationResult (*stop_vld)(char *params);
 } ValidateFunc;
 
 /*
@@ -43,7 +43,7 @@ Union representing pointer the method to invoke according to the cmd code
 */
 typedef union
 {
-    void (*cmd_action)(CommandParams *params);
+    void (*cmd_action)(Parameters *params);
     void (*exit_action)(commandData *command_data);
 } Action;
 
@@ -97,7 +97,7 @@ void execute_command(commandData *command_data);
 This method calls the correct validation method and return
 the appropriate parameters
 */
-CommandParams validate(int index, char *params);
+ValidationResult validate(int index, char *params);
 /*
 This method stop the porgram and prints message according to reason
 */
@@ -120,10 +120,10 @@ This method free allocated data for the commandData fields
 */
 void free_commnad_data(commandData *command_data);
 /*
-This method free allocated data for the CommandParams number's pointers fields
+This method free allocated data for the ValidationResult number's pointers fields
 */
 
-void free_command_params(CommandParams *cmdParams);
+void free_validation_result(ValidationResult *vldRes);
 
 /*Development helpers*/
 

@@ -45,20 +45,20 @@ void display_comp_num(const Complex num)
 
 /*  Actions */
 
-void read_comp(CommandParams *params)
+void read_comp(Parameters *params)
 {
     params->a->real = *(params->val_a);
     params->a->imaginary = *(params->val_b);
 }
 
-void print_comp(CommandParams *params)
+void print_comp(Parameters *params)
 {
     display_comp_num(*params->a);
 }
 
 /* Calculation*/
 
-void add_comp(CommandParams *params)
+void add_comp(Parameters *params)
 {
     Complex result = {0};
     result.real = params->a->real + params->b->real;
@@ -66,7 +66,7 @@ void add_comp(CommandParams *params)
     display_comp_num(result);
 }
 
-void sub_comp(CommandParams *params)
+void sub_comp(Parameters *params)
 {
     Complex result = {0};
     result.real = params->a->real - params->b->real;
@@ -74,7 +74,7 @@ void sub_comp(CommandParams *params)
     display_comp_num(result);
 }
 
-void mult_comp_real(CommandParams *params)
+void mult_comp_real(Parameters *params)
 {
     Complex result = {0};
     result.real = params->a->real * (*(params->val_a));
@@ -82,7 +82,7 @@ void mult_comp_real(CommandParams *params)
     display_comp_num(result);
 }
 
-void mult_comp_img(CommandParams *params)
+void mult_comp_img(Parameters *params)
 {
     Complex result = {0};
     result.real = -params->a->imaginary * (*(params->val_a));
@@ -90,7 +90,7 @@ void mult_comp_img(CommandParams *params)
     display_comp_num(result);
 }
 
-void mult_comp_comp(CommandParams *params)
+void mult_comp_comp(Parameters *params)
 {
     Complex result = {0};
     result.real = params->a->real * params->b->real - params->a->imaginary * params->b->imaginary;
@@ -98,7 +98,7 @@ void mult_comp_comp(CommandParams *params)
     display_comp_num(result);
 }
 
-void abs_comp(CommandParams *params)
+void abs_comp(Parameters *params)
 {
     double result = 0;
     result = sqrt(params->a->real * params->a->real + params->a->imaginary * params->a->imaginary);
@@ -107,13 +107,13 @@ void abs_comp(CommandParams *params)
 
 /* Validation*/
 
-CommandParams vld_action(char *params, Requiermets req)
+ValidationResult vld_action(char *params, Requiermets req)
 {
     return extract_command_params(params, req);
 }
-CommandParams vld_white_charecters_only(char *params)
+ValidationResult vld_white_charecters_only(char *params)
 {
-    CommandParams cmd_params = {NULL, NULL, NULL, NULL, NULL};
+    ValidationResult cmd_params = {{0}, NULL};
     if (!isSpacesString(params))
     {
         set_error_code(&cmd_params, ERR_EXTRANEOUS_TEXT);
@@ -121,17 +121,17 @@ CommandParams vld_white_charecters_only(char *params)
     return cmd_params;
 }
 
-CommandParams extract_command_params(char *params_str, Requiermets req)
+ValidationResult extract_command_params(char *params_str, Requiermets req)
 {
-    CommandParams cmdParams = {NULL, NULL, NULL, NULL, NULL};
+    ValidationResult vldRes = {{0}, NULL};
     char *token = NULL;
     int token_count = 0;
     while ((token = my_strsep(&params_str, ",")) != NULL)
     {
         if (token_count == req.param_count)
         {
-            set_error_code(&cmdParams, ERR_EXTRANEOUS_TEXT);
-            return cmdParams;
+            set_error_code(&vldRes, ERR_EXTRANEOUS_TEXT);
+            return vldRes;
         }
         SKIP_SPACES(token);
         if (isSpacesString(token))
@@ -139,56 +139,56 @@ CommandParams extract_command_params(char *params_str, Requiermets req)
             if (token_count > 0)
             {
                 BOOLEAN isConsecCommas = checkConsecutiveCommas(params_str);
-                set_error_code(&cmdParams, isConsecCommas ? ERR_MULTIPLE_CONSECUTIVE_COMMAS : ERR_MISSING_PARAMETER);
-                return cmdParams;
+                set_error_code(&vldRes, isConsecCommas ? ERR_MULTIPLE_CONSECUTIVE_COMMAS : ERR_MISSING_PARAMETER);
+                return vldRes;
             }
             else
             {
-                set_error_code(&cmdParams, ERR_MISSING_PARAMETER);
-                return cmdParams;
+                set_error_code(&vldRes, ERR_MISSING_PARAMETER);
+                return vldRes;
             }
         }
         switch (token_count)
         {
         case 0:
-            handle_first_param(req, token, &cmdParams);
-            if (cmdParams.errorCode != NULL)
+            handle_first_param(req, token, &vldRes);
+            if (vldRes.errorCode != NULL)
             {
-                return cmdParams;
+                return vldRes;
             }
             break;
         case 1:
-            handle_second_param(req, token, &cmdParams);
-            if (cmdParams.errorCode != NULL)
+            handle_second_param(req, token, &vldRes);
+            if (vldRes.errorCode != NULL)
             {
-                return cmdParams;
+                return vldRes;
             }
             break;
         case 2:
-            handle_third_param(req, token, &cmdParams);
-            if (cmdParams.errorCode != NULL)
+            handle_third_param(req, token, &vldRes);
+            if (vldRes.errorCode != NULL)
             {
-                return cmdParams;
+                return vldRes;
             }
             break;
         case 3:
-            handle_fourth_param(req, token, &cmdParams);
-            if (cmdParams.errorCode != NULL)
+            handle_fourth_param(req, token, &vldRes);
+            if (vldRes.errorCode != NULL)
             {
-                return cmdParams;
+                return vldRes;
             }
             break;
         }
         token_count++;
     }
-    if (!validate_requirements(&cmdParams, &req))
+    if (!validate_requirements(vldRes.params, &req))
     {
-        set_error_code(&cmdParams, ERR_MISSING_PARAMETER);
+        set_error_code(&vldRes, ERR_MISSING_PARAMETER);
     }
-    return cmdParams;
+    return vldRes;
 }
 
-void handle_first_param(Requiermets req, char *token, CommandParams *cmdParams)
+void handle_first_param(Requiermets req, char *token, ValidationResult *vldRes)
 {
     char varName = getOnlyChar(token);
     if (varName != '\0')
@@ -196,13 +196,14 @@ void handle_first_param(Requiermets req, char *token, CommandParams *cmdParams)
         int index = get_variable_index(varName);
         if (index >= 0)
         {
-            cmdParams->a = get_variable_ref_by_index(index);
+            vldRes->params.a = get_variable_ref_by_index(index);
             return;
         }
     }
-    set_error_code(cmdParams, ERR_UNDEFINED_COMPLEX_VAR);
+    set_error_code(vldRes, ERR_UNDEFINED_COMPLEX_VAR);
 }
-void handle_second_param(Requiermets req, char *token, CommandParams *cmdParams)
+
+void handle_second_param(Requiermets req, char *token, ValidationResult *vldRes)
 {
     if (req.var_2)
     {
@@ -212,16 +213,17 @@ void handle_second_param(Requiermets req, char *token, CommandParams *cmdParams)
             int index = get_variable_index(varName);
             if (index >= 0)
             {
-                cmdParams->b = get_variable_ref_by_index(index);
+                vldRes->params.b = get_variable_ref_by_index(index);
+                return;
             }
             else
             {
-                set_error_code(cmdParams, ERR_UNDEFINED_COMPLEX_VAR);
+                set_error_code(vldRes, ERR_UNDEFINED_COMPLEX_VAR);
             }
         }
         else
         {
-            set_error_code(cmdParams, ERR_UNDEFINED_COMPLEX_VAR);
+            set_error_code(vldRes, ERR_UNDEFINED_COMPLEX_VAR);
         }
     }
     else if (req.val_1 && isValidNumString(token))
@@ -229,113 +231,114 @@ void handle_second_param(Requiermets req, char *token, CommandParams *cmdParams)
         double value = atof(token);
         if (value != 0 || strcmp(token, "0") == 0)
         {
-            cmdParams->val_a = allocate_double_value(value);
-            if (cmdParams->val_a == NULL)
+            vldRes->params.val_a = allocate_double_value(value);
+            if (vldRes->params.val_a == NULL)
             {
-                set_error_code(cmdParams, ERR_MALLOC_FAILED);
+                set_error_code(vldRes, ERR_MALLOC_FAILED);
             }
         }
         else
         {
-            set_error_code(cmdParams, ERR_INVALID_PARAMETER);
+            set_error_code(vldRes, ERR_INVALID_PARAMETER);
         }
     }
     else
     {
-        set_error_code(cmdParams, ERR_INVALID_PARAMETER);
+        set_error_code(vldRes, ERR_INVALID_PARAMETER);
     }
 }
-void handle_third_param(Requiermets req, char *token, CommandParams *cmdParams)
+void handle_third_param(Requiermets req, char *token, ValidationResult *vldRes)
 {
-    if (req.val_2 && cmdParams->val_b == NULL && isValidNumString(token))
+    if (req.val_2 && vldRes->params.val_b == NULL && isValidNumString(token))
     {
         double value = atof(token);
         if (value != 0 || strcmp(token, "0") == 0)
         {
-            if (cmdParams->val_a == NULL)
+            if (vldRes->params.val_a == NULL)
             {
-                cmdParams->val_a = allocate_double_value(value);
-                if (cmdParams->val_a == NULL)
+                vldRes->params.val_a = allocate_double_value(value);
+                if (vldRes->params.val_a == NULL)
                 {
-                    set_error_code(cmdParams, ERR_MALLOC_FAILED);
+                    set_error_code(vldRes, ERR_MALLOC_FAILED);
                 }
             }
             else
             {
-                cmdParams->val_b = allocate_double_value(value);
-                if (cmdParams->val_b == NULL)
+                vldRes->params.val_b = allocate_double_value(value);
+                if (vldRes->params.val_b == NULL)
                 {
-                    set_error_code(cmdParams, ERR_MALLOC_FAILED);
+                    set_error_code(vldRes, ERR_MALLOC_FAILED);
                 }
             }
         }
         else
         {
-            set_error_code(cmdParams, ERR_INVALID_PARAMETER);
+            set_error_code(vldRes, ERR_INVALID_PARAMETER);
         }
     }
     else
     {
-        set_error_code(cmdParams, ERR_INVALID_PARAMETER);
+        set_error_code(vldRes, ERR_INVALID_PARAMETER);
     }
 }
-void handle_fourth_param(Requiermets req, char *token, CommandParams *cmdParams)
+void handle_fourth_param(Requiermets req, char *token, ValidationResult *vldRes)
 {
+
     if (req.val_2 && isValidNumString(token))
     {
         double value = atof(token);
         if (value != 0 || strcmp(token, "0") == 0)
         {
-            if (cmdParams->val_b == NULL)
+            if (vldRes->params.val_b == NULL)
             {
-                cmdParams->val_b = allocate_double_value(value);
-                if (cmdParams->val_b == NULL)
+                vldRes->params.val_b = allocate_double_value(value);
+                if (vldRes->params.val_b == NULL)
                 {
-                    set_error_code(cmdParams, ERR_MALLOC_FAILED);
+                    set_error_code(vldRes, ERR_MALLOC_FAILED);
                 }
             }
         }
         else
         {
-            set_error_code(cmdParams, ERR_INVALID_PARAMETER);
+            set_error_code(vldRes, ERR_INVALID_PARAMETER);
         }
     }
     else
     {
-        set_error_code(cmdParams, ERR_INVALID_PARAMETER);
+        set_error_code(vldRes, ERR_INVALID_PARAMETER);
     }
 }
-BOOLEAN validate_requirements(const CommandParams *cmdParams, const Requiermets *req)
+BOOLEAN validate_requirements(const Parameters params, const Requiermets *req)
 {
-    if (req->var_1 && cmdParams->a == NULL)
+    if (req->var_1 && params.a == NULL)
     {
         return FALSE;
     }
-    if (req->var_2 && cmdParams->b == NULL)
+    if (req->var_2 && params.b == NULL)
     {
         return FALSE;
     }
-    if (req->val_1 && cmdParams->val_a == NULL)
+    if (req->val_1 && params.val_a == NULL)
     {
         return FALSE;
     }
-    if (req->val_2 && cmdParams->val_b == NULL)
+    if (req->val_2 && params.val_b == NULL)
     {
         return FALSE;
     }
     return TRUE;
 }
 
-void set_error_code(CommandParams *cmdParams, ErrorCode error)
+void set_error_code(ValidationResult *vldRes, ErrorCode error)
 {
-    cmdParams->errorCode = malloc(sizeof(ErrorCode));
-    if (cmdParams->errorCode == NULL)
+    vldRes->errorCode = malloc(sizeof(ErrorCode));
+    if (vldRes->errorCode == NULL)
     {
-        *cmdParams->errorCode = ERR_MALLOC_FAILED;
+        *vldRes->errorCode = ERR_MALLOC_FAILED;
     }
     else
     {
-        *cmdParams->errorCode = error;
+        *vldRes->errorCode = error;
     }
 }
 
@@ -352,32 +355,28 @@ double *allocate_double_value(double value)
 }
 
 /*Development helpers*/
-void print_params(CommandParams *params)
+void print_params(Parameters params)
 {
-    if (params == NULL)
-    {
-        return;
-    }
     printf("Command Parameters:\n");
-    if (params->a)
+    if (params.a)
     {
         printf("Complex a: %.2f + %.2fi\n",
-               params->a->real,
-               params->a->imaginary);
+               params.a->real,
+               params.a->imaginary);
     }
-    if (params->b)
+    if (params.b)
     {
         printf("Complex b: %.2f + %.2fi\n",
-               params->b->real,
-               params->b->imaginary);
+               params.b->real,
+               params.b->imaginary);
     }
-    if (params->val_a)
+    if (params.val_a)
     {
-        printf("Value a: %.2f\n", *(params->val_a));
+        printf("Value a: %.2f\n", *(params.val_a));
     }
-    if (params->val_b)
+    if (params.val_b)
     {
-        printf("Value b: %.2f\n", *(params->val_b));
+        printf("Value b: %.2f\n", *(params.val_b));
     }
 }
 
