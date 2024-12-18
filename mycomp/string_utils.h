@@ -3,7 +3,7 @@
 
 #include "common_types.h"
 
-/* MACRO to skip str pointer to the firsst non whitespace*/
+/* MACRO to skip str pointer to the first non whitespace*/
 #define SKIP_SPACES(str)                                                 \
     while ((*str == ' ' || *str == '\t') && *str != '\0' && *str != EOF) \
         str++;
@@ -15,13 +15,11 @@
 
 /*Helper method to copy a string into new allocated memory*/
 char *copyStr(const char *source, const int length);
-/*Helper method to return a charecter if it is the only non-white charecter in a string*/
+/*Helper method to return a character if it is the only non-white character in a string*/
 char getOnlyChar(const char *str);
-/*Helper method to wether a charecter is white charecter*/
-BOOLEAN isTabOrSpace(char c);
 /*Validation method before a string inserted into atof method*/
 BOOLEAN isValidNumString(const char *str);
-/*Helper method check wether a given string contains only white charecters*/
+/*Helper method check wether a given string contains only white characters*/
 BOOLEAN isSpacesString(const char *str);
 
 /*
@@ -31,8 +29,12 @@ BOOLEAN isSpacesString(const char *str);
  *             to point to the next segment of the string.
   @param delimiters: A string containing the delimiter characters.
   @return A pointer to the next token (or segment) in the string ,
-  NULL if there are no more tokens or empty string if consequtive delimeters
+  NULL if there are no more tokens or empty string if consecutive decimeters
  */
 char *my_strsep(char **inputPtr, const char *delimiters);
+
+/*
+Return wether consecutive commas
+*/
 BOOLEAN checkConsecutiveCommas(char *params_str);
 #endif

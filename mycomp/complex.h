@@ -89,36 +89,36 @@ typedef struct
 This method iterates through all the variables to find the index of
  the item if it exists otherwise it returns -1
  */
-int get_variable_index(char c);
+int getVariableIndex(char c);
 
 /*
 This method return a reference to the variable by it's index
  if exists otherwise NULL
 */
-Complex *get_variable_ref_by_index(int index);
+Complex *getVariableRefByIndex(int index);
 
 /*This method print a complex variable*/
-void display_comp_num(const Complex num);
+void displayCompNum(const Complex num);
 
 /*  Actions */
 
 /*This method insert a validated input and update the variable */
-void read_comp(Parameters *params);
+void readComp(Parameters *params);
 /*This method invoke the printing method with validated variable name*/
 
-void print_comp(Parameters *params);
+void printComp(Parameters *params);
 /*This method print a addition of two complex variables*/
-void add_comp(Parameters *params);
+void addComp(Parameters *params);
 /*This method print a subtraction of two complex variables*/
-void sub_comp(Parameters *params);
+void subComp(Parameters *params);
 /*This method prints a multiplication of complex variable and a real number*/
-void mult_comp_real(Parameters *params);
+void multCompReal(Parameters *params);
 /*This method prints the result of multiplying a complex variable by an imaginary number*/
-void mult_comp_img(Parameters *params);
+void multCompImg(Parameters *params);
 /*This method prints the result of multiplying tow complex variables*/
-void mult_comp_comp(Parameters *params);
+void multCompComp(Parameters *params);
 /*This method prints the absolute value of a complex variable*/
-void abs_comp(Parameters *params);
+void absComp(Parameters *params);
 
 /*Validation*/
 
@@ -126,11 +126,11 @@ void abs_comp(Parameters *params);
 Validates the string parameters according to the requirements
 for an action and returns the corresponding result
 */
-ValidationResult vld_action(char *params, Requirements req);
+ValidationResult vldAction(char *params, Requirements req);
 /*Validate a string parameters to be only white characters*/
-ValidationResult vld_white_characters_only(char *params);
+ValidationResult vldWhiteCharactersOnly(char *params);
 /*This method iterates and check each parameter if valid and set the corresponding result*/
-ValidationResult extract_command_params(char *params_str, Requirements req);
+ValidationResult extractCommandParams(char *params_str, Requirements req);
 
 /*Data extraction*/
 
@@ -145,16 +145,9 @@ Extract and validate a double value by the token and allocate memory for it's ne
  */
 void setNumberByToken(char *token, ValidationResult *vldRes, BOOLEAN isFirst);
 
-double *allocate_double_value(double value);
+double *allocateDoublevalue(double value);
 /*This method validate the all of the requirements fullfield*/
 BOOLEAN validate_requirements(const Parameters params, const Requirements *req);
 /*Set the ValidationResult error */
-void set_error_code(ValidationResult *vldRes, ErrorCode error);
-
-/*Development helpers*/
-
-/*This method prints Requirements struct */
-void print_Req(Requirements *req);
-/*This method prints ValidationResult struct */
-void print_params(Parameters params);
+void setErrorCode(ValidationResult *vldRes, ErrorCode error);
 #endif

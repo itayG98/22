@@ -6,8 +6,11 @@
 #include "complex.h"
 #include "string_utils.h"
 
-/* Command table-like structure containing name, action placeholder, and validation function */
-static Command command_table[NUM_OF_CMNDS] = {
+/*
+Command table-like structure containing name, action placeholder, validation function
+and Requirements
+*/
+static Command commandTable[NUM_OF_CMNDS] = {
     {"read_comp", {0}, {0}, {TRUE, FALSE, TRUE, TRUE, 3}},
     {"print_comp", {0}, {0}, {TRUE, FALSE, FALSE, FALSE, 1}},
     {"add_comp", {0}, {0}, {TRUE, TRUE, FALSE, FALSE, 2}},
@@ -46,36 +49,36 @@ Example usage :
 */
 int main()
 {
-    commandData command_data = {NULL, NULL, NULL, DEFAULT};
+    CommandData commanData = {NULL, NULL, NULL, DEFAULT};
     initCommandTableAction();
-    calculate_max_command_length();
-    display_rules();
-    while (command_data.flag == DEFAULT)
+    calculateMaxCommandLength();
+    displayRules();
+    while (commanData.flag == DEFAULT)
     {
-        free_command_data(&command_data);
+        freeCommandData(&commanData);
         printf("\nprompt: ");
-        get_line(&command_data);
-        if (command_data.line == NULL || command_data.flag < DEFAULT)
+        getLine(&commanData);
+        if (commanData.line == NULL || commanData.flag < DEFAULT)
         {
-            stop(&command_data);
+            stop(&commanData);
         }
-        if (isSpacesString(command_data.line))
+        if (isSpacesString(commanData.line))
         {
             continue;
         }
-        extract_data_from_line(&command_data);
-        if (command_data.command == NULL)
+        extractDataFromLine(&commanData);
+        if (commanData.command == NULL)
         {
             printf("%s\n", errors[1].message);
             continue;
         }
-        if (isSpacesString(command_data.command) && isSpacesString(command_data.params))
+        if (isSpacesString(commanData.command) && isSpacesString(commanData.params))
         {
             continue;
         }
-        execute_command(&command_data);
+        executeCommand(&commanData);
     }
-    stop(&command_data);
+    stop(&commanData);
     return 0;
 }
 
@@ -86,23 +89,23 @@ void initCommandTableAction(void)
     int i;
     for (i = 0; i < NUM_OF_CMNDS - 1; i++)
     {
-        command_table[i].validate.action_vld = vld_action;
+        commandTable[i].validate.actionVld = vldAction;
     }
-    command_table[NUM_OF_CMNDS - 1].validate.stop_vld = vld_white_characters_only;
-    command_table[0].action.cmd_action = read_comp;
-    command_table[1].action.cmd_action = print_comp;
-    command_table[2].action.cmd_action = add_comp;
-    command_table[3].action.cmd_action = sub_comp;
-    command_table[4].action.cmd_action = mult_comp_real;
-    command_table[5].action.cmd_action = mult_comp_img;
-    command_table[6].action.cmd_action = mult_comp_comp;
-    command_table[7].action.cmd_action = abs_comp;
-    command_table[8].action.exit_action = stop;
+    commandTable[NUM_OF_CMNDS - 1].validate.stopVld = vldWhiteCharactersOnly;
+    commandTable[0].action.cmdAction = readComp;
+    commandTable[1].action.cmdAction = printComp;
+    commandTable[2].action.cmdAction = addComp;
+    commandTable[3].action.cmdAction = subComp;
+    commandTable[4].action.cmdAction = multCompReal;
+    commandTable[5].action.cmdAction = multCompImg;
+    commandTable[6].action.cmdAction = multCompComp;
+    commandTable[7].action.cmdAction = absComp;
+    commandTable[8].action.exitAction = stop;
 }
 
 /*Input */
 
-void get_line(commandData *command_data)
+void getLine(CommandData *commanData)
 {
     int ch;
     /*skip empty lines or white characters*/
@@ -116,38 +119,38 @@ void get_line(commandData *command_data)
     }
     if (ch == EOF)
     {
-        command_data->flag = EOF_REACHED;
-        command_data->line = NULL;
+        commanData->flag = EOF_REACHED;
+        commanData->line = NULL;
         return;
     }
-    command_data->line = malloc(sizeof(char) * MAX_LINE_LENGTH);
-    if (!command_data->line)
+    commanData->line = malloc(sizeof(char) * MAX_LINE_LENGTH);
+    if (!commanData->line)
     {
-        command_data->flag = MALLOC_ERROR;
+        commanData->flag = MALLOC_ERROR;
         return;
     }
-    if (fgets(command_data->line, MAX_LINE_LENGTH, stdin) == NULL)
+    if (fgets(commanData->line, MAX_LINE_LENGTH, stdin) == NULL)
     {
-        command_data->flag = EOF_REACHED;
-        free(command_data->line);
-        command_data->line = NULL;
+        commanData->flag = EOF_REACHED;
+        free(commanData->line);
+        commanData->line = NULL;
         return;
     }
-    command_data->line[strcspn(command_data->line, "\n")] = '\0';
+    commanData->line[strcspn(commanData->line, "\n")] = '\0';
 }
 
-void extract_data_from_line(commandData *command_data)
+void extractDataFromLine(CommandData *commanData)
 {
     int i, j;
     char *cmnd = NULL;
     char *suffix = NULL;
-    char *line = command_data->line;
+    char *line = commanData->line;
     i = j = 0;
     cmnd = malloc((MAX_CMD_LENGTH + 1) * sizeof(char));
     suffix = malloc(sizeof(char) * MAX_LINE_LENGTH);
     if (cmnd == NULL || suffix == NULL)
     {
-        command_data->flag = MALLOC_ERROR;
+        commanData->flag = MALLOC_ERROR;
         return;
     }
     SKIP_SPACES(line);
@@ -163,18 +166,18 @@ void extract_data_from_line(commandData *command_data)
         suffix[j++] = line[i++];
     }
     suffix[j] = '\0';
-    command_data->command = cmnd;
-    command_data->params = suffix;
+    commanData->command = cmnd;
+    commanData->params = suffix;
 }
 
 /*Logic*/
 
-void calculate_max_command_length(void)
+void calculateMaxCommandLength(void)
 {
     int i;
     for (i = 0; i < NUM_OF_CMNDS; i++)
     {
-        int len = strlen(command_table[i].command);
+        int len = strlen(commandTable[i].command);
         if (len > MAX_CMD_LENGTH)
         {
             MAX_CMD_LENGTH = len;
@@ -182,67 +185,67 @@ void calculate_max_command_length(void)
     }
 }
 
-void execute_command(commandData *command_data)
+void executeCommand(CommandData *commanData)
 {
     int i;
     int stop_index = NUM_OF_CMNDS - 1;
-    char *params_copy = copyStr(command_data->params, MAX_LINE_LENGTH);
+    char *paramsCopy = copyStr(commanData->params, MAX_LINE_LENGTH);
     ValidationResult vldResult = {{0}, NULL};
-    if (params_copy == NULL)
+    if (paramsCopy == NULL)
     {
-        command_data->flag = MALLOC_ERROR;
-        stop(command_data);
+        commanData->flag = MALLOC_ERROR;
+        stop(commanData);
     }
-    printf("%s %s", command_data->command, command_data->params);
+    printf("%s %s", commanData->command, commanData->params);
     for (i = 0; i < NUM_OF_CMNDS; i++)
     {
-        if (i < NUM_OF_CMNDS && strcmp(command_data->command, command_table[i].command) == 0)
+        if (i < NUM_OF_CMNDS && strcmp(commanData->command, commandTable[i].command) == 0)
         {
-            vldResult = validate(i, params_copy);
+            vldResult = validate(i, paramsCopy);
             if (vldResult.errorCode && *vldResult.errorCode == ERR_MALLOC_FAILED)
             {
-                free(params_copy);
-                command_data->flag = MALLOC_ERROR;
-                stop(command_data);
+                free(paramsCopy);
+                commanData->flag = MALLOC_ERROR;
+                stop(commanData);
             }
             else if (vldResult.errorCode && vldResult.errorCode)
             {
-                print_error_message(*vldResult.errorCode);
+                printErrorMessage(*vldResult.errorCode);
             }
-            else if (i < stop_index && command_table[i].action.cmd_action)
+            else if (i < stop_index && commandTable[i].action.cmdAction)
             {
-                command_table[i].action.cmd_action(&vldResult.params);
+                commandTable[i].action.cmdAction(&vldResult.params);
             }
-            else if (i == stop_index && command_table[i].action.exit_action)
+            else if (i == stop_index && commandTable[i].action.exitAction)
             {
-                free(params_copy);
-                command_data->flag = SUCCESS;
-                command_table[stop_index].action.exit_action(command_data);
+                free(paramsCopy);
+                commanData->flag = SUCCESS;
+                commandTable[stop_index].action.exitAction(commanData);
             }
-            free_validation_result(&vldResult);
-            free(params_copy);
+            freeValidationResult(&vldResult);
+            free(paramsCopy);
             return;
         }
     }
-    print_error_message(ERR_UNDEFINED_COMMAND_NAME);
+    printErrorMessage(ERR_UNDEFINED_COMMAND_NAME);
 }
 
 ValidationResult validate(int index, char *params)
 {
     if (index < NUM_OF_CMNDS - 1)
     {
-        return command_table[index].validate.action_vld(params, command_table[index].req);
+        return commandTable[index].validate.actionVld(params, commandTable[index].req);
     }
     else
     {
-        return command_table[index].validate.stop_vld(params);
+        return commandTable[index].validate.stopVld(params);
     }
 }
 
-void stop(commandData *command_data)
+void stop(CommandData *commanData)
 {
-    free_command_data(command_data);
-    switch (command_data->flag)
+    freeCommandData(commanData);
+    switch (commanData->flag)
     {
     case SUCCESS:
         printf("\nOperation successful.\nExiting...");
@@ -254,9 +257,6 @@ void stop(commandData *command_data)
     case EOF_REACHED:
         printf("\nEnd of file reached.\nExiting...");
         exit(EXIT_SUCCESS);
-    case ERROR:
-        printf("\nError occurred.\nExiting...");
-        exit(EXIT_FAILURE);
     case MALLOC_ERROR:
         printf("\nMemory allocation failed.\nExiting...");
         exit(EXIT_FAILURE);
@@ -266,7 +266,7 @@ void stop(commandData *command_data)
     }
 }
 
-void display_rules(void)
+void displayRules(void)
 {
     /* Introduction and instructions for user */
     printf("Welcome to the complex numbers calculator.\n");
@@ -298,7 +298,7 @@ void display_rules(void)
     printf("4. To quit: stop<ENTER>\n");
 }
 
-void print_error_message(int code)
+void printErrorMessage(int code)
 {
     if (code >= 0 && code < NUM_OF_ERRORS)
     {
@@ -312,26 +312,26 @@ void print_error_message(int code)
 
 /* Allocation*/
 
-void free_command_data(commandData *command_data)
+void freeCommandData(CommandData *commanData)
 {
-    if (command_data->line)
+    if (commanData->line)
     {
-        free(command_data->line);
+        free(commanData->line);
     }
-    if (command_data->command)
+    if (commanData->command)
     {
-        free(command_data->command);
+        free(commanData->command);
     }
-    if (command_data->params)
+    if (commanData->params)
     {
-        free(command_data->params);
+        free(commanData->params);
     }
-    command_data->line = NULL;
-    command_data->command = NULL;
-    command_data->params = NULL;
+    commanData->line = NULL;
+    commanData->command = NULL;
+    commanData->params = NULL;
 }
 
-void free_validation_result(ValidationResult *vldRes)
+void freeValidationResult(ValidationResult *vldRes)
 {
     Parameters params = vldRes->params;
     if (params.val_a)
@@ -346,21 +346,4 @@ void free_validation_result(ValidationResult *vldRes)
     {
         free(vldRes->errorCode);
     }
-}
-
-/*Development helpers*/
-
-void print_commandData(commandData *cmdData)
-{
-    if (cmdData == NULL)
-    {
-        printf("commandData is NULL.\n");
-        return;
-    }
-
-    printf("commandData:\n");
-    printf("  Line    : %s\n", cmdData->line ? cmdData->line : "NULL");
-    printf("  Command : %s\n", cmdData->command ? cmdData->command : "NULL");
-    printf("  Params  : %s\n", cmdData->params ? cmdData->params : "NULL");
-    printf("  Flag    : %d\n", cmdData->flag);
 }

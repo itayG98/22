@@ -16,7 +16,7 @@ static Variable variables[NUM_OF_VARIABLES] = {
     {'E', {0.0, 0.0}},
     {'F', {0.0, 0.0}}};
 
-int get_variable_index(char c)
+int getVariableIndex(char c)
 {
     int i;
     for (i = 0; i < NUM_OF_VARIABLES; i++)
@@ -29,7 +29,7 @@ int get_variable_index(char c)
     return -1;
 }
 
-Complex *get_variable_ref_by_index(int index)
+Complex *getVariableRefByIndex(int index)
 {
     if (index >= 0 && index < NUM_OF_VARIABLES)
     {
@@ -38,67 +38,67 @@ Complex *get_variable_ref_by_index(int index)
     return NULL;
 }
 
-void display_comp_num(const Complex num)
+void displayCompNum(const Complex num)
 {
     printf("\n%.2f + (%.2f)i", num.real, num.imaginary);
 }
 
 /*  Actions */
 
-void read_comp(Parameters *params)
+void readComp(Parameters *params)
 {
     params->a->real = *(params->val_a);
     params->a->imaginary = *(params->val_b);
 }
 
-void print_comp(Parameters *params)
+void printComp(Parameters *params)
 {
-    display_comp_num(*params->a);
+    displayCompNum(*params->a);
 }
 
 /* Calculation*/
 
-void add_comp(Parameters *params)
+void addComp(Parameters *params)
 {
     Complex result = {0};
     result.real = params->a->real + params->b->real;
     result.imaginary = params->a->imaginary + params->b->imaginary;
-    display_comp_num(result);
+    displayCompNum(result);
 }
 
-void sub_comp(Parameters *params)
+void subComp(Parameters *params)
 {
     Complex result = {0};
     result.real = params->a->real - params->b->real;
     result.imaginary = params->a->imaginary - params->b->imaginary;
-    display_comp_num(result);
+    displayCompNum(result);
 }
 
-void mult_comp_real(Parameters *params)
+void multCompReal(Parameters *params)
 {
     Complex result = {0};
     result.real = params->a->real * (*(params->val_a));
     result.imaginary = params->a->imaginary * (*(params->val_a));
-    display_comp_num(result);
+    displayCompNum(result);
 }
 
-void mult_comp_img(Parameters *params)
+void multCompImg(Parameters *params)
 {
     Complex result = {0};
     result.real = -params->a->imaginary * (*(params->val_a));
     result.imaginary = params->a->real * (*(params->val_a));
-    display_comp_num(result);
+    displayCompNum(result);
 }
 
-void mult_comp_comp(Parameters *params)
+void multCompComp(Parameters *params)
 {
     Complex result = {0};
     result.real = params->a->real * params->b->real - params->a->imaginary * params->b->imaginary;
     result.imaginary = params->a->real * params->b->imaginary + params->a->imaginary * params->b->real;
-    display_comp_num(result);
+    displayCompNum(result);
 }
 
-void abs_comp(Parameters *params)
+void absComp(Parameters *params)
 {
     double result = 0;
     result = sqrt(params->a->real * params->a->real + params->a->imaginary * params->a->imaginary);
@@ -107,21 +107,21 @@ void abs_comp(Parameters *params)
 
 /* Validation*/
 
-ValidationResult vld_action(char *params, Requirements req)
+ValidationResult vldAction(char *params, Requirements req)
 {
-    return extract_command_params(params, req);
+    return extractCommandParams(params, req);
 }
-ValidationResult vld_white_characters_only(char *params)
+ValidationResult vldWhiteCharactersOnly(char *params)
 {
     ValidationResult cmd_params = {{0}, NULL};
     if (!isSpacesString(params))
     {
-        set_error_code(&cmd_params, ERR_EXTRANEOUS_TEXT);
+        setErrorCode(&cmd_params, ERR_EXTRANEOUS_TEXT);
     }
     return cmd_params;
 }
 
-ValidationResult extract_command_params(char *params_str, Requirements req)
+ValidationResult extractCommandParams(char *params_str, Requirements req)
 {
     ValidationResult vldRes = {{0}, NULL};
     char *token = NULL;
@@ -130,7 +130,7 @@ ValidationResult extract_command_params(char *params_str, Requirements req)
     {
         if (token_count == req.param_count)
         {
-            set_error_code(&vldRes, ERR_EXTRANEOUS_TEXT);
+            setErrorCode(&vldRes, ERR_EXTRANEOUS_TEXT);
             return vldRes;
         }
         SKIP_SPACES(token);
@@ -139,12 +139,12 @@ ValidationResult extract_command_params(char *params_str, Requirements req)
             if (token_count > 0)
             {
                 BOOLEAN isConsecCommas = checkConsecutiveCommas(params_str);
-                set_error_code(&vldRes, isConsecCommas ? ERR_MULTIPLE_CONSECUTIVE_COMMAS : ERR_MISSING_PARAMETER);
+                setErrorCode(&vldRes, isConsecCommas ? ERR_MULTIPLE_CONSECUTIVE_COMMAS : ERR_MISSING_PARAMETER);
                 return vldRes;
             }
             else
             {
-                set_error_code(&vldRes, ERR_MISSING_PARAMETER);
+                setErrorCode(&vldRes, ERR_MISSING_PARAMETER);
                 return vldRes;
             }
         }
@@ -200,7 +200,7 @@ ValidationResult extract_command_params(char *params_str, Requirements req)
     }
     if (!validate_requirements(vldRes.params, &req))
     {
-        set_error_code(&vldRes, ERR_MISSING_PARAMETER);
+        setErrorCode(&vldRes, ERR_MISSING_PARAMETER);
     }
     return vldRes;
 }
@@ -210,21 +210,21 @@ void setVarByToken(char *token, ValidationResult *vldRes, BOOLEAN isFirst)
     char varName = getOnlyChar(token);
     if (varName != '\0')
     {
-        int index = get_variable_index(varName);
+        int index = getVariableIndex(varName);
         if (index >= 0)
         {
             if (isFirst)
             {
-                vldRes->params.a = get_variable_ref_by_index(index);
+                vldRes->params.a = getVariableRefByIndex(index);
             }
             else
             {
-                vldRes->params.b = get_variable_ref_by_index(index);
+                vldRes->params.b = getVariableRefByIndex(index);
             }
             return;
         }
     }
-    set_error_code(vldRes, ERR_UNDEFINED_COMPLEX_VAR);
+    setErrorCode(vldRes, ERR_UNDEFINED_COMPLEX_VAR);
 }
 
 void setNumberByToken(char *token, ValidationResult *vldRes, BOOLEAN isFirst)
@@ -234,10 +234,10 @@ void setNumberByToken(char *token, ValidationResult *vldRes, BOOLEAN isFirst)
         double value = atof(token);
         if (value != 0 || strcmp(token, "0") == 0)
         {
-            double *ptr = allocate_double_value(value);
+            double *ptr = allocateDoublevalue(value);
             if (ptr == NULL)
             {
-                set_error_code(vldRes, ERR_MALLOC_FAILED);
+                setErrorCode(vldRes, ERR_MALLOC_FAILED);
             }
             else if (isFirst)
             {
@@ -250,12 +250,12 @@ void setNumberByToken(char *token, ValidationResult *vldRes, BOOLEAN isFirst)
         }
         else
         {
-            set_error_code(vldRes, ERR_INVALID_PARAMETER);
+            setErrorCode(vldRes, ERR_INVALID_PARAMETER);
         }
     }
     else
     {
-        set_error_code(vldRes, ERR_INVALID_PARAMETER);
+        setErrorCode(vldRes, ERR_INVALID_PARAMETER);
     }
 }
 
@@ -280,7 +280,7 @@ BOOLEAN validate_requirements(const Parameters params, const Requirements *req)
     return TRUE;
 }
 
-void set_error_code(ValidationResult *vldRes, ErrorCode error)
+void setErrorCode(ValidationResult *vldRes, ErrorCode error)
 {
     vldRes->errorCode = malloc(sizeof(ErrorCode));
     if (vldRes->errorCode == NULL)
@@ -295,7 +295,7 @@ void set_error_code(ValidationResult *vldRes, ErrorCode error)
 
 /*helper method*/
 
-double *allocate_double_value(double value)
+double *allocateDoublevalue(double value)
 {
     double *val = malloc(sizeof(double));
     if (val != NULL)
@@ -303,45 +303,4 @@ double *allocate_double_value(double value)
         *val = value;
     }
     return val;
-}
-
-/*Development helpers*/
-void print_params(Parameters params)
-{
-    printf("Command Parameters:\n");
-    if (params.a)
-    {
-        printf("Complex a: %.2f + %.2fi\n",
-               params.a->real,
-               params.a->imaginary);
-    }
-    if (params.b)
-    {
-        printf("Complex b: %.2f + %.2fi\n",
-               params.b->real,
-               params.b->imaginary);
-    }
-    if (params.val_a)
-    {
-        printf("Value a: %.2f\n", *(params.val_a));
-    }
-    if (params.val_b)
-    {
-        printf("Value b: %.2f\n", *(params.val_b));
-    }
-}
-
-void print_Req(Requirements *req)
-{
-    if (req == NULL)
-    {
-        printf("Requirements structure is NULL.\n");
-        return;
-    }
-
-    printf("Requirements Structure:\n");
-    printf("  var_1 : %s\n", req->var_1 ? "TRUE" : "FALSE");
-    printf("  var_2 : %s\n", req->var_2 ? "TRUE" : "FALSE");
-    printf("  val_1 : %s\n", req->val_1 ? "TRUE" : "FALSE");
-    printf("  val_2 : %s\n", req->val_2 ? "TRUE" : "FALSE");
 }

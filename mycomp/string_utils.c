@@ -41,11 +41,6 @@ char getOnlyChar(const char *str)
     return foundChar;
 }
 
-BOOLEAN isTabOrSpace(char c)
-{
-    return c == ' ' || c == '\t' ? TRUE : FALSE;
-}
-
 BOOLEAN isValidNumString(const char *str)
 {
     BOOLEAN seenDigit = FALSE;

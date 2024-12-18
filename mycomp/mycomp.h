@@ -15,7 +15,6 @@ typedef enum
 {
     MALLOC_ERROR = -3,
     EOF_REACHED = -2,
-    ERROR = -1,
     DEFAULT = 0,
     SUCCESS = 1
 } STATE;
@@ -27,15 +26,15 @@ typedef struct
     char *command;
     char *params;
     STATE flag;
-} commandData;
+} CommandData;
 
 /*
 Union representing pointer to a validation method
 */
 typedef union
 {
-    ValidationResult (*action_vld)(char *params, Requirements req);
-    ValidationResult (*stop_vld)(char *params);
+    ValidationResult (*actionVld)(char *params, Requirements req);
+    ValidationResult (*stopVld)(char *params);
 } ValidateFunc;
 
 /*
@@ -43,13 +42,13 @@ Union representing pointer the method to invoke according to the cmd code
 */
 typedef union
 {
-    void (*cmd_action)(Parameters *params);
-    void (*exit_action)(commandData *command_data);
+    void (*cmdAction)(Parameters *params);
+    void (*exitAction)(CommandData *commandData);
 } Action;
 
 /*
 Struct representing a line in the commands table with code ,
-validation method and action method
+validation method action method nad it's requirements
  */
 typedef struct
 {
@@ -73,26 +72,26 @@ void initCommandTableAction(void);
 This method skips white characters and than allocate and assign a new
  line using fgets to the commandData object
 */
-void get_line(commandData *command_data);
+void getLine(CommandData *command_data);
 
 /*
 This method will extract the first lower or underscore characters and assign to the command parameter
  and the rest will be assigned as the params
 white characters at the start of the line or after the line will skipped
 */
-void extract_data_from_line(commandData *command_data);
+void extractDataFromLine(CommandData *command_data);
 
 /*Logic*/
 
 /*
 This method determines the longest command length and assigns it to MAX_CMD_LENGTH during runtime
 */
-void calculate_max_command_length(void);
+void calculateMaxCommandLength(void);
 /*
 This method takes the data that extracted previously validate it and execute
  it or print an error message
 */
-void execute_command(commandData *command_data);
+void executeCommand(CommandData *command_data);
 /*
 This method calls the correct validation method and return
 the appropriate parameters
@@ -101,32 +100,27 @@ ValidationResult validate(int index, char *params);
 /*
 This method stop the program and prints message according to reason
 */
-void stop(commandData *command_data);
+void stop(CommandData *command_data);
 
 /*
 This method prints a menu for the user explains how to use
 the calculator program
 */
-void display_rules(void);
+void displayRules(void);
 /*
 This method prints an error messene according to it's code
 */
-void print_error_message(int code);
+void printErrorMessage(int code);
 
 /* Allocation*/
 
 /*
 This method free allocated data for the commandData fields
 */
-void free_command_data(commandData *command_data);
+void freeCommandData(CommandData *command_data);
 /*
 This method free allocated data for the ValidationResult number's pointers fields
 */
 
-void free_validation_result(ValidationResult *vldRes);
-
-/*Development helpers*/
-
-/*This method prints the commandData struct */
-void print_commandData(commandData *cmdData);
+void freeValidationResult(ValidationResult *vldRes);
 #endif
